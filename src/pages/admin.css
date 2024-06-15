@@ -1,0 +1,23 @@
+.page-admin {
+    padding: 0.5rem;
+    width: 100%;
+}
+
+.page-admin .actions {
+    display: flex;
+    /* justify-content: center; */
+}
+
+.page-admin .actions .p-button {
+    /* max-height: 40px; */
+}
+
+.page-admin .content {
+    margin-top: 1rem;
+}
+
+.page-admin .actions-form {
+    height: auto;
+    margin: 0 auto;
+    max-width: 1000px;
+}

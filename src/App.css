@@ -1,7 +1,14 @@
 .App {
   text-align: center;
+  /* display: flex; */
 }
 
+.App .container{
+  /* flex-grow: 1; */
+  /* padding: 0 60px; */
+  display: flex;
+}
+/* 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -26,7 +33,7 @@
 
 .App-link {
   color: #61dafb;
-}
+} */
 
 @keyframes App-logo-spin {
   from {
@@ -35,4 +42,46 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+:root {
+  --navbar-height: 70px;
+}
+
+
+.p-button-icon-only {
+  max-width: 36px;
+  max-height: 36px;
+}
+.p-button {
+  max-height: 36px;
+  padding: 0.5rem 0.75rem;
+}
+
+.p-inputtext {
+  padding: 0.25rem 0.5rem !important;
+}
+
+label {
+  font-weight: 500;
+}
+
+.p-button-label {
+  font-weight: 600;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  font-weight: 600;
+}
+
+.p-card-content h4{
+  margin-top: 0;
+  text-align: left;
+}
+
+.p-card-content label{
+  margin-top: 0;
+  text-align: left;
+  min-width: 100px;
+  cursor: pointer;
 }

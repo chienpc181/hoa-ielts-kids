@@ -1,0 +1,22 @@
+.sidebar {
+    width: 300px;
+    min-width: 300px;
+    background: var(--surface-card);
+    /* min-height: 100vh; */
+    min-height: calc(100vh - var(--navbar-height));
+    border: solid #e5e7eb;
+    border-width: 0 1px 0 0;
+}
+
+.sidebar-content {
+    display: flex;
+    padding: 0.5rem;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: center;
+    min-height: 70px;
+    color: var(--primary-color);
+    align-items: center;
+}

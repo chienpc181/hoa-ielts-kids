@@ -1,0 +1,21 @@
+.navbar-admin {
+    background: var(--surface-card);
+    min-height: var(--navbar-height);
+    /* height: 70px; */
+    height: var(--navbar-height);
+    justify-content:space-between;
+    display: flex;
+    align-items: center;
+    border: solid #e5e7eb;
+    border-width: 0 0 1px 0;
+}
+
+.user-bar {
+    /* background: var(--surface-card); */
+    padding: 1rem;
+    /* border-radius: 25px; */
+    margin-right: 0.5rem;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
