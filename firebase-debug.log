@@ -1,0 +1,111 @@
+[debug] [2024-06-15T08:49:59.360Z] ----------------------------------------------------------------------
+[debug] [2024-06-15T08:49:59.363Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\user\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2024-06-15T08:49:59.364Z] CLI Version:   11.30.0
+[debug] [2024-06-15T08:49:59.364Z] Platform:      win32
+[debug] [2024-06-15T08:49:59.364Z] Node Version:  v20.1.0
+[debug] [2024-06-15T08:49:59.364Z] Time:          Sat Jun 15 2024 15:49:59 GMT+0700 (Indochina Time)
+[debug] [2024-06-15T08:49:59.365Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-06-15T08:49:59.369Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2024-06-15T08:49:59.435Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-06-15T08:49:59.435Z] > authorizing via signed-in user (chienpc181@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  E:\MyCode\React\HOA IELTS KIDS\hoa-ielts-kids
+
+[debug] [2024-06-15T08:50:00.193Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2024-06-15T08:50:00.194Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-06-15T08:50:47.853Z] > refreshing access token with scopes: []
+[debug] [2024-06-15T08:50:47.855Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-06-15T08:50:47.855Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-06-15T08:50:48.018Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-06-15T08:50:48.018Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-06-15T08:50:48.041Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2024-06-15T08:50:48.613Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2024-06-15T08:50:48.613Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project hoa-ielts-kids (hoa-ielts-kids) 
+[info] 
+=== Firestore Setup
+[debug] [2024-06-15T08:50:55.309Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/hoa-ielts-kids/services/firestore.googleapis.com [none]
+[debug] [2024-06-15T08:50:55.309Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/hoa-ielts-kids/services/firestore.googleapis.com x-goog-quota-user=projects/hoa-ielts-kids
+[debug] [2024-06-15T08:50:56.603Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/hoa-ielts-kids/services/firestore.googleapis.com 200
+[debug] [2024-06-15T08:50:56.603Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/hoa-ielts-kids/services/firestore.googleapis.com [omitted]
+[debug] [2024-06-15T08:50:56.604Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/hoa-ielts-kids/databases/(default) [none]
+[debug] [2024-06-15T08:50:56.996Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/hoa-ielts-kids/databases/(default) 200
+[debug] [2024-06-15T08:50:56.996Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/hoa-ielts-kids/databases/(default) {"name":"projects/hoa-ielts-kids/databases/(default)","uid":"861d0f52-6201-4b6f-ace1-46bb44f91d5a","createTime":"2024-06-15T05:38:29.853822Z","updateTime":"2024-06-15T05:38:29.853822Z","locationId":"asia-southeast1","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2024-06-15T07:51:00.140895Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"zas","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","etag":"IPCSsqad3YYDMJnysazz3IYD"}
+[debug] [2024-06-15T08:50:56.996Z] database_type: FIRESTORE_NATIVE
+[debug] [2024-06-15T08:50:56.997Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-06-15T08:50:56.997Z] > authorizing via signed-in user (chienpc181@gmail.com)
+[debug] [2024-06-15T08:50:56.997Z] [iam] checking project hoa-ielts-kids for permissions ["firebase.projects.get"]
+[debug] [2024-06-15T08:50:56.998Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/hoa-ielts-kids:testIamPermissions [none]
+[debug] [2024-06-15T08:50:56.998Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/hoa-ielts-kids:testIamPermissions x-goog-quota-user=projects/hoa-ielts-kids
+[debug] [2024-06-15T08:50:56.998Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/hoa-ielts-kids:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-06-15T08:50:57.980Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/hoa-ielts-kids:testIamPermissions 200
+[debug] [2024-06-15T08:50:57.981Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/hoa-ielts-kids:testIamPermissions {"permissions":["firebase.projects.get"]}
+[info] 
+[info] Firestore Security Rules allow you to define how and when to allow
+[info] requests. You can keep these rules in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[debug] [2024-06-15T08:51:28.645Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/hoa-ielts-kids/releases pageSize=10&pageToken=
+[debug] [2024-06-15T08:51:29.809Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/hoa-ielts-kids/releases 200
+[debug] [2024-06-15T08:51:29.809Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/hoa-ielts-kids/releases {"releases":[{"name":"projects/hoa-ielts-kids/releases/cloud.firestore","rulesetName":"projects/hoa-ielts-kids/rulesets/60fb9cb1-ad39-4757-8f59-8fa11ff06372","createTime":"2024-06-15T05:38:37.900040Z","updateTime":"2024-06-15T05:38:37.900040Z"},{"name":"projects/hoa-ielts-kids/releases/firebase.storage/hoa-ielts-kids.appspot.com","rulesetName":"projects/hoa-ielts-kids/rulesets/79ce6cfb-6da5-4981-a2f1-fdd4d1a95744","createTime":"2024-06-15T05:56:57.304073Z","updateTime":"2024-06-15T05:56:57.304073Z"}]}
+[debug] [2024-06-15T08:51:29.809Z] Found ruleset: projects/hoa-ielts-kids/rulesets/60fb9cb1-ad39-4757-8f59-8fa11ff06372
+[debug] [2024-06-15T08:51:29.810Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/hoa-ielts-kids/rulesets/60fb9cb1-ad39-4757-8f59-8fa11ff06372 [none]
+[debug] [2024-06-15T08:51:30.849Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/hoa-ielts-kids/rulesets/60fb9cb1-ad39-4757-8f59-8fa11ff06372 200
+[debug] [2024-06-15T08:51:30.850Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/hoa-ielts-kids/rulesets/60fb9cb1-ad39-4757-8f59-8fa11ff06372 [omitted]
+[info] 
+[info] Firestore indexes allow you to perform complex queries while
+[info] maintaining performance that scales with the size of the result
+[info] set. You can keep index definitions in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[debug] [2024-06-15T08:51:47.052Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/hoa-ielts-kids/databases/(default)/collectionGroups/-/indexes [none]
+[debug] [2024-06-15T08:51:47.055Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/hoa-ielts-kids/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* [none]
+[debug] [2024-06-15T08:51:47.451Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/hoa-ielts-kids/databases/(default)/collectionGroups/-/indexes 200
+[debug] [2024-06-15T08:51:47.451Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/hoa-ielts-kids/databases/(default)/collectionGroups/-/indexes {}
+[debug] [2024-06-15T08:51:47.458Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/hoa-ielts-kids/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* 200
+[debug] [2024-06-15T08:51:47.458Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/hoa-ielts-kids/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* {"fields":[{"name":"projects/hoa-ielts-kids/databases/(default)/collectionGroups/__default__/fields/*","indexConfig":{"indexes":[{"queryScope":"COLLECTION","fields":[{"fieldPath":"*","order":"ASCENDING"}],"state":"READY"},{"queryScope":"COLLECTION","fields":[{"fieldPath":"*","order":"DESCENDING"}],"state":"READY"},{"queryScope":"COLLECTION","fields":[{"fieldPath":"*","arrayConfig":"CONTAINS"}],"state":"READY"}]}}]}
+[info] 
+=== Hosting Setup
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 
+[debug] [2024-06-15T08:52:41.404Z] >>> [apiv2][query] GET https://www.gstatic.com/firebasejs/releases.json [none]
+[debug] [2024-06-15T08:52:41.514Z] <<< [apiv2][status] GET https://www.gstatic.com/firebasejs/releases.json 200
+[debug] [2024-06-15T08:52:41.514Z] <<< [apiv2][body] GET https://www.gstatic.com/firebasejs/releases.json {"current":{"version":"10.12.2","browserURL":"https://www.gstatic.com/firebasejs/10.12.2/firebase.js","packageURL":"https://www.gstatic.com/firebasejs/10.12.2/firebase.tgz"},"live":{"version":"10.12","browserURL":"https://www.gstatic.com/firebasejs/live/10.12/firebase.js","packageURL":"https://www.gstatic.com/firebasejs/live/10.12/firebase.tgz"},"components":{"analytics":"https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js","app":"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js","app-check":"https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check.js","auth":"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js","auth/cordova":"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth/cordova.js","auth/web-extension":"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth/web-extension.js","functions":"https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js","firestore":"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js","firestore/lite":"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore/lite.js","installations":"https://www.gstatic.com/firebasejs/10.12.2/firebase-installations.js","storage":"https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js","performance":"https://www.gstatic.com/firebasejs/10.12.2/firebase-performance.js","remote-config":"https://www.gstatic.com/firebasejs/10.12.2/firebase-remote-config.js","messaging":"https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js","messaging/sw":"https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging/sw.js","database":"https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js","vertexai-preview":"https://www.gstatic.com/firebasejs/10.12.2/firebase-vertexai-preview.js","firestore.memory":"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.memory.js"}}
+[info] +  Wrote dist/index.html 
+[info] 
+[info] i  Detected a .git folder at E:\MyCode\React\HOA IELTS KIDS\hoa-ielts-kids 
+[info] i  Authorizing with GitHub to upload your service account to a GitHub repository's secrets store. 
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://github.com/login/oauth/authorize?client_id=89cf50f02ac6aaed3484&state=701986367&redirect_uri=http%3A%2F%2Flocalhost%3A9005&scope=read%3Auser%20repo%20public_repo
+[info] 
+[info] Waiting for authentication...
+[debug] [2024-06-15T08:53:07.624Z] >>> [apiv2][query] POST https://github.com/login/oauth/access_token [none]
+[debug] [2024-06-15T08:53:07.624Z] >>> [apiv2][body] POST https://github.com/login/oauth/access_token [stream]
+[debug] [2024-06-15T08:53:08.136Z] <<< [apiv2][status] POST https://github.com/login/oauth/access_token 200
+[debug] [2024-06-15T08:53:08.136Z] <<< [apiv2][body] POST https://github.com/login/oauth/access_token {"access_token":"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","token_type":"bearer","scope":"read:user,repo"}
+[debug] [2024-06-15T08:53:08.146Z] >>> [apiv2][query] GET https://api.github.com/user [none]
+[debug] [2024-06-15T08:53:08.718Z] <<< [apiv2][status] GET https://api.github.com/user 200
+[debug] [2024-06-15T08:53:08.718Z] <<< [apiv2][body] GET https://api.github.com/user {"login":"chienpc181","id":82916653,"node_id":"MDQ6VXNlcjgyOTE2NjUz","avatar_url":"https://avatars.githubusercontent.com/u/82916653?v=4","gravatar_id":"","url":"https://api.github.com/users/chienpc181","html_url":"https://github.com/chienpc181","followers_url":"https://api.github.com/users/chienpc181/followers","following_url":"https://api.github.com/users/chienpc181/following{/other_user}","gists_url":"https://api.github.com/users/chienpc181/gists{/gist_id}","starred_url":"https://api.github.com/users/chienpc181/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/chienpc181/subscriptions","organizations_url":"https://api.github.com/users/chienpc181/orgs","repos_url":"https://api.github.com/users/chienpc181/repos","events_url":"https://api.github.com/users/chienpc181/events{/privacy}","received_events_url":"https://api.github.com/users/chienpc181/received_events","type":"User","site_admin":false,"name":null,"company":null,"blog":"","location":null,"email":null,"hireable":null,"bio":null,"twitter_username":null,"public_repos":14,"public_gists":0,"followers":0,"following":0,"created_at":"2021-04-21T00:14:48Z","updated_at":"2024-06-12T11:56:54Z","private_gists":0,"total_private_repos":1,"owned_private_repos":1,"disk_usage":46632,"collaborators":0,"two_factor_authentication":false,"plan":{"name":"free","space":976562499,"collaborators":0,"private_repos":10000}}
+[info] 
+[info] +  Success! Logged into GitHub as chienpc181 
+[info] 
