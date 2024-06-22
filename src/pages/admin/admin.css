@@ -6,6 +6,7 @@
 .page-admin .actions {
     display: flex;
     /* justify-content: center; */
+    
 }
 
 .page-admin .actions .p-button {
@@ -16,12 +17,40 @@
     margin-top: 1rem;
 }
 
-.page-admin .actions-form {
+/* .page-admin .actions-form {
     height: auto;
     margin: 0 auto;
     max-width: 1000px;
+    
+} */
+
+.page-admin .form-content {
+    text-align: left;
+    margin: 0.5rem;
+    margin-top: 3rem;
+}
+
+.page-admin .form-actions {
+    margin-top: 3rem;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1rem;
 }
 
 .page-admin .data-table {
     border: solid 1px #e5e7eb;;
+}
+
+.page-admin .form-field {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 1rem;
+    display: flex;
+}
+
+.page-admin .form-field input{
+    height: 36px;
+}
+
+.page-admin .form-field button{
+    height: 36px;
 }

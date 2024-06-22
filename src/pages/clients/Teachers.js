@@ -38,7 +38,7 @@ export default function Teachers() {
                             const header = (
                                 <div className='card-photo'>
                                     <img alt="Card" 
-                                        src="https://img.freepik.com/premium-photo/studio-flash-light-shot-beautiful-asian-woman-holding-book-chalk-standing-front-black-board-with-copy-space_102814-6240.jpg?w=900" />
+                                        src={teacher.PhotoUrl} />
                                 </div>
 
                             );

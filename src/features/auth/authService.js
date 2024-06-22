@@ -1,6 +1,6 @@
 // authService.js
 import { projectAuth, googleAuthProvider, projectFirestore } from '../../firebase/config';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, onAuthStateChanged } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 // Register a new user
@@ -36,6 +36,7 @@ export const registerUser = async ({ email, password, name }) => {
 
 const setCurrentUser = (userDoc) => {
     return {
+        id: userDoc.data().Id,
         email: userDoc.data().Email,
         name: userDoc.data().Name,
         photoURL: userDoc.data().PhotoURL,
@@ -96,7 +97,7 @@ export const logoutUser = async () => {
 // Check authentication state
 export const checkAuthState = async () => {
     return new Promise((resolve) => {
-        projectAuth.onAuthStateChanged(async (user) => {
+        onAuthStateChanged(projectAuth, async (user) => {
             if (user) {
                 // resolve(user);
                 const userDocRef = doc(projectFirestore, 'HikUsers', user.uid);

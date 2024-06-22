@@ -66,8 +66,12 @@ export default function NavbarClient() {
         }
     ];
     const start = <div className='logo' role='button' onClick={onClickLogo}>
-        <Avatar image={logo} className="mr-2" size="large" shape="circle" />
-        <h4>HOA IELTS KiDS</h4>
+        <Avatar image={logo} size="large" shape="circle" />
+        {/* <h4>HOA</h4> */}
+        <div className='ml-1'>
+            <h4 style={{color:'royalblue', margin:'0'}}>IELTS</h4>
+            <h4 style={{color:'orangered', margin:'0'}}>KiDs</h4>
+        </div>
     </div>
     const end = <div className='user-bar'>
         {currentUser && <div>{currentUser.name}</div>}

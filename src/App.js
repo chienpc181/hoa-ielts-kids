@@ -20,16 +20,18 @@ import Home from './pages/Home';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { checkAuthStateThunk } from './features/auth/authSlice';
+import AdminRoute from './components/AdminRoute';
 
 function App() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
-  console.log(user);
-  let isUserAdmin = user ? (user.role === 'admin' ? true : false) : false;
-  console.log(isUserAdmin);
+  const authStatus = useSelector(state => state.auth.status);
+
   useEffect(() => {
     dispatch(checkAuthStateThunk());
-  }, [ dispatch]);
+  }, [dispatch]);
+  let isUserAdmin = user?.role === 'admin' ? true : false;
+  
   return (
     <div className="App">
       <BrowserRouter>
@@ -38,11 +40,14 @@ function App() {
         <div className='container'>
           {isUserAdmin && <SidebarAdmin />}
           <Routes>
-            <Route path='/admin/students' element={<Students />} />
-            <Route path='/admin/teachers' element={<AdminTeachers />} />
-            <Route path='/admin/teachers/add-teacher' element={<AddTeacher />} />
-            <Route path='/admin/questions/grammar/arrange-sentence' element={<QGrammarArrangeSentence />} />
-            <Route path='/admin/questions/reading/1' element={<QReading />} />
+            <Route element={<AdminRoute isAllowed={isUserAdmin} />}>
+              <Route path='/admin/students' element={<Students />} />
+              <Route path='/admin/teachers' element={<AdminTeachers />} />
+              <Route path='/admin/teachers/add-teacher' element={<AddTeacher />} />
+              <Route path='/admin/questions/grammar/arrange-sentence' element={<QGrammarArrangeSentence />} />
+              <Route path='/admin/questions/reading/1' element={<QReading />} />
+            </Route>
+
 
             <Route path='/teachers' element={<Teachers />} />
 

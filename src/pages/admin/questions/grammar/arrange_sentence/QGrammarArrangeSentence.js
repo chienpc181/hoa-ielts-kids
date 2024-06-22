@@ -49,32 +49,34 @@ export default function QGrammarArrangeSentence() {
     return (
 
         <div className='page-admin'>
+
             <div className='grid'>
                 <div className='col'>
                     <form onSubmit={handleSubmit}>
-                        <Card>
-                            <div className='text-left px-3'>
-                                <div className="grid mb-3 mt-3">
-                                    <label className='col-4' htmlFor="ask">Ask</label>
-                                    <InputTextarea className='col-8' id="ask" name="ask" value={question.ask} onChange={handleInputChange} />
+                        <div className='card'>
+                            <h3 className="text-center">Create question</h3>
+                            <div className='form-content'>
+                                <div className="form-field mt-3">
+                                    <label className='col-3' htmlFor="ask">Ask</label>
+                                    <InputTextarea className='col-9' id="ask" name="ask" value={question.ask} onChange={handleInputChange} />
                                 </div>
                                 {question.answerOptions.map((option, index) => (
-                                    <div key={option.key} className="grid mb-3 mt-3">
-                                        <label className='col-4'>Option {option.key}</label>
+                                    <div key={option.key} className="form-field">
+                                        <label className='col-3'>Option {option.key}</label>
                                         <InputText
-                                            className='col-8'
+                                            className='col-9'
                                             value={option.name}
                                             onChange={(e) => handleAnswerOptionChange(index, e.target.value)}
                                         />
                                     </div>
                                 ))}
-                                <div className="grid mb-3 mt-3">
-                                    <label className='col-4' htmlFor="answer">Answer</label>
-                                    <InputText className='col-8' id="answer" name="answer" value={question.answer} onChange={handleInputChange} />
+                                <div className="form-field">
+                                    <label className='col-3' htmlFor="answer">Answer</label>
+                                    <InputText className='col-9' id="answer" name="answer" value={question.answer} onChange={handleInputChange} />
                                 </div>
-                                <div className="grid mb-3 mt-3">
-                                    <label className='col-4' htmlFor="explain">Explain</label>
-                                    <InputTextarea className='col-8' id="explain" name="explain" value={question.explain} onChange={handleInputChange} />
+                                <div className="form-field">
+                                    <label className='col-3' htmlFor="explain">Explain</label>
+                                    <InputTextarea className='col-9' id="explain" name="explain" autoResize rows={3} value={question.explain} onChange={handleInputChange} />
                                 </div>
                             </div>
                             <div className='form-actions'>
@@ -82,7 +84,7 @@ export default function QGrammarArrangeSentence() {
                                 onIcon="pi pi-caret-right" offIcon="pi pi-caret-left"/>
                                 <Button label="Add" className='mx-2' icon="pi pi-plus" />
                             </div>
-                        </Card>
+                        </div>
                     </form>
                 </div>
 
@@ -90,6 +92,8 @@ export default function QGrammarArrangeSentence() {
                     <QGrammarArrangeSentencePreview question={question} />
                 </div>}
             </div>
+
+
 
 
         </div>
