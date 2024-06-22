@@ -1,0 +1,36 @@
+.page-client {
+    width: 100%;
+}
+
+.page-client .page-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    /* padding-left: 0.5rem;
+    padding-right: 0.5rem; */
+    padding: 0 0.5rem 1rem 0.5rem;
+}
+
+.page-client .actions {
+    display: flex;
+    /* justify-content: center; */
+}
+
+.page-client .actions .p-button {
+    /* max-height: 40px; */
+}
+
+.page-client .main-content {
+    margin-top: 1rem;
+    
+}
+
+.page-client .actions-form {
+    height: auto;
+    margin: 0 auto;
+    max-width: 1000px;
+}
+
+.page-client .data-table {
+    border: solid 1px #e5e7eb;;
+}
+

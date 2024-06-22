@@ -1,13 +1,17 @@
 .App {
   text-align: center;
-  /* display: flex; */
+  display: flex;
+  flex-direction: column;
 }
 
 .App .container{
-  /* flex-grow: 1; */
-  /* padding: 0 60px; */
   display: flex;
+  background-color: #F3F4FF;
+  /* margin-top: 4px; */
+  width: 100%;
+  min-height: calc(100vh);
 }
+
 /* 
 .App-logo {
   height: 40vmin;
@@ -45,7 +49,8 @@
 }
 
 :root {
-  --navbar-height: 70px;
+  --navbar-height: 65px;
+  /* --container-gap: 4px */
 }
 
 
@@ -55,11 +60,12 @@
 }
 .p-button {
   max-height: 36px;
-  padding: 0.5rem 0.75rem;
+  /* padding: 0.5rem 0.75rem; */
 }
 
 .p-inputtext {
-  padding: 0.25rem 0.5rem !important;
+  /* padding: 0.25rem 0.5rem !important; */
+  height: 36px;
 }
 
 label {
@@ -84,4 +90,24 @@ label {
   text-align: left;
   min-width: 100px;
   cursor: pointer;
+}
+.p-calendar {
+  padding: 0 !important;
+}
+.p-card {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12);
+  border-radius: 12px;
+}
+
+.p-menubar {
+  padding: 0; 
+  background: inherit;
+  color: #4b5563;
+  border: 0;
+  font-weight: 600;
+  width: 100%;
+    justify-content: space-between;
+}
+.p-menubar .p-menubar-end {
+  margin-left: unset;
 }

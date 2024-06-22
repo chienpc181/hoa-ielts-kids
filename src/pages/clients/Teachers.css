@@ -1,0 +1,35 @@
+.teacher-card {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .teacher-card {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.page-client .card-photo {
+    width: 100%;
+    height: auto;
+    display: block;
+    padding: 1rem;
+}
+
+.teacher-card .p-card .p-card-body {
+    padding: 0 1rem 0 1rem;
+}
+
+.teacher-card p {
+    text-align: left;
+}
+
+/* .teacher-card .p-card {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12);
+    border-radius: 12px;
+} */
+
+.teacher-card img {
+    border-radius: 12px;
+}
