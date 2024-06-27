@@ -1,0 +1,45 @@
+.student-card {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .student-card {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* .page-client .card-photo {
+    width: 100%;
+    height: auto;
+    display: block;
+    padding: 1rem;
+} */
+
+.page-client .student-card .card-photo {
+    width: 100%;
+    display: block;
+    padding: 1rem;
+    text-align: center; /* Center the image within the card */
+}
+
+.page-client .student-card .card-photo img {
+    width: 150px; /* Set the desired width and height for the circular image */
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover; /* Ensure the image covers the container without distortion */
+}
+
+.student-card .p-card .p-card-body {
+    padding: 0 1rem 0 1rem;
+}
+
+.student-card p {
+    text-align: left;
+}
+
+
+.student-card img {
+    border-radius: 12px;
+}

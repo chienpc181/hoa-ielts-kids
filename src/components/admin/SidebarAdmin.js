@@ -78,10 +78,10 @@ export default function SidebarAdmin() {
                             }
                         },
                         {
-                            label: 'Subcategory 2',
+                            label: 'Images',
                             icon: 'pi pi-box',
                             command: () => {
-                                navigate('/admin/questions/category-2/subcategory-2');
+                                navigate('/admin/questions/images/image');
                             }
                         },
                     ]
@@ -100,6 +100,13 @@ export default function SidebarAdmin() {
             icon: 'pi pi-twitter',
             command: () => {
                 navigate('/admin/activities');
+            }
+        },
+        {
+            label: 'Stories',
+            icon: 'pi pi-book',
+            command: () => {
+                navigate('/admin/stories');
             }
         },
     ]

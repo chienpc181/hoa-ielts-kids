@@ -1,9 +1,8 @@
-import '../../../admin.css';
 import React, { useState, useEffect } from "react";
 import { Button } from 'primereact/button';
 import { RadioButton } from 'primereact/radiobutton';
 
-export default function QGrammarArrangeSentencePreview({ question: initialQuestion }) {
+export default function QuestionStandard({ question: initialQuestion }) {
     const [question, setQuestion] = useState(initialQuestion);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [result, setResult] = useState({
@@ -16,6 +15,17 @@ export default function QGrammarArrangeSentencePreview({ question: initialQuesti
         setSelectedAnswer(null);
         setResult({ isCorrect: false, submitted: false });
     }, [initialQuestion]);
+
+    useEffect(() => {
+        // console.log(selectedAnswer);
+        if (selectedAnswer) {
+            // const isCorrect = selectedAnswer.option === question.correctAnswer;
+            setResult({
+                isCorrect: selectedAnswer.isCorrect,
+                submitted: true
+            });
+        }
+    }, [selectedAnswer]);
 
     const submit = () => {
         if (selectedAnswer) {
@@ -55,7 +65,7 @@ export default function QGrammarArrangeSentencePreview({ question: initialQuesti
                         <div>{question.explaination}</div>
                     </>
                 )}
-                <Button className='mt-3' label="Submit" icon="pi pi-save" onClick={submit} />
+                {/* <Button className='mt-3' label="Submit" icon="pi pi-save" onClick={submit} /> */}
             </div>
         </div>
     );

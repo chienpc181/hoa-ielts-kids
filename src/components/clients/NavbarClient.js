@@ -37,6 +37,11 @@ export default function NavbarClient() {
                     icon: 'pi pi-box'
                 },
                 {
+                    label: 'IELTS band 5.5',
+                    icon: 'pi pi-box',
+                    command: () => navigate('/practices')
+                },
+                {
                     label: 'IELTS band 6',
                     icon: 'pi pi-box'
                 },
@@ -58,11 +63,17 @@ export default function NavbarClient() {
         },
         {
             label: 'Students',
-            icon: 'pi pi-box'
+            icon: 'pi pi-box',
+            command: () => navigate('/students')
         },
         {
             label: 'Contact',
             icon: 'pi pi-envelope'
+        },
+        {
+            label: 'Stories',
+            icon: 'pi pi-book',
+            command: () => navigate('/stories')
         }
     ];
     const start = <div className='logo' role='button' onClick={onClickLogo}>

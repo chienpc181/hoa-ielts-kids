@@ -5,13 +5,19 @@ import NavbarAdmin from './components/admin/NavbarAdmin';
 import NavbarClient from './components/clients/NavbarClient';
 import SidebarAdmin from './components/admin/SidebarAdmin';
 
-import Students from './pages/admin/Students';
+import AdminStudents from './pages/admin/Students';
+import AddStudent from './pages/admin/AddStudent';
 import AdminTeachers from './pages/admin/Teachers';
 import AddTeacher from './pages/admin/AddTeacher';
 import QGrammarArrangeSentence from './pages/admin/questions/grammar/arrange_sentence/QGrammarArrangeSentence';
 import QReading from './pages/admin/questions/reading/QReading';
+import QReadingWithImage from './pages/admin/questions/reading/QReadingWithImage';
+import StoryStandard from './pages/admin/stories/StoryStandard';
 
 import Teachers from './pages/clients/Teachers';
+import Students from './pages/clients/Students';
+import Practices from './pages/clients/Practices';
+import Stories from './pages/clients/Stories';
 
 import Register from './pages/login/Register';
 import Login from './pages/login/Login';
@@ -41,15 +47,21 @@ function App() {
           {isUserAdmin && <SidebarAdmin />}
           <Routes>
             <Route element={<AdminRoute isAllowed={isUserAdmin} />}>
-              <Route path='/admin/students' element={<Students />} />
+              <Route path='/admin/students' element={<AdminStudents />} />
+              <Route path='/admin/students/add-student' element={<AddStudent />} />
               <Route path='/admin/teachers' element={<AdminTeachers />} />
               <Route path='/admin/teachers/add-teacher' element={<AddTeacher />} />
               <Route path='/admin/questions/grammar/arrange-sentence' element={<QGrammarArrangeSentence />} />
               <Route path='/admin/questions/reading/1' element={<QReading />} />
+              <Route path='/admin/questions/images/image' element={<QReadingWithImage />} />
+              <Route path='/admin/stories' element={<StoryStandard />} />
             </Route>
 
 
             <Route path='/teachers' element={<Teachers />} />
+            <Route path='/students' element={<Students />} />
+            <Route path='/practices' element={<Practices />} />
+            <Route path='/stories' element={<Stories />} />
 
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />

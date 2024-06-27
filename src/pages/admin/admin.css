@@ -36,6 +36,10 @@
     padding-top: 1rem;
 }
 
+.page-admin .form-error {
+    color: red;
+}
+
 .page-admin .data-table {
     border: solid 1px #e5e7eb;;
 }
@@ -53,4 +57,10 @@
 
 .page-admin .form-field button{
     height: 36px;
+}
+
+.page-admin .story-para {
+    cursor: pointer;
+    font-weight: 500;
+    text-align: justify;
 }

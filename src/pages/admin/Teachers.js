@@ -5,6 +5,7 @@ import { Column } from 'primereact/column';
 import './admin.css';
 import { useNavigate } from 'react-router-dom';
 import { useCollection } from '../../hooks/useCollection';
+import { formatDate } from '../../utils';
 
 export default function Teachers() {
     const navigate = useNavigate();
@@ -14,21 +15,14 @@ export default function Teachers() {
    
     const { documents, error } = useCollection(
         "HikTeachers",
-        ["IsActive", "==", true], // Example query
-        ["CreatedAt", "desc"] // Example orderBy
+        ["IsActive", "==", true], 
+        ["CreatedAt", "desc"] 
       );
     
     const dateBodyTemplate = (rowData) => {
         return formatDate(rowData.DateOfBirth);
     };
-    const formatDate = (value) => {
-        value = value.toDate();
-        return value.toLocaleDateString('en-GB', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
-    };
+
     return (
         <div className='page-admin'>
             <div>

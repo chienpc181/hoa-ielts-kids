@@ -94,7 +94,7 @@ label {
   padding: 0 !important;
 }
 .p-card {
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .12);
   border-radius: 12px;
 }
 
@@ -109,4 +109,7 @@ label {
 }
 .p-menubar .p-menubar-end {
   margin-left: unset;
+}
+.p-stepper-horizontal ul {
+  max-width: 800px;
 }
