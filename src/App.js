@@ -18,6 +18,7 @@ import Teachers from './pages/clients/Teachers';
 import Students from './pages/clients/Students';
 import Practices from './pages/clients/Practices';
 import Stories from './pages/clients/Stories';
+import StoryDetail from './pages/clients/StoryDetail';
 
 import Register from './pages/login/Register';
 import Login from './pages/login/Login';
@@ -62,6 +63,7 @@ function App() {
             <Route path='/students' element={<Students />} />
             <Route path='/practices' element={<Practices />} />
             <Route path='/stories' element={<Stories />} />
+            <Route path="/stories/:id" element={<StoryDetail />} />
 
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />

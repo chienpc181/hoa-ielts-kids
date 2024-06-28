@@ -1,11 +1,12 @@
 import './client.css';
 import './Stories.css';
 import { useCollection } from '../../hooks/useCollection';
-import { InputSwitch } from "primereact/inputswitch";
-import { OverlayPanel } from 'primereact/overlaypanel';
 import { useState, useRef } from 'react';
+import SwitchLang from '../../components/clients/SwitchLang';
+import { useNavigate } from 'react-router-dom';
 
 export default function Stories() {
+    const navigate = useNavigate();
     const { documents, error } = useCollection(
         "HikStories",
         // ["IsActive", "==", true], 
@@ -13,8 +14,6 @@ export default function Stories() {
     );
 
     const [translate, setTranslate] = useState(false);
-    const [currentIndex, setCurrentIndex] = useState(null);
-    const op = useRef([]);
 
     if (error) {
         return <div>Error: {error}</div>;
@@ -24,44 +23,24 @@ export default function Stories() {
         return <div>Loading...</div>;
     }
 
-    const toggleOverlay = (e, index) => {
-        setCurrentIndex(index);
-        op.current[index].toggle(e);
-    };
+    const handleClickStory = (story) => {
+        navigate(`/stories/${story.id}`);
+    }
 
     return (
         <div className='page-client'>
-            <div className='page-content' style={{maxWidth:'600px'}}>
-                <div className='align-items-center flex justify-content-center pt-3' >
-                    <h4 className='mr-2'>VI</h4>
-                    <InputSwitch checked={translate} onChange={(e) => setTranslate(e.value)} />
-                    <h4 className='ml-2'>EN</h4>
+            <div className='page-content'>
+                <div className='pt-3' >
+                    <SwitchLang translate={translate} setTranslate={setTranslate}></SwitchLang>
                 </div>
-                <div>
-                    {translate && <h2>{documents[1].title.en}</h2>}
-                    {!translate && <h2>{documents[1].title.vi}</h2>}
+                <div className='list-stories'>
+                    {documents.map((story, index) => (
+                        <div key={index} className='story-route card' onClick={() => handleClickStory(story)}>
+                            {translate ? <h2>{story.title.en}</h2> : <h2>{story.title.vi}</h2>}
+                        </div>
+                    ))}
                 </div>
-
-                <div className='main-content'>
-                    <div className='px-2'>
-                        {documents[1].paragraphs.map((para, index) => (
-                            <div key={index}>
-                                {translate ? (
-                                    <p className='story-para' onClick={(e) => toggleOverlay(e, index)}>{para.en}</p>
-                                ) : (
-                                    <p className='story-para' onClick={(e) => toggleOverlay(e, index)}>{para.vi}</p>
-                                )}
-                                <OverlayPanel ref={el => op.current[index] = el}>
-                                    {translate ? (
-                                        <p className='story-para'>{para.vi}</p>
-                                    ) : (
-                                        <p className='story-para'>{para.en}</p>
-                                    )}
-                                </OverlayPanel>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                
             </div>
         </div>
     );
