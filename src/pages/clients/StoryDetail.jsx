@@ -9,6 +9,7 @@ import { ToggleButton } from 'primereact/togglebutton';
 import { Dropdown } from 'primereact/dropdown';
 import useFilteredSpeechSynthesis from '../../hooks/useFilteredSpeechSynthesis ';
 import { OverlayPanel } from 'primereact/overlaypanel';
+import { useSpeechSynthesis } from 'react-speech-kit';
 
 export default function StoryDetail() {
     const { id } = useParams();
@@ -16,14 +17,18 @@ export default function StoryDetail() {
     const [translate, setTranslate] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(null);
     const op = useRef([]);
-    const { speak, cancel, speaking, voices, supported } = useFilteredSpeechSynthesis();
+    // const { speak, cancel, speaking, voices, supported } = useFilteredSpeechSynthesis();
+    const { speak, cancel, speaking, voices, supported } = useSpeechSynthesis();
     const [selectedVoice, setSelectedVoice] = useState(null);
+    const [voicesEN, setVoicesEN] = useState([]);
 
     useEffect(() => {
-        
-        if (voices.length > 0) {
-            setSelectedVoice(voices[0]);
+        setVoicesEN(voices.filter(voice => voice.localService && (voice.lang === 'en-US' || voice.lang === 'en-GB')));
+        if (voicesEN.length > 0) {
+            
+            setSelectedVoice(voicesEN[0]);
         }
+        console.log("Voices available:", voicesEN); // Debug statement to log voices
     }, [voices]);
 
     if (error) {
@@ -40,7 +45,6 @@ export default function StoryDetail() {
     };
 
     const handleSpeak = () => {
-        console.log(selectedVoice);
         const text = document.paragraphs
             .map(para => (translate ? para.en : para.vi))
             .join(' ');
@@ -55,6 +59,20 @@ export default function StoryDetail() {
         }
     };
 
+    const handleSpeakPara = (text) => {
+        // const text = document.paragraphs[index].en;
+        speak({ text, voice: selectedVoice });
+    };
+
+    const handleCopyPara = (text) => {
+        // const text = document.paragraphs[index].en;
+        navigator.clipboard.writeText(text).then(() => {
+            console.log('Text copied to clipboard');
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    };
+
     return (
         <div className='page-client'>
             <div className='page-content' style={{maxWidth:'600px'}}>
@@ -62,12 +80,12 @@ export default function StoryDetail() {
                     <SwitchLang translate={translate} setTranslate={setTranslate}/>
                 </div>
                 <div className='block justify-content-center mt-4'>
-                <Dropdown className='w-full'
+                    <Dropdown className='w-full'
                         value={selectedVoice} 
-                        options={voices} 
+                        options={voicesEN} 
                         onChange={(e) => setSelectedVoice(e.value)} 
                         optionLabel="name" 
-                        optionValue="voiceURI"
+                        // optionValue="voiceURI"
                         placeholder="Select a Voice"
                     />
                     <ToggleButton 
@@ -76,7 +94,7 @@ export default function StoryDetail() {
                         onIcon="pi pi-pause" 
                         offIcon="pi pi-play" 
                         onLabel="Pause" 
-                        offLabel="Read Story" 
+                        offLabel="Listen" 
                     />
                 </div>
                 <div className='main-content'>
@@ -91,9 +109,15 @@ export default function StoryDetail() {
                                 )}
                                 <OverlayPanel ref={el => op.current[index] = el}>
                                     {translate ? (
-                                        <p className='story-para'>{para.vi}</p>
+                                        <div className='story-para'>{para.vi}</div>
                                     ) : (
-                                        <p className='story-para'>{para.en}</p>
+                                        <>
+                                            <div className='flex justify-content-end mb-2'>
+                                                <Button rounded text icon="pi pi-copy" onClick={() => handleCopyPara(para.en)}/>
+                                                <Button rounded text icon="pi pi-volume-up" onClick={() => handleSpeakPara(para.en)}/>
+                                            </div>
+                                            <div className='story-para'>{para.en}</div>
+                                        </>
                                     )}
                                 </OverlayPanel>
                             </div>

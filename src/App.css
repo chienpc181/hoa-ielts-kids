@@ -54,12 +54,15 @@
 }
 
 
-/* .p-button-icon-only {
+.p-button-icon-only {
   max-width: 36px;
   max-height: 36px;
-} */
+}
 .p-button {
   max-height: 36px;
+}
+.p-overlaypanel-content {
+  padding: 1rem;
 }
 
 /* .p-inputtext {
