@@ -5,9 +5,10 @@ import { Column } from 'primereact/column';
 import './client.css';
 import './Students.css';
 import { useCollection } from '../../hooks/useCollection';
+import { useNavigate } from 'react-router-dom';
 
 export default function Students() {
-
+    const navigate = useNavigate();
     const { documents, error } = useCollection(
         "HikStudents",
         // ["IsActive", "==", true], 
@@ -23,7 +24,9 @@ export default function Students() {
         return <div>Loading...</div>;
     }
 
-
+    const handleClickStudent = (student) => {
+        navigate(`/students/${student.id}`);
+    }
 
     return (
         <div className='page-client'>
@@ -34,7 +37,7 @@ export default function Students() {
 
                 <div className='main-content'>
                     <div className='student-card'>
-                        {documents.map((student) => {
+                        {documents.map((student, index) => {
                             const header = (
                                 <div className='card-photo'>
                                     <img alt="Card" 
@@ -48,7 +51,7 @@ export default function Students() {
                                 </>
                             );
                             return (
-                                <Card title={student.Alias} subTitle={subTitle} header={header} className="">
+                                <Card key={index} title={student.Alias} subTitle={subTitle} header={header} style={{cursor: 'pointer'}} onClick={() => handleClickStudent(student)}>
                                     <p className="m-0">
                                         {student.Description}
                                     </p>

@@ -13,12 +13,16 @@ import QGrammarArrangeSentence from './pages/admin/questions/grammar/arrange_sen
 import QReading from './pages/admin/questions/reading/QReading';
 import QReadingWithImage from './pages/admin/questions/reading/QReadingWithImage';
 import StoryStandard from './pages/admin/stories/StoryStandard';
+import LessonStandard from './pages/admin/lessons/LessonStandard';
 
 import Teachers from './pages/clients/Teachers';
 import Students from './pages/clients/Students';
 import Practices from './pages/clients/Practices';
 import Stories from './pages/clients/Stories';
 import StoryDetail from './pages/clients/StoryDetail';
+import StudentDetail from './pages/clients/StudentDetail';
+import Lessons from './pages/clients/lessons/Lessons';
+import LessonDetail from './pages/clients/lessons/LessonDetail';
 
 import Register from './pages/login/Register';
 import Login from './pages/login/Login';
@@ -56,14 +60,18 @@ function App() {
               <Route path='/admin/questions/reading/1' element={<QReading />} />
               <Route path='/admin/questions/images/image' element={<QReadingWithImage />} />
               <Route path='/admin/stories' element={<StoryStandard />} />
+              <Route path='/admin/lessons' element={<LessonStandard />} />
             </Route>
 
 
             <Route path='/teachers' element={<Teachers />} />
             <Route path='/students' element={<Students />} />
+            <Route path='/students/:id' element={<StudentDetail />} />
             <Route path='/practices' element={<Practices />} />
             <Route path='/stories' element={<Stories />} />
             <Route path="/stories/:id" element={<StoryDetail />} />
+            <Route path='/lessons' element={<Lessons />} />
+            <Route path="/lessons/:id" element={<LessonDetail />} />
 
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />

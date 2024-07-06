@@ -7,7 +7,7 @@
     margin: 0 auto;
     /* padding-left: 0.5rem;
     padding-right: 0.5rem; */
-    padding: 0 0.5rem 1rem 0.5rem;
+    padding: 0 0.75rem 1rem 0.75rem;
 }
 
 .page-client .actions {
@@ -32,5 +32,9 @@
 
 .page-client .data-table {
     border: solid 1px #e5e7eb;;
+}
+
+.page-client img {
+    width: 100%;
 }
 

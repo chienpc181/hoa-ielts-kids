@@ -15,7 +15,7 @@ const FileUploadImage = ({ handleOnSelectFiles }) => {
 
     useEffect(() => {
         handleOnSelectFiles(files);
-    }, [files, handleOnSelectFiles])
+    }, [files])
 
     const uploadOptions = { className: 'hidden' }
     const cancelOptions = { className: 'hidden' }

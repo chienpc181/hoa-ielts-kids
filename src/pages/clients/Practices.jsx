@@ -23,8 +23,6 @@ export default function Practices() {
         return <div>Loading...</div>;
     }
 
-
-
     return (
         <div className='page-client'>
             <div className='page-content'>

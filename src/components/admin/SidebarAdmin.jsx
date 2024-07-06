@@ -109,6 +109,13 @@ export default function SidebarAdmin() {
                 navigate('/admin/stories');
             }
         },
+        {
+            label: 'Lessons',
+            icon: 'pi pi-book',
+            command: () => {
+                navigate('/admin/lessons');
+            }
+        },
     ]
     return (
         <div className="sidebar">

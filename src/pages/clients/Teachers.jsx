@@ -34,7 +34,7 @@ export default function Teachers() {
 
                 <div className='main-content'>
                     <div className='teacher-card'>
-                        {documents.map((teacher) => {
+                        {documents.map((teacher, index) => {
                             const header = (
                                 <div className='card-photo'>
                                     <img alt="Card" 
@@ -49,7 +49,7 @@ export default function Teachers() {
                                 </>
                             );
                             return (
-                                <Card title={teacher.Alias} subTitle={subTitle} header={header} className="">
+                                <Card key={index} title={teacher.Alias} subTitle={subTitle} header={header} className="">
                                     <p className="m-0">
                                         {teacher.Description}
                                     </p>

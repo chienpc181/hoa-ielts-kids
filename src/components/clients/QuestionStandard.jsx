@@ -40,18 +40,18 @@ export default function QuestionStandard({ question: initialQuestion }) {
     return (
         <div>
             <div className='card'>
-                <h4 className='text-left'>{question.content}</h4>
+                <p className='text-left' style={{fontWeight:'600'}}>{question.content}</p>
                 <div className="flex flex-column gap-3">
                     {question.options.map((opt, index) => (
                         <div key={index} className="flex align-items-center">
                             <RadioButton
                                 inputId={opt.option}
                                 name="option"
-                                value={opt}
+                                value={opt} 
                                 onChange={(e) => setSelectedAnswer(e.value)}
                                 checked={selectedAnswer && selectedAnswer.option === opt.option}
                             />
-                            <label htmlFor={opt.option} className="ml-2">{opt.option}</label>
+                            <span htmlFor={opt.option} className="ml-2" style={{fontWeight: '500'}}>{opt.option}</span>
                         </div>
                     ))}
                 </div>

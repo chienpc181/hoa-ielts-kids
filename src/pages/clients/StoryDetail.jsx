@@ -7,9 +7,9 @@ import useDocument from '../../hooks/useDocument';
 import { Button } from 'primereact/button';
 import { ToggleButton } from 'primereact/togglebutton';
 import { Dropdown } from 'primereact/dropdown';
-import useFilteredSpeechSynthesis from '../../hooks/useFilteredSpeechSynthesis ';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { useSpeechSynthesis } from 'react-speech-kit';
+import { Image } from 'primereact/image';
 
 export default function StoryDetail() {
     const { id } = useParams();
@@ -23,7 +23,8 @@ export default function StoryDetail() {
     const [voicesEN, setVoicesEN] = useState([]);
 
     useEffect(() => {
-        setVoicesEN(voices.filter(voice => voice.localService && (voice.lang === 'en-US' || voice.lang === 'en-GB')));
+        // setVoicesEN(voices.filter(voice => voice.localService && (voice.lang === 'en-US' || voice.lang === 'en-GB')));
+        setVoicesEN(voices);
         if (voicesEN.length > 0) {
             
             setSelectedVoice(voicesEN[0]);
@@ -80,7 +81,7 @@ export default function StoryDetail() {
                     <SwitchLang translate={translate} setTranslate={setTranslate}/>
                 </div>
                 <div className='block justify-content-center mt-4'>
-                    <Dropdown className='w-full'
+                    <Dropdown className='w-full mb-2'
                         value={selectedVoice} 
                         options={voicesEN} 
                         onChange={(e) => setSelectedVoice(e.value)} 
@@ -98,7 +99,8 @@ export default function StoryDetail() {
                     />
                 </div>
                 <div className='main-content'>
-                    {translate ? <h2>{document.title.en}</h2> : <h2>{document.title.vi}</h2>}
+                    {translate ? <h1>{document.title.en}</h1> : <h1>{document.title.vi}</h1>}
+                    <Image src={document.thumbnailUrl} alt="Image"></Image>
                     <div className='px-2'>
                         {document.paragraphs.map((para, index) => (
                             <div key={index}>
