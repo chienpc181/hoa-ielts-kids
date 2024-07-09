@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from 'primereact/button';
 import { RadioButton } from 'primereact/radiobutton';
 
-export default function QuestionStandard({ question: initialQuestion }) {
+export default function QuestionStandard({ question: initialQuestion, questionNumber }) {
     const [question, setQuestion] = useState(initialQuestion);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [result, setResult] = useState({
@@ -40,10 +40,10 @@ export default function QuestionStandard({ question: initialQuestion }) {
     return (
         <div>
             <div className='card'>
-                <p className='text-left' style={{fontWeight:'600'}}>{question.content}</p>
+                <p className='text-left' style={{fontWeight:'600', marginTop:'0'}}>{questionNumber+1}. {question.content}</p>
                 <div className="flex flex-column gap-3">
-                    {question.options.map((opt, index) => (
-                        <div key={index} className="flex align-items-center">
+                    {question.options.map((opt, idx) => (
+                        <div key={idx} className="flex align-items-center">
                             <RadioButton
                                 inputId={opt.option}
                                 name="option"
@@ -51,18 +51,18 @@ export default function QuestionStandard({ question: initialQuestion }) {
                                 onChange={(e) => setSelectedAnswer(e.value)}
                                 checked={selectedAnswer && selectedAnswer.option === opt.option}
                             />
-                            <span htmlFor={opt.option} className="ml-2" style={{fontWeight: '500'}}>{opt.option}</span>
+                            <label htmlFor={opt.option} className="ml-2" style={{fontWeight: '500', cursor:'pointer'}}>{opt.option}</label>
                         </div>
                     ))}
                 </div>
                 {result.submitted && (
                     <>
                         {result.isCorrect ? (
-                            <div style={{ color: 'green' }}>Correct</div>
+                            <p style={{ color: 'green', fontWeight:'600', textAlign:'center' }}>Correct</p>
                         ) : (
-                            <div style={{ color: 'red' }}>Wrong</div>
+                            <p style={{ color: 'red', fontWeight:'600', textAlign:'center'  }}>Wrong</p>
                         )}
-                        <div>{question.explaination}</div>
+                        <p>{question.explaination}</p>
                     </>
                 )}
                 {/* <Button className='mt-3' label="Submit" icon="pi pi-save" onClick={submit} /> */}

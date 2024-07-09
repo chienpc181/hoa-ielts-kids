@@ -32,7 +32,7 @@ export default function Teachers() {
                     <h2>Our teachers</h2>
                 </div>
 
-                <div className='main-content'>
+                <div className='mt-3'>
                     <div className='teacher-card'>
                         {documents.map((teacher, index) => {
                             const header = (

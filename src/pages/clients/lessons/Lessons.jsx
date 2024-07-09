@@ -2,6 +2,8 @@
 import '../client.css';
 import { useCollection } from '../../../hooks/useCollection';
 import { useNavigate } from 'react-router-dom';
+import ListItemLesson from '../../../components/clients/ListItemLesson';
+import SwitchLang from '../../../components/clients/SwitchLang';
 
 export default function Lessons() {
     const navigate = useNavigate();
@@ -27,14 +29,15 @@ export default function Lessons() {
     return (
         <div className='page-client'>
             <div className='page-content'>
-                <div>
-                    <h2>All lessons</h2>
+            <div className='my-3' >
+                    <SwitchLang></SwitchLang>
                 </div>
-                <div className='list-stories'>
+                <div>
+                    <h1>All lessons</h1>
+                </div>
+                <div className='lesson'>
                     {documents.map((lesson, index) => (
-                        <div key={index} className='card' style={{fontWeight:'600', cursor: 'pointer'}} onClick={() => handleClickLesson(lesson)}>
-                            {lesson.title}
-                        </div>
+                        <ListItemLesson key={index} item={lesson} onSelectItem={() => handleClickLesson(lesson)}></ListItemLesson>
                     ))}
                 </div>
                 

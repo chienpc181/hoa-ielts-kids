@@ -53,6 +53,16 @@
   /* --container-gap: 4px */
 }
 
+h1 {
+  font-size: 1.55rem;
+}
+h2 {
+  font-size: 1rem;
+}
+h3 {
+  font-size: 1rem;
+}
+
 
 .p-button-icon-only {
   max-width: 36px;
@@ -70,9 +80,9 @@
   /* height: 36px;
 } */
 
-label {
-  font-weight: 600;
-}
+/* label {
+  font-weight: 500;
+} */
 
 .p-button-label {
   font-weight: 600;
@@ -115,4 +125,7 @@ label {
 }
 .p-stepper-horizontal ul {
   max-width: 800px;
+}
+.p-tabview .p-tabview-panels {
+  padding: 0.75rem;
 }

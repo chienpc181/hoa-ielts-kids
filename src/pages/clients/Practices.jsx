@@ -30,7 +30,7 @@ export default function Practices() {
                     <h2>All questions</h2>
                 </div>
 
-                <div className='main-content'>
+                <div className='mt-3'>
                     {documents.map((question, index) => <QuestionStandard question={question} key={index}/>)}
                 </div>
             </div>

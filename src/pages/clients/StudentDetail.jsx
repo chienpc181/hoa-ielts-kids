@@ -1,8 +1,6 @@
 import './client.css';
-import './Stories.css';
 import { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import SwitchLang from '../../components/clients/SwitchLang';
 import useDocument from '../../hooks/useDocument';
 
 export default function StudentDetail() {

@@ -35,7 +35,7 @@ export default function Students() {
                     <h2>Our Students</h2>
                 </div>
 
-                <div className='main-content'>
+                <div className='mt-3'>
                     <div className='student-card'>
                         {documents.map((student, index) => {
                             const header = (
