@@ -19,20 +19,27 @@ export default function StoryDetail() {
     // const { speak, cancel, speaking, voices, supported } = useFilteredSpeechSynthesis();
     const { speak, cancel, speaking, voices, supported } = useSpeechSynthesis();
     const [selectedVoice, setSelectedVoice] = useState(null);
-    const [voicesEN, setVoicesEN] = useState([]);
+    // const [voicesEN, setVoicesEN] = useState([]);
     const translate = useSelector(state => state.lang.translate);
     const getTranslate = (text) => {
         return translate ? text.en : text.vi;
     };
 
     useEffect(() => {
-        // setVoicesEN(voices.filter(voice => voice.localService && (voice.lang === 'en-US' || voice.lang === 'en-GB')));
-        setVoicesEN(voices);
-        if (voicesEN.length > 0) {
+        // setVoicesEN(voices);
+        // if (voicesEN.length > 0) {
             
-            setSelectedVoice(voicesEN[0]);
+        //     setSelectedVoice(voicesEN[0]);
+        // }
+
+        const englishVoices = voices.filter(voice => voice.lang.startsWith('en'));
+        if (englishVoices.length > 0) {
+            setSelectedVoice(englishVoices[0]);
+        } else {
+            setSelectedVoice(null);
         }
-        console.log("Voices available:", voicesEN); // Debug statement to log voices
+        
+        
     }, [voices]);
 
     if (error) {
@@ -49,9 +56,10 @@ export default function StoryDetail() {
     };
 
     const handleSpeak = () => {
-        const text = document.paragraphs
+        const content = document.paragraphs
             .map(para => (translate ? para.en : para.vi))
-            .join(' ');
+            .join('\n');
+        const text = getTranslate(document.title) + "\n" + content;
         speak({ text, voice: selectedVoice });
     };
 
@@ -64,12 +72,10 @@ export default function StoryDetail() {
     };
 
     const handleSpeakPara = (text) => {
-        // const text = document.paragraphs[index].en;
         speak({ text, voice: selectedVoice });
     };
 
     const handleCopyPara = (text) => {
-        // const text = document.paragraphs[index].en;
         navigator.clipboard.writeText(text).then(() => {
             console.log('Text copied to clipboard');
         }).catch(err => {
@@ -77,49 +83,49 @@ export default function StoryDetail() {
         });
     };
 
-    
-
     return (
         <div className='page-client'>
-            <div className='page-content' style={{maxWidth:'600px'}}>
+            <div className='page-content' style={{maxWidth:'700px'}}>
                 <div className='pt-3'>
                     <SwitchLang/>
                 </div>
                 <div className='block justify-content-center mt-4'>
-                    <Dropdown className='w-full mb-2'
+                    {/* <Dropdown className='w-full mb-2'
                         value={selectedVoice} 
                         options={voicesEN} 
                         onChange={(e) => setSelectedVoice(e.value)} 
                         optionLabel="name" 
                         // optionValue="voiceURI"
                         placeholder="Select a Voice"
-                    />
-                    <ToggleButton 
+                    /> */}
+                    {translate && <ToggleButton 
                         checked={speaking} 
                         onChange={handlePauseResume} 
                         onIcon="pi pi-pause" 
                         offIcon="pi pi-play" 
                         onLabel="Pause" 
                         offLabel="Listen" 
-                    />
+                        disabled={!selectedVoice} 
+                    />}
                 </div>
                 <div className='mt-3'>
                     <Image src={document.thumbnailUrl} alt="Image"></Image>
                     <h1>{getTranslate(document.title)}</h1>
-                    <div className='px-2'>
+                    <span className='flex justify-content-end' style={{fontStyle: 'italic'}}>{document.author}</span>
+                    <div className=''>
                         {document.paragraphs.map((para, index) => (
                             <div key={index}>
                                 <p className='story-para' onClick={(e) => toggleOverlay(e, index)}>{getTranslate(para)}</p>
-                                <OverlayPanel ref={el => op.current[index] = el}>
+                                <OverlayPanel ref={el => op.current[index] = el} style={{ maxWidth: '700px'}}>
                                     {translate ? (
-                                        <div className='story-para'>{para.vi}</div>
+                                        <span style={{fontFamily: 'cursive', fontWeight: '1rem'}}>{para.vi}</span>
                                     ) : (
                                         <>
                                             <div className='flex justify-content-end mb-2'>
                                                 <Button rounded text icon="pi pi-copy" onClick={() => handleCopyPara(para.en)}/>
                                                 <Button rounded text icon="pi pi-volume-up" onClick={() => handleSpeakPara(para.en)}/>
                                             </div>
-                                            <div className='story-para'>{para.en}</div>
+                                            <span style={{fontFamily: 'cursive', fontWeight: '1rem'}}>{para.en}</span>
                                         </>
                                     )}
                                 </OverlayPanel>
