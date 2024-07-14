@@ -65,14 +65,20 @@ h3 {
 
 
 .p-button-icon-only {
-  max-width: 36px;
-  max-height: 36px;
+  max-width: 38px;
+  max-height: 38px;
 }
 .p-button {
-  max-height: 36px;
+  max-height: 38px;
 }
 .p-overlaypanel-content {
   padding: 1rem;
+}
+
+.p-dropdown-label.p-inputtext {
+  height: 36px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 /* .p-inputtext {

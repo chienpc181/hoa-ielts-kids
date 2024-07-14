@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Divider } from 'primereact/divider';
 
-export default function DoubleLangTexts({ textLang, handleTextChange, index }) {
+export default function DoubleLangInputTextAreas({ textLang, handleTextChange, index }) {
     const [textEn, setTextEn] = useState(textLang.en);
     const [textVi, setTextvi] = useState(textLang.vi);
     const [paragraphEns, setParagraphEns] = useState([])

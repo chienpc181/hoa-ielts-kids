@@ -1,75 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
 import { Divider } from 'primereact/divider';
+import PropTypes from 'prop-types';
+import DoubleLangInputText from './DoubleLangInputText';
+import MultipleInputTexts from './MultipleInputTexts';
 
-const LessonUsage = ({ usage, onLessonUsageChange, index }) => {
+export default function LessonUsage({ usage, onLessonUsageChange }) {
     const [lessonUsage, setLessonUsage] = useState(usage);
 
     useEffect(() => {
-        onLessonUsageChange(index, lessonUsage);
+        onLessonUsageChange(lessonUsage);
     }, [lessonUsage]);
 
-    const onAddExample = () => {
+    const onContentChange = (textLang) => {
         setLessonUsage(prev => ({
             ...prev,
-            examples: [...prev.examples, '']
+            content: textLang
         }));
     };
 
-    const onRemoveExample = () => {
-        if (lessonUsage.examples.length > 1) {
-            setLessonUsage(prev => ({
-                ...prev,
-                examples: prev.examples.slice(0, -1)
-            }));
-        }
-    };
-
-    const onTitleChange = (e) => {
+    const handleExamplesChange = (texts) => {
         setLessonUsage(prev => ({
             ...prev,
-            title: e.target.value
-        }));
-    };
-
-    const onExampleChange = (e, exampleIndex) => {
-        const newExamples = lessonUsage.examples.map((example, i) => {
-            if (i === exampleIndex) {
-                return e.target.value;
-            }
-            return example;
-        });
-        setLessonUsage(prev => ({
-            ...prev,
-            examples: newExamples
+            examples: texts
         }));
     };
 
     return (
         <div className="card w-full">
             <div className="form-field">
-                <InputText className='w-full' placeholder='Title' name='title' value={lessonUsage.title} onChange={onTitleChange} />
+                <DoubleLangInputText textLang={lessonUsage.content} handleTextChange={onContentChange}></DoubleLangInputText>
             </div>
-            <Divider align='center' type='dashed'>
+            <Divider align='start' type='dashed'>
                 <span>Examples</span>
             </Divider>
-            {lessonUsage.examples.map((example, exampleIndex) => (
-                <div className="form-field" key={exampleIndex}>
-                    <InputText
-                        className='w-full'
-                        placeholder='Example'
-                        value={example}
-                        onChange={(e) => onExampleChange(e, exampleIndex)}
-                    />
-                </div>
-            ))}
-            <div className="form-field justify-content-end">
-                <Button label='-' outlined onClick={onRemoveExample} type='button' />
-                <Button className='ml-2' label='+' outlined onClick={onAddExample} type='button' />
-            </div>
+            <MultipleInputTexts inputTexts={lessonUsage.examples} handleChange={handleExamplesChange} placeholder='Example'></MultipleInputTexts>
         </div>
     );
-};
+}
 
-export default LessonUsage;
+LessonUsage.propTypes = {
+    usage: PropTypes.shape({
+        content: PropTypes.shape({
+            en: PropTypes.string,
+            vi: PropTypes.string
+        }).isRequired,
+        examples: PropTypes.arrayOf(PropTypes.string).isRequired
+    }).isRequired,
+    onLessonUsageChange: PropTypes.func.isRequired,
+};

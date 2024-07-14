@@ -49,18 +49,30 @@
     margin: 0;
     margin-bottom: 1rem;
     display: flex;
+    text-align: left;
 }
 
 .page-admin .form-field input{
-    height: 36px;
+    height: 38px;
+}
+
+.page-admin .form-field label{
+    font-weight: 600;
 }
 
 .page-admin .form-field button{
-    height: 36px;
+    height: 38px;
 }
 
 .page-admin .story-para {
     cursor: pointer;
     font-weight: 500;
     text-align: justify;
+}
+
+.page-admin .p-inputgroup-addon {
+    height: 38px;
+    font-weight: 600;
+    font-size: 14px;
+    min-width: 55px;
 }

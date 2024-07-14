@@ -41,9 +41,9 @@ export default function LessonDetail() {
                     <h1>{document.title}</h1>
 
                     <TabView>
-                        <TabPanel header={translate ? 'Lesson' : 'Lý thuyết'} leftIcon="pi pi-book mr-2">
+                        <TabPanel header={translate ? 'Summary' : 'Tóm tắt'} leftIcon="pi pi-book mr-2">
                             <div >
-                                {translate ? <h2>I. Definition</h2> : <h2>I. Định nghĩa</h2>}
+                                {translate ? <h2>I. Introduce</h2> : <h2>I. Giới thiệu</h2>}
                                 <p>{document.introduce}</p>
                                 {translate ? <h2>II. Structure</h2> : <h2>II. Công thức</h2>}
                                 {document.structures.map((str, index) => (

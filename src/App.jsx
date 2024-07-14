@@ -12,8 +12,8 @@ import AddTeacher from './pages/admin/AddTeacher';
 import QGrammarArrangeSentence from './pages/admin/questions/grammar/arrange_sentence/QGrammarArrangeSentence';
 import QReading from './pages/admin/questions/reading/QReading';
 import QReadingWithImage from './pages/admin/questions/reading/QReadingWithImage';
-import StoryStandard from './pages/admin/stories/StoryStandard';
-import LessonStandard from './pages/admin/lessons/LessonStandard';
+import CreateStoryStandard from './pages/admin/stories/CreateStoryStandard';
+import CreateLessonStandard from './pages/admin/lessons/CreateLessonStandard';
 
 import Teachers from './pages/clients/Teachers';
 import Students from './pages/clients/Students';
@@ -59,8 +59,8 @@ function App() {
               <Route path='/admin/questions/grammar/arrange-sentence' element={<QGrammarArrangeSentence />} />
               <Route path='/admin/questions/reading/1' element={<QReading />} />
               <Route path='/admin/questions/images/image' element={<QReadingWithImage />} />
-              <Route path='/admin/stories' element={<StoryStandard />} />
-              <Route path='/admin/lessons' element={<LessonStandard />} />
+              <Route path='/admin/stories' element={<CreateStoryStandard />} />
+              <Route path='/admin/lessons' element={<CreateLessonStandard />} />
             </Route>
 
 

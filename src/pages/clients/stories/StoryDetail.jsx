@@ -118,14 +118,14 @@ export default function StoryDetail() {
                                 <p className='story-para' onClick={(e) => toggleOverlay(e, index)}>{getTranslate(para)}</p>
                                 <OverlayPanel ref={el => op.current[index] = el} style={{ maxWidth: '700px'}}>
                                     {translate ? (
-                                        <span style={{fontFamily: 'cursive', fontWeight: '1rem'}}>{para.vi}</span>
+                                        <span style={{fontSize: '1rem', fontWeight: '500'}}>{para.vi}</span>
                                     ) : (
                                         <>
                                             <div className='flex justify-content-end mb-2'>
                                                 <Button rounded text icon="pi pi-copy" onClick={() => handleCopyPara(para.en)}/>
                                                 <Button rounded text icon="pi pi-volume-up" onClick={() => handleSpeakPara(para.en)}/>
                                             </div>
-                                            <span style={{fontFamily: 'cursive', fontWeight: '1rem'}}>{para.en}</span>
+                                            <span style={{fontSize: '1rem', fontWeight: '500'}}>{para.en}</span>
                                         </>
                                     )}
                                 </OverlayPanel>
