@@ -14,6 +14,7 @@ import QReading from './pages/admin/questions/reading/QReading';
 import QReadingWithImage from './pages/admin/questions/reading/QReadingWithImage';
 import CreateStoryStandard from './pages/admin/stories/CreateStoryStandard';
 import CreateLessonStandard from './pages/admin/lessons/CreateLessonStandard';
+import EditStoryStandard from './pages/admin/stories/EditStoryStandard';
 
 import Teachers from './pages/clients/Teachers';
 import Students from './pages/clients/Students';
@@ -60,6 +61,7 @@ function App() {
               <Route path='/admin/questions/reading/1' element={<QReading />} />
               <Route path='/admin/questions/images/image' element={<QReadingWithImage />} />
               <Route path='/admin/stories' element={<CreateStoryStandard />} />
+              <Route path='/admin/stories/:id' element={<EditStoryStandard />} />
               <Route path='/admin/lessons' element={<CreateLessonStandard />} />
             </Route>
 

@@ -6,7 +6,7 @@ export default function ListItemLesson({ item, onSelectItem }) {
     const translate = useSelector(state => state.lang.translate);
 
     const getTranslate = (text) => {
-        return translate ? text : text;
+        return translate ? text.en : text.vi;
     };
     
 

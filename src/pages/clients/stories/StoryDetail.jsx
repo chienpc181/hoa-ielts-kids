@@ -1,6 +1,6 @@
 import '../client.css';
 import { useState, useRef, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import SwitchLang from '../../../components/clients/SwitchLang';
 import useDocument from '../../../hooks/useDocument';
 import { Button } from 'primereact/button';
@@ -24,6 +24,9 @@ export default function StoryDetail() {
     const getTranslate = (text) => {
         return translate ? text.en : text.vi;
     };
+    const user = useSelector(state => state.auth.user);
+    const isUserAdmin = user?.role === 'admin' ? true : false;
+    const navigate = useNavigate();
 
     useEffect(() => {
         // setVoicesEN(voices);
@@ -86,6 +89,9 @@ export default function StoryDetail() {
     return (
         <div className='page-client'>
             <div className='page-content' style={{maxWidth:'700px'}}>
+                {isUserAdmin && <div className='pt-3'>
+                    <Button onClick={() => navigate(`../admin/stories/${document.id}`)}>Edit</Button>
+                </div>}
                 <div className='pt-3'>
                     <SwitchLang/>
                 </div>
@@ -109,7 +115,7 @@ export default function StoryDetail() {
                     />}
                 </div>
                 <div className='mt-3'>
-                    <Image src={document.thumbnailUrl} alt="Image"></Image>
+                    <Image src={document.thumbnailUrl} alt="Image" className='shadow-2 border-round'></Image>
                     <h1>{getTranslate(document.title)}</h1>
                     <span className='flex justify-content-end' style={{fontStyle: 'italic'}}>{document.author}</span>
                     <div className=''>
@@ -118,14 +124,14 @@ export default function StoryDetail() {
                                 <p className='story-para' onClick={(e) => toggleOverlay(e, index)}>{getTranslate(para)}</p>
                                 <OverlayPanel ref={el => op.current[index] = el} style={{ maxWidth: '700px'}}>
                                     {translate ? (
-                                        <span style={{fontSize: '1rem', fontWeight: '500'}}>{para.vi}</span>
+                                        <p style={{fontStyle: 'italic', margin: '0'}}>{para.vi}</p>
                                     ) : (
                                         <>
                                             <div className='flex justify-content-end mb-2'>
                                                 <Button rounded text icon="pi pi-copy" onClick={() => handleCopyPara(para.en)}/>
                                                 <Button rounded text icon="pi pi-volume-up" onClick={() => handleSpeakPara(para.en)}/>
                                             </div>
-                                            <span style={{fontSize: '1rem', fontWeight: '500'}}>{para.en}</span>
+                                            <p style={{fontStyle: 'italic', margin: '0'}}>{para.en}</p>
                                         </>
                                     )}
                                 </OverlayPanel>

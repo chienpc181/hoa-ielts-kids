@@ -9,47 +9,39 @@ import FileUploadImage from '../../../components/admin/FileUploadImage';
 import DoubleLangInputText from '../../../components/admin/DoubleLangInputText';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
+import { useParams, useNavigate } from 'react-router-dom';
+import useDocument from '../../../hooks/useDocument';
 
-export default function CreateStoryStandard() {
-    const { addDocument } = useFirestore('HikStories');
+export default function EditStoryStandard() {
+    const { updateDocument } = useFirestore('HikStories');
     const { uploadFile, fileUrl } = useFirebaseStorage();
+    const navigate = useNavigate();
+    
+    const { id } = useParams();
+    const { document, error } = useDocument('HikStories', id);
+    
 
-    const [images, setImages] = useState([]);
+    const [image, setImage] = useState();
     const [formError, setFormError] = useState('');
 
     const [textEn, setTextEn] = useState('');
     const [textVi, setTextvi] = useState('');
     const [paragraphEns, setParagraphEns] = useState([]);
     const [paragraphVis, setParagraphVis] = useState([]);
-    const [resetKey, setResetKey] = useState(Date.now());
 
-    const initStory = {
-        title: {
-            en: '',
-            vi: ''
-        },
-        author: '',
-        ages: '3+',
-        genre: 'ForeignFairyTales',
-        thumbnailUrl: '',
-        paragraphs: []
-    }
-
-    const [story, setStory] = useState(initStory);
-
-
-    const textAreaStyle = {
-        border: '1px solid #d1d5db',
-        boxShadow: 'none',
-        borderRadius: 0,
-        background: '#f9fafb',
-        width: '100%',
-        lineHeight: '24px'
-    }
+    const [story, setStory] = useState();
 
     useEffect(() => {
-        combineLang();
-    }, [textEn, textVi])
+        if (document && document.id) {
+            setStory(document);
+            const parasEn = document.paragraphs.map(x => x.en);
+            const parasVi = document.paragraphs.map(x => x.vi);
+            setParagraphEns(parasEn);
+            setParagraphVis(parasVi);
+            setTextEn(parasEn.join('\n'));
+            setTextvi(parasVi.join('\n'));
+        }
+    }, [document]);
 
     const combineLang = () => {
         if (paragraphEns.length && paragraphEns.length === paragraphVis.length) {
@@ -64,8 +56,30 @@ export default function CreateStoryStandard() {
                 ...prev,
                 paragraphs: paras
             }))
-            
         }
+    }
+
+    useEffect(() => {
+        combineLang();
+    }, [textEn, textVi])
+
+    useEffect(() => {
+        if (fileUrl) {
+            setStory(prev => ({
+                ...prev,
+                thumbnailUrl: fileUrl
+            }))
+        }
+        
+    }, [fileUrl])
+
+    const textAreaStyle = {
+        border: '1px solid #d1d5db',
+        boxShadow: 'none',
+        borderRadius: 0,
+        background: '#f9fafb',
+        width: '100%',
+        lineHeight: '24px'
     }
 
     const handleSubmit = async (e) => {
@@ -96,24 +110,15 @@ export default function CreateStoryStandard() {
         if (canSubmit) {
 
             console.log(story);
-                setImages([]);
-                setStory(initStory);
-                setTextEn('');
-                setTextvi('');
-                setResetKey(Date.now()); // Update key to force remount
 
-            // const response = await addDocument(story);
+            const response = await updateDocument(story.id, story);
 
-            // if (response.success) {
-            //     setFormError('');
-            //     // setParagraphs([]);
-                
-            //     setStory(initStory);
-            //     setImages([]);
-            //     setResetKey(Date.now()); // Update key to force remount
-            // } else {
-            //     setFormError('Error submitting story');
-            // }
+            if (response.success) {
+                console.log("Update story successfully");
+                navigate(`../stories/${story.id}`);
+            } else {
+                setFormError('Error submitting story');
+            }
         }
     };
 
@@ -132,7 +137,10 @@ export default function CreateStoryStandard() {
     }
 
     const handleOnSelectFiles = async (files) => {
-        setImages(files);
+        if (files && files.length && files[0]) {
+            setImage(files[0]);
+            await uploadFile(files[0], 'Stories');
+        }
     }
 
     const handleTitleChange = (textLang) => {
@@ -176,11 +184,20 @@ export default function CreateStoryStandard() {
         {name: 'Foreign fairy tales', code: 'ForeignFairyTales'}
     ]
 
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+    if (!document) {
+        return <div>Loading...</div>;
+    }
+
     return (
-        <div className='page-admin'>
+        <>
+        {story && <div className='page-admin'>
             <Splitter className='card' style={{ minHeight: '800px' }}>
                 <SplitterPanel className="block p-3" size={75} minSize={10}>
-                    <form onSubmit={handleSubmit} key={resetKey}>
+                    <form onSubmit={handleSubmit} >
                         <h1>Create story</h1>
                         <div className="form-field">
                             <FileUploadImage handleOnSelectFiles={handleOnSelectFiles} />
@@ -231,17 +248,15 @@ export default function CreateStoryStandard() {
                             </div>
                         </div>
                         <div className='form-actions'>
-                            <Button label="Add" type='submit' className='mx-2' icon="pi pi-save" />
+                            <Button label="Save" type='submit' className='mx-2' icon="pi pi-save" />
                         </div>
                     </form>
                 </SplitterPanel>
                 <SplitterPanel className="block p-3" size={25}>
                     <h3 className="text-center">Preview</h3>
-                    {images.map((file, idx) => (
-                        <div className='form-field' key={idx}>
-                            <img role="presentation" className="w-full" src={file.objectURL} alt={file.name} />
-                        </div>
-                    ))}
+                    {image && <div className='form-field'>
+                        <img role="presentation" className="w-full" src={image.objectURL} alt={image.name} />
+                    </div>}
                     {story.paragraphs.map((para, index) => (
                         <div className='story-para' key={index}>
                             <p><strong>EN:</strong> {para.en}</p>
@@ -250,6 +265,8 @@ export default function CreateStoryStandard() {
                     ))}
                 </SplitterPanel>
             </Splitter>
-        </div>
+        </div>}
+        </>
+        
     )
 }

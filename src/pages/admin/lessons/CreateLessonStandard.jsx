@@ -1,5 +1,5 @@
 import '../admin.css';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Splitter, SplitterPanel } from 'primereact/splitter';
 import FileUploadImage from '../../../components/admin/FileUploadImage';
 import useFirebaseStorage from '../../../hooks/useFirebaseStorage';
@@ -13,7 +13,7 @@ export default function CreateLessonStandard() {
     const { addDocument } = useFirestore('HikLessons');
     const { uploadFile, fileUrl } = useFirebaseStorage();
 
-    const [images, setImages] = useState([]);
+    const [image, setImage] = useState([]);
     const [formError, setFormError] = useState('');
     const [resetKey, setResetKey] = useState(Date.now());
 
@@ -42,10 +42,23 @@ export default function CreateLessonStandard() {
         thumbnailUrl: ''
     };
 
+    useEffect(() => {
+        if (fileUrl) {
+            setLesson(prev => ({
+                ...prev,
+                thumbnailUrl: fileUrl
+            }))
+        }
+        
+    }, [fileUrl])
+
     const [lesson, setLesson] = useState(initLesson);
 
     const handleOnSelectFiles = async (files) => {
-        setImages(files);
+        if (files && files.length && files[0]) {
+            setImage(files[0]);
+            await uploadFile(files[0], 'Lessons');
+        }
     };
 
     const handleUsagesChange = (newUsages) => {
@@ -59,24 +72,11 @@ export default function CreateLessonStandard() {
         e.preventDefault();
         setFormError('');
         try {
-            if (images.length) {
-                // const thumbnail = images[0];
-                // await uploadFile(thumbnail, 'Lessons');
-                // const updatedLesson = {
-                //     ...lesson,
-                //     thumbnailUrl: fileUrl
-                // };
-                // await addDocument(updatedLesson);
-                // setLesson(initLesson);
-                // setImages([]);
-                // console.log('Lesson saved successfully:', updatedLesson);
-            } else {
-                // await addDocument(lesson);
-                console.log('Lesson saved successfully:', lesson);
-            }
+            await addDocument(lesson);
+            console.log('Lesson saved successfully:', lesson);
             // Reset form fields
             setLesson(initLesson);
-            setImages([]);
+            setImage();
             setResetKey(Date.now()); // Update key to force remount
         } catch (error) {
             setFormError('Failed to submit the lesson.');
