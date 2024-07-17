@@ -73,15 +73,6 @@ export default function EditStoryStandard() {
         
     }, [fileUrl])
 
-    const textAreaStyle = {
-        border: '1px solid #d1d5db',
-        boxShadow: 'none',
-        borderRadius: 0,
-        background: '#f9fafb',
-        width: '100%',
-        lineHeight: '24px'
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         let canSubmit = true;
@@ -228,12 +219,11 @@ export default function EditStoryStandard() {
                             <div className='w-full ml-2'>
                                 <span className='flex' style={{ alignItems: 'flex-start', fontSize: '14px', fontWeight: '700' }}>ENG</span>
                                 <InputTextarea
-                                    className='w-full mr-2'
+                                    className='double-textarea'
                                     autoResize
                                     rows={35}
                                     value={textEn}
                                     onChange={handleChangeEn}
-                                    style={textAreaStyle}
                                 />
                             </div>
                             <div className='w-full ml-2'>
@@ -243,7 +233,7 @@ export default function EditStoryStandard() {
                                     rows={35}
                                     value={textVi}
                                     onChange={handleChangeVi}
-                                    style={textAreaStyle}
+                                    className='double-textarea'
                                 />
                             </div>
                         </div>
