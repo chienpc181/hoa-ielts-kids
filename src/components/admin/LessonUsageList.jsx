@@ -6,13 +6,17 @@ import PropTypes from 'prop-types';
 export default function LessonUsageList({ lessonUsages, onChange }) {
     const [usages, setUsages] = useState(lessonUsages);
 
+    const textLang = {
+        en: '',
+        vi: ''
+    }
+
     const initUsage = {
-        content: {
-            en: '',
-            vi: ''
-        },
-        examples: ['', '', '']
+        usage: textLang,
+        explain: textLang,
+        examples: [textLang]
     };
+
 
     useEffect(() => {
         onChange(usages);
@@ -34,16 +38,18 @@ export default function LessonUsageList({ lessonUsages, onChange }) {
     };
 
     return (
-        <div className='w-full mt-2'>
-            <div className="form-field justify-content-end">
-                <Button label='Remove usage' outlined onClick={handleRemoveUsage} type='button' disabled={usages.length <= 1} />
-                <Button className='ml-2' label='Add usage' outlined onClick={handleAddUsage} type='button' />
+        <div className='w-full mt-2 card'>
+            <div className="form-field justify-content-between">
+                <label>Usages</label>
+                <div>
+                    <Button label='-' outlined onClick={handleRemoveUsage} type='button' disabled={usages.length <= 1} />
+                    <Button className='ml-2' label='+' outlined onClick={handleAddUsage} type='button' />
+                </div>
             </div>
             {usages.map((usage, idx) => (
                 <div className="form-field" key={idx}>
                     <LessonUsage
                         usage={usage}
-                        index={idx}
                         onLessonUsageChange={(usage) => handleLessonUsageChange(usage, idx)}
                     />
                 </div>
@@ -55,11 +61,18 @@ export default function LessonUsageList({ lessonUsages, onChange }) {
 LessonUsageList.propTypes = {
     lessonUsages: PropTypes.arrayOf(
         PropTypes.shape({
-            content: PropTypes.shape({
+            usage: PropTypes.shape({
                 en: PropTypes.string,
                 vi: PropTypes.string
             }).isRequired,
-            examples: PropTypes.arrayOf(PropTypes.string).isRequired
+            explain: PropTypes.shape({
+                en: PropTypes.string,
+                vi: PropTypes.string
+            }).isRequired,
+            examples: PropTypes.arrayOf({
+                en: PropTypes.string,
+                vi: PropTypes.string
+            }).isRequired
         })
     ).isRequired,
     onChange: PropTypes.func.isRequired

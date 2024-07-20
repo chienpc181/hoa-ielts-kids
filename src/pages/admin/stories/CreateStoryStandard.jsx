@@ -9,6 +9,7 @@ import FileUploadImage from '../../../components/admin/FileUploadImage';
 import DoubleLangInputText from '../../../components/admin/DoubleLangInputText';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
+import DoubleLangInputTextAreas from '../../../components/admin/DoubleLangInputTextAreas';
 
 export default function CreateStoryStandard() {
     const { addDocument } = useFirestore('HikStories');
@@ -16,11 +17,6 @@ export default function CreateStoryStandard() {
 
     const [images, setImages] = useState([]);
     const [formError, setFormError] = useState('');
-
-    const [textEn, setTextEn] = useState('');
-    const [textVi, setTextvi] = useState('');
-    const [paragraphEns, setParagraphEns] = useState([]);
-    const [paragraphVis, setParagraphVis] = useState([]);
     const [resetKey, setResetKey] = useState(Date.now());
 
     const initStory = {
@@ -37,45 +33,9 @@ export default function CreateStoryStandard() {
 
     const [story, setStory] = useState(initStory);
 
-    useEffect(() => {
-        combineLang();
-    }, [textEn, textVi])
-
-    const combineLang = () => {
-        if (paragraphEns.length && paragraphEns.length === paragraphVis.length) {
-            const paras = [];
-            for (let i = 0; i < paragraphEns.length; i++) {
-                paras.push({
-                    en: paragraphEns[i],
-                    vi: paragraphVis[i]
-                })
-            }
-            setStory(prev => ({
-                ...prev,
-                paragraphs: paras
-            }))
-            
-        }
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         let canSubmit = true;
-        if (paragraphEns.some(paragraph => paragraph.trim() === '')) {
-            canSubmit = false;
-            setFormError('ENG paragraphs are missing');
-            return;
-        }
-        if (paragraphVis.some(paragraph => paragraph.trim() === '')) {
-            canSubmit = false;
-            setFormError('VIE paragraphs are missing');
-            return;
-        }
-        if (paragraphEns.length !== paragraphVis.length) {
-            canSubmit = false;
-            setFormError('ENG is not equal VIE');
-            return;
-        }
 
         if (story.paragraphs.some(paragraph => paragraph.en.trim() === '' || paragraph.vi.trim() === '')) {
             canSubmit = false;
@@ -84,42 +44,19 @@ export default function CreateStoryStandard() {
         }
 
         if (canSubmit) {
-
             console.log(story);
-                setImages([]);
+            const response = await addDocument(story);
+
+            if (response.success) {
+                setFormError('');
                 setStory(initStory);
-                setTextEn('');
-                setTextvi('');
+                setImages([]);
                 setResetKey(Date.now()); // Update key to force remount
-
-            // const response = await addDocument(story);
-
-            // if (response.success) {
-            //     setFormError('');
-            //     // setParagraphs([]);
-                
-            //     setStory(initStory);
-            //     setImages([]);
-            //     setResetKey(Date.now()); // Update key to force remount
-            // } else {
-            //     setFormError('Error submitting story');
-            // }
+            } else {
+                setFormError('Error submitting story');
+            }
         }
     };
-
-    const handleChangeEn = (e) => {
-        const text = e.target.value;
-        setTextEn(text);
-        const paras = text.split('\n').filter(para => para.trim() !== '');
-        setParagraphEns(paras);
-    }
-
-    const handleChangeVi = (e) => {
-        const text = e.target.value;
-        setTextvi(text);
-        const paras = text.split('\n').filter(para => para.trim() !== '');
-        setParagraphVis(paras);
-    }
 
     const handleOnSelectFiles = async (files) => {
         setImages(files);
@@ -161,6 +98,13 @@ export default function CreateStoryStandard() {
         {name: '7+', code: '7+'},
     ]
 
+    const handleParagraphsChange = (paras) => {
+        setStory(prev => ({
+            ...prev,
+            paragraphs: paras
+        }));
+    };
+
     const genreOptions = [
         {name: 'Vietnamese fairy tales', code: 'VietnameseFairyTales'},
         {name: 'Foreign fairy tales', code: 'ForeignFairyTales'}
@@ -196,28 +140,8 @@ export default function CreateStoryStandard() {
                                     onChange={handleGenreChange} className='mt-2' style={{ minWidth: '300px' }}></Dropdown>
                             </div>
                         </div>
-                        
-                        <div className='flex w-full'>
-                            <div className='w-full mr-2'>
-                                <span className='flex' style={{ alignItems: 'flex-start', fontSize: '14px', fontWeight: '700' }}>ENG</span>
-                                <InputTextarea
-                                    className='double-textarea'
-                                    autoResize
-                                    rows={35}
-                                    value={textEn}
-                                    onChange={handleChangeEn}
-                                />
-                            </div>
-                            <div className='w-full ml-2'>
-                                <span className='flex' style={{ alignItems: 'flex-start', fontSize: '14px', fontWeight: '700' }}>VIE</span>
-                                <InputTextarea
-                                    autoResize
-                                    rows={35}
-                                    value={textVi}
-                                    onChange={handleChangeVi}
-                                    className='double-textarea'
-                                />
-                            </div>
+                        <div className="form-field">
+                            <DoubleLangInputTextAreas paraLang={story.paragraphs} handleChange={handleParagraphsChange} numberOfRow={35}></DoubleLangInputTextAreas>
                         </div>
                         <div className='form-actions'>
                             <Button label="Add" type='submit' className='mx-2' icon="pi pi-save" />

@@ -1,50 +1,54 @@
 import { useState, useEffect } from 'react';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { Divider } from 'primereact/divider';
+import { joinParagraphsToTextArea, splitTextAreaToParagraphs } from '../../utils';
 
-export default function DoubleLangInputTextAreas({ textLang, handleTextChange, index }) {
-    const [textEn, setTextEn] = useState(textLang.en);
-    const [textVi, setTextvi] = useState(textLang.vi);
-    const [paragraphEns, setParagraphEns] = useState([])
-    const [paragraphVis, setParagraphVis] = useState([])
-    const handleChangeEn = (e) => {
-        const text = e.target.value;
-        
-        setTextEn(e.target.value);
-    }
-    const handleChangeVi = (e) => {
-        setTextvi(e.target.value);
-    }
+export default function DoubleLangInputTextAreas({ paraLang, handleChange, numberOfRow }) {
+    const [textEn, setTextEn] = useState(joinParagraphsToTextArea(paraLang, 'en'));
+    const [textVi, setTextvi] = useState(joinParagraphsToTextArea(paraLang, 'vi'));
 
     useEffect(() => {
-        handleTextChange({
-            textEn,
-            textVi
-        }, index);
+        let paragraphEns = splitTextAreaToParagraphs(textEn);
+        let paragraphVis = splitTextAreaToParagraphs(textVi);
+        if (paragraphEns && paragraphVis && paragraphEns.length === paragraphVis.length) {
+            const paras = [];
+            for (let i = 0; i < paragraphEns.length; i++) {
+                paras.push({
+                    en: paragraphEns[i],
+                    vi: paragraphVis[i]
+                })
+            }
+            handleChange(paras)
+        }
+        
     }, [textEn, textVi])
+
+    
     return (
-        <div className='w-full'>
-            <Divider type='dashed' />
+        <div className='w-full mt-2'>
             <div className='flex'>
                 <div className='w-full mr-2'>
-                    <span className='flex' style={{ alignItems: 'flex-start', fontSize: '14px', fontWeight: '500' }}>ENG</span>
-                    <InputTextarea
-                        className='double-textarea'
-                        autoResize
-                        rows={4}
-                        value={textEn}
-                        onChange={handleChangeEn}
-                    />
+                    <div className="p-inputgroup flex-1">
+                        <span className="p-inputgroup-addon" style={{alignItems: 'start'}}>ENG</span>
+                        <InputTextarea
+                            className='double-textarea'
+                            autoResize
+                            rows={numberOfRow ? numberOfRow : 4}
+                            value={textEn}
+                            onChange={(e) => setTextEn(e.target.value)}
+                        />
+                    </div>
                 </div>
                 <div className='w-full ml-2'>
-                    <span className='flex' style={{ alignItems: 'flex-start', fontSize: '14px', fontWeight: '500' }}>VIE</span>
-                    <InputTextarea
-                        autoResize
-                        rows={4}
-                        value={textVi}
-                        onChange={handleChangeVi}
-                        className='double-textarea'
-                    />
+                    <div className="p-inputgroup flex-1">
+                        <span className="p-inputgroup-addon" style={{alignItems: 'start'}}>VIE</span>
+                        <InputTextarea
+                            className='double-textarea'
+                            autoResize
+                            rows={numberOfRow ? numberOfRow : 4}
+                            value={textVi}
+                            onChange={(e) => setTextvi(e.target.value)}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

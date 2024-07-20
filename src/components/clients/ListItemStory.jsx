@@ -13,7 +13,6 @@ export default function ListItemStory({ item, onSelectItem }) {
     };
 
     const ageColorStyle = (story) => {
-        console.log(story)
         if (story.ages === '3+') {
             return {background: 'orangered'}
         }
@@ -29,6 +28,8 @@ export default function ListItemStory({ item, onSelectItem }) {
         if (story.ages === '7+') {
             return {background: '#64748b'}
         }
+
+        return {background: 'orangered'}
     }
 
     return (

@@ -11,6 +11,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { useParams, useNavigate } from 'react-router-dom';
 import useDocument from '../../../hooks/useDocument';
+import DoubleLangInputTextAreas from '../../../components/admin/DoubleLangInputTextAreas';
 
 export default function EditStoryStandard() {
     const { updateDocument } = useFirestore('HikStories');
@@ -24,44 +25,14 @@ export default function EditStoryStandard() {
     const [image, setImage] = useState();
     const [formError, setFormError] = useState('');
 
-    const [textEn, setTextEn] = useState('');
-    const [textVi, setTextvi] = useState('');
-    const [paragraphEns, setParagraphEns] = useState([]);
-    const [paragraphVis, setParagraphVis] = useState([]);
-
     const [story, setStory] = useState();
 
     useEffect(() => {
         if (document && document.id) {
             setStory(document);
-            const parasEn = document.paragraphs.map(x => x.en);
-            const parasVi = document.paragraphs.map(x => x.vi);
-            setParagraphEns(parasEn);
-            setParagraphVis(parasVi);
-            setTextEn(parasEn.join('\n'));
-            setTextvi(parasVi.join('\n'));
         }
     }, [document]);
 
-    const combineLang = () => {
-        if (paragraphEns.length && paragraphEns.length === paragraphVis.length) {
-            const paras = [];
-            for (let i = 0; i < paragraphEns.length; i++) {
-                paras.push({
-                    en: paragraphEns[i],
-                    vi: paragraphVis[i]
-                })
-            }
-            setStory(prev => ({
-                ...prev,
-                paragraphs: paras
-            }))
-        }
-    }
-
-    useEffect(() => {
-        combineLang();
-    }, [textEn, textVi])
 
     useEffect(() => {
         if (fileUrl) {
@@ -76,21 +47,6 @@ export default function EditStoryStandard() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         let canSubmit = true;
-        if (paragraphEns.some(paragraph => paragraph.trim() === '')) {
-            canSubmit = false;
-            setFormError('ENG paragraphs are missing');
-            return;
-        }
-        if (paragraphVis.some(paragraph => paragraph.trim() === '')) {
-            canSubmit = false;
-            setFormError('VIE paragraphs are missing');
-            return;
-        }
-        if (paragraphEns.length !== paragraphVis.length) {
-            canSubmit = false;
-            setFormError('ENG is not equal VIE');
-            return;
-        }
 
         if (story.paragraphs.some(paragraph => paragraph.en.trim() === '' || paragraph.vi.trim() === '')) {
             canSubmit = false;
@@ -112,20 +68,6 @@ export default function EditStoryStandard() {
             }
         }
     };
-
-    const handleChangeEn = (e) => {
-        const text = e.target.value;
-        setTextEn(text);
-        const paras = text.split('\n').filter(para => para.trim() !== '');
-        setParagraphEns(paras);
-    }
-
-    const handleChangeVi = (e) => {
-        const text = e.target.value;
-        setTextvi(text);
-        const paras = text.split('\n').filter(para => para.trim() !== '');
-        setParagraphVis(paras);
-    }
 
     const handleOnSelectFiles = async (files) => {
         if (files && files.length && files[0]) {
@@ -175,6 +117,13 @@ export default function EditStoryStandard() {
         {name: 'Foreign fairy tales', code: 'ForeignFairyTales'}
     ]
 
+    const handleParagraphsChange = (paras) => {
+        setStory(prev => ({
+            ...prev,
+            paragraphs: paras
+        }));
+    };
+
     if (error) {
         return <div>Error: {error}</div>;
     }
@@ -193,7 +142,6 @@ export default function EditStoryStandard() {
                         <div className="form-field">
                             <FileUploadImage handleOnSelectFiles={handleOnSelectFiles} />
                         </div>
-
                         <div className="form-field" style={{ display: 'block' }}>
                             <label >Title</label>
                             <DoubleLangInputText textLang={story.title} handleTextChange={handleTitleChange} />
@@ -214,28 +162,8 @@ export default function EditStoryStandard() {
                                     onChange={handleGenreChange} className='mt-2' style={{ minWidth: '300px' }}></Dropdown>
                             </div>
                         </div>
-                        
-                        <div className='flex w-full'>
-                            <div className='w-full ml-2'>
-                                <span className='flex' style={{ alignItems: 'flex-start', fontSize: '14px', fontWeight: '700' }}>ENG</span>
-                                <InputTextarea
-                                    className='double-textarea'
-                                    autoResize
-                                    rows={35}
-                                    value={textEn}
-                                    onChange={handleChangeEn}
-                                />
-                            </div>
-                            <div className='w-full ml-2'>
-                                <span className='flex' style={{ alignItems: 'flex-start', fontSize: '14px', fontWeight: '700' }}>VIE</span>
-                                <InputTextarea
-                                    autoResize
-                                    rows={35}
-                                    value={textVi}
-                                    onChange={handleChangeVi}
-                                    className='double-textarea'
-                                />
-                            </div>
+                        <div className="form-field">
+                            <DoubleLangInputTextAreas paraLang={story.paragraphs} handleChange={handleParagraphsChange} numberOfRow={35}></DoubleLangInputTextAreas>
                         </div>
                         <div className='form-actions'>
                             <Button label="Save" type='submit' className='mx-2' icon="pi pi-save" />

@@ -6,8 +6,10 @@ import useFirebaseStorage from '../../../hooks/useFirebaseStorage';
 import { useFirestore } from '../../../hooks/useFirestore';
 import { Button } from 'primereact/button';
 import DoubleLangInputText from '../../../components/admin/DoubleLangInputText';
-import MultipleInputTexts from '../../../components/admin/MultipleInputTexts';
 import LessonUsageList from '../../../components/admin/LessonUsageList';
+import DoubleLangInputTextAreas from '../../../components/admin/DoubleLangInputTextAreas';
+import LessonStructureList from '../../../components/admin/LessonStructureList';
+import LessonMistakeList from '../../../components/admin/LessonMistakeList';
 
 export default function CreateLessonStandard() {
     const { addDocument } = useFirestore('HikLessons');
@@ -17,28 +19,36 @@ export default function CreateLessonStandard() {
     const [formError, setFormError] = useState('');
     const [resetKey, setResetKey] = useState(Date.now());
 
+    const textLang = {
+        en: '',
+        vi: ''
+    }
+
     const initUsage = {
-        content: {
-            en: '',
-            vi: ''
-        },
-        examples: ['', '', '']
+        usage: textLang,
+        explain: textLang,
+        examples: [textLang]
     };
+
+    const initStructure = {
+        title: textLang,
+        examples: [textLang]
+    }
+
+    const initMistake = {
+        title: textLang,
+        examples: [textLang]
+    }
 
     const initLesson = {
         title: {
-            en: '', 
-            vi: ''
-        },
-        introduce: {
             en: '',
             vi: ''
         },
-        structures: ['', ''],
-        usages: [
-            { ...initUsage },
-            { ...initUsage }
-        ],
+        introduce: [textLang],
+        structures: [initStructure],
+        usages: [initUsage],
+        commonMistakes: [initMistake],
         thumbnailUrl: ''
     };
 
@@ -71,6 +81,11 @@ export default function CreateLessonStandard() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setFormError('');
+        setLesson(prevLesson => ({
+            ...prevLesson,
+            status: 'created'
+        }))
+        console.log(lesson)
         try {
             await addDocument(lesson);
             console.log('Lesson saved successfully:', lesson);
@@ -91,17 +106,24 @@ export default function CreateLessonStandard() {
         }));
     };
 
-    const handleIntroduceChange = (textLang) => {
+    const handleIntroduceChange = (paras) => {
         setLesson(prev => ({
             ...prev,
-            introduce: textLang
+            introduce: paras
         }));
     };
 
-    const handleStructuresChange = (texts) => {
+    const handleStructuresChange = (newStrucs) => {
         setLesson(prev => ({
             ...prev,
-            structures: texts
+            structures: newStrucs
+        }));
+    }
+
+    const handleMistakesChange = (newMistakes) => {
+        setLesson(prev => ({
+            ...prev,
+            commonMistakes: newMistakes
         }));
     }
 
@@ -117,22 +139,26 @@ export default function CreateLessonStandard() {
                         <div className="form-field">
                             <FileUploadImage handleOnSelectFiles={handleOnSelectFiles} />
                         </div>
-
-                        <div className="form-field" style={{ display: 'block' }}>
-                            <label>Title</label>
-                            <DoubleLangInputText textLang={lesson.title} handleTextChange={handleTitleChange} />
+                        <div className="form-field card" >
+                            <div className="w-full p-3">
+                                <label>Title</label>
+                                <DoubleLangInputText textLang={lesson.title} handleTextChange={handleTitleChange}/>
+                            </div>
                         </div>
-                        <div className="form-field" style={{ display: 'block' }}>
-                            <label>Introduce</label>
-                            <DoubleLangInputText textLang={lesson.introduce} handleTextChange={handleIntroduceChange} />
+                        <div className="form-field card" >
+                            <div className="w-full p-3">
+                                <label>Introduce</label>
+                                <DoubleLangInputTextAreas paraLang={lesson.introduce} handleChange={handleIntroduceChange} ></DoubleLangInputTextAreas>
+                            </div>
                         </div>
-                        <div className="form-field" style={{ display: 'block' }}>
-                            <label>Structures</label>
-                            <MultipleInputTexts inputTexts={lesson.structures} handleChange={handleStructuresChange} placeholder='Structure'></MultipleInputTexts>
+                        <div className="form-field" >
+                            <LessonStructureList lessonStructures={lesson.structures} onChange={handleStructuresChange}></LessonStructureList>
                         </div>
-                        <div className="form-field" style={{ display: 'block' }}>
-                            <label>Usages</label>
+                        <div className="form-field" >
                             <LessonUsageList lessonUsages={lesson.usages} onChange={handleUsagesChange}></LessonUsageList>
+                        </div>
+                        <div className="form-field" >
+                            <LessonMistakeList lessonMistakes={lesson.commonMistakes} onChange={handleMistakesChange}></LessonMistakeList>
                         </div>
                         <div className='form-actions'>
                             <Button label="Add" type='submit' className='mx-2' icon="pi pi-save" />

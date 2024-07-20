@@ -1,47 +1,33 @@
 import '../client.css';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import SwitchLang from '../../../components/clients/SwitchLang';
 import useDocument from '../../../hooks/useDocument';
 import { Button } from 'primereact/button';
 import { ToggleButton } from 'primereact/togglebutton';
-import { Dropdown } from 'primereact/dropdown';
-import { OverlayPanel } from 'primereact/overlaypanel';
 import { useSpeechSynthesis } from 'react-speech-kit';
 import { Image } from 'primereact/image';
 import { useSelector } from 'react-redux';
+import DoubleLangText from '../../../components/clients/DoubleLangText';
 
 export default function StoryDetail() {
     const { id } = useParams();
     const { document, error } = useDocument('HikStories', id);
-    const [currentIndex, setCurrentIndex] = useState(null);
-    const op = useRef([]);
-    // const { speak, cancel, speaking, voices, supported } = useFilteredSpeechSynthesis();
     const { speak, cancel, speaking, voices, supported } = useSpeechSynthesis();
     const [selectedVoice, setSelectedVoice] = useState(null);
-    // const [voicesEN, setVoicesEN] = useState([]);
     const translate = useSelector(state => state.lang.translate);
-    const getTranslate = (text) => {
-        return translate ? text.en : text.vi;
-    };
+    
     const user = useSelector(state => state.auth.user);
     const isUserAdmin = user?.role === 'admin' ? true : false;
     const navigate = useNavigate();
 
     useEffect(() => {
-        // setVoicesEN(voices);
-        // if (voicesEN.length > 0) {
-            
-        //     setSelectedVoice(voicesEN[0]);
-        // }
-
         const englishVoices = voices.filter(voice => voice.lang.startsWith('en'));
         if (englishVoices.length > 0) {
             setSelectedVoice(englishVoices[0]);
         } else {
             setSelectedVoice(null);
         }
-        
         
     }, [voices]);
 
@@ -53,9 +39,8 @@ export default function StoryDetail() {
         return <div>Loading...</div>;
     }
 
-    const toggleOverlay = (e, index) => {
-        setCurrentIndex(index);
-        op.current[index].toggle(e); 
+    const getTranslate = (text) => {
+        return translate ? text.en : text.vi;
     };
 
     const handleSpeak = () => {
@@ -74,16 +59,8 @@ export default function StoryDetail() {
         }
     };
 
-    const handleSpeakPara = (text) => {
+    const handleSpeakText = (text) => {
         speak({ text, voice: selectedVoice });
-    };
-
-    const handleCopyPara = (text) => {
-        navigator.clipboard.writeText(text).then(() => {
-            console.log('Text copied to clipboard');
-        }).catch(err => {
-            console.error('Failed to copy text: ', err);
-        });
     };
 
     return (
@@ -96,14 +73,6 @@ export default function StoryDetail() {
                     <SwitchLang/>
                 </div>
                 <div className='block justify-content-center mt-4'>
-                    {/* <Dropdown className='w-full mb-2'
-                        value={selectedVoice} 
-                        options={voicesEN} 
-                        onChange={(e) => setSelectedVoice(e.value)} 
-                        optionLabel="name" 
-                        // optionValue="voiceURI"
-                        placeholder="Select a Voice"
-                    /> */}
                     {translate && <ToggleButton 
                         checked={speaking} 
                         onChange={handlePauseResume} 
@@ -120,22 +89,9 @@ export default function StoryDetail() {
                     <span className='flex justify-content-end' style={{fontStyle: 'italic'}}>{document.author}</span>
                     <div className=''>
                         {document.paragraphs.map((para, index) => (
-                            <div key={index}>
-                                <p className='story-para' onClick={(e) => toggleOverlay(e, index)}>{getTranslate(para)}</p>
-                                <OverlayPanel ref={el => op.current[index] = el} style={{ maxWidth: '700px'}}>
-                                    {translate ? (
-                                        <p style={{fontStyle: 'italic', margin: '0'}}>{para.vi}</p>
-                                    ) : (
-                                        <>
-                                            <div className='flex justify-content-end mb-2'>
-                                                <Button rounded text icon="pi pi-copy" onClick={() => handleCopyPara(para.en)}/>
-                                                <Button rounded text icon="pi pi-volume-up" onClick={() => handleSpeakPara(para.en)}/>
-                                            </div>
-                                            <p style={{fontStyle: 'italic', margin: '0'}}>{para.en}</p>
-                                        </>
-                                    )}
-                                </OverlayPanel>
-                            </div>
+                            <DoubleLangText key={index} textLang={para} speakText={handleSpeakText}>
+                                {({ text, onClick }) => <p className='story-para' onClick={onClick}>{text}</p>}
+                            </DoubleLangText>
                         ))}
                     </div>
                 </div>
