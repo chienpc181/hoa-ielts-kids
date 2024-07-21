@@ -33,7 +33,7 @@ export default function ListItemStory({ item, onSelectItem }) {
     }
 
     return (
-        <div className='grid card mx-0' style={{ cursor: 'pointer' }} onClick={onSelectItem}>
+        <div className='grid card mx-0 p-2' style={{ cursor: 'pointer' }} onClick={onSelectItem}>
             <div className="col-12 md:col-4">
                 <Image src={item.thumbnailUrl} alt="Thumbnail" />
             </div>

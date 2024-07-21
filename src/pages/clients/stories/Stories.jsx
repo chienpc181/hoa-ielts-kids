@@ -27,7 +27,7 @@ export default function Stories() {
 
     return (
         <div className='page-client'>
-            <div className='page-content'>
+            <div className='page-content px-3'>
                 <div className='my-3' >
                     <SwitchLang></SwitchLang>
                 </div>

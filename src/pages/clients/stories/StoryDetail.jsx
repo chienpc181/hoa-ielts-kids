@@ -65,7 +65,7 @@ export default function StoryDetail() {
 
     return (
         <div className='page-client'>
-            <div className='page-content' style={{maxWidth:'700px'}}>
+            <div className='page-content p-3' style={{maxWidth:'700px'}}>
                 {isUserAdmin && <div className='pt-3'>
                     <Button onClick={() => navigate(`../admin/stories/${document.id}`)}>Edit</Button>
                 </div>}

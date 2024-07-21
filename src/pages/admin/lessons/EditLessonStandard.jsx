@@ -1,6 +1,5 @@
 import '../admin.css';
-import React, { useState, useEffect } from "react";
-import { Splitter, SplitterPanel } from 'primereact/splitter';
+import { useState, useEffect } from "react";
 import FileUploadImage from '../../../components/admin/FileUploadImage';
 import useFirebaseStorage from '../../../hooks/useFirebaseStorage';
 import { useFirestore } from '../../../hooks/useFirestore';
@@ -12,6 +11,7 @@ import LessonStructureList from '../../../components/admin/LessonStructureList';
 import LessonMistakeList from '../../../components/admin/LessonMistakeList';
 import useDocument from '../../../hooks/useDocument';
 import { useNavigate, useParams } from 'react-router-dom';
+import FillInTheGapList from '../../../components/admin/lessonExercises/FillInTheGapList';
 
 export default function EditLessonStandard() {
     const { updateDocument } = useFirestore('HikLessons');
@@ -35,10 +35,24 @@ export default function EditLessonStandard() {
     }, [fileUrl])
 
     const [lesson, setLesson] = useState();
+    const initFillInTheGap = {
+        content: '',
+        answer: ''
+    }
+    const initExercise = {
+        fillInTheGaps: [initFillInTheGap],
+    }
     useEffect(() => {
         if (document && document.id) {
             setLesson(document);
+            if (!document.exercises) {
+                setLesson(prev => ({
+                    ...prev,
+                    exercises: initExercise
+                }));
+            }
         }
+        
     }, [document]);
 
     const handleOnSelectFiles = async (files) => {
@@ -103,49 +117,59 @@ export default function EditLessonStandard() {
         }));
     }
 
+    const handleFillInTheGapsChange = (fillInTheGaps) => {
+        const updatedExercises = {
+            ...lesson.exercises,
+            fillInTheGaps: fillInTheGaps
+        }
+        setLesson(prev => ({
+            ...prev,
+            exercises: updatedExercises
+        }));
+        console.log(lesson)
+    }
+
     return (
         <>
             {lesson && <div className='page-admin'>
-                <Splitter className='card' style={{ minHeight: '800px' }}>
-                    <SplitterPanel className="block p-3" size={75} minSize={10}>
-                        <form onSubmit={handleSubmit} className='form-content'>
-                            <h1 className="text-center">Create lesson</h1>
-                            <div className='form-error'>
-                                {formError && <p>Invalid: {formError}</p>}
+                <div>
+                    <form onSubmit={handleSubmit} className='form-content'>
+                        <h1 className="text-center">Create lesson</h1>
+                        <div className='form-error'>
+                            {formError && <p>Invalid: {formError}</p>}
+                        </div>
+                        <div className="form-field">
+                            <FileUploadImage handleOnSelectFiles={handleOnSelectFiles} />
+                        </div>
+                        <div className="form-field card" >
+                            <div className="w-full p-3">
+                                <label>Title</label>
+                                <DoubleLangInputText textLang={lesson.title} handleTextChange={handleTitleChange} />
                             </div>
-                            <div className="form-field">
-                                <FileUploadImage handleOnSelectFiles={handleOnSelectFiles} />
+                        </div>
+                        <div className="form-field card" >
+                            <div className="w-full p-3">
+                                <label>Introduce</label>
+                                <DoubleLangInputTextAreas paraLang={lesson.introduce} handleChange={handleIntroduceChange} ></DoubleLangInputTextAreas>
                             </div>
-                            <div className="form-field card" >
-                                <div className="w-full p-3">
-                                    <label>Title</label>
-                                    <DoubleLangInputText textLang={lesson.title} handleTextChange={handleTitleChange} />
-                                </div>
-                            </div>
-                            <div className="form-field card" >
-                                <div className="w-full p-3">
-                                    <label>Introduce</label>
-                                    <DoubleLangInputTextAreas paraLang={lesson.introduce} handleChange={handleIntroduceChange} ></DoubleLangInputTextAreas>
-                                </div>
-                            </div>
-                            <div className="form-field" >
-                                <LessonStructureList lessonStructures={lesson.structures} onChange={handleStructuresChange}></LessonStructureList>
-                            </div>
-                            <div className="form-field" >
-                                <LessonUsageList lessonUsages={lesson.usages} onChange={handleUsagesChange}></LessonUsageList>
-                            </div>
-                            <div className="form-field" >
-                                <LessonMistakeList lessonMistakes={lesson.commonMistakes} onChange={handleMistakesChange}></LessonMistakeList>
-                            </div>
-                            <div className='form-actions'>
-                                <Button label="Edit" type='submit' className='mx-2' icon="pi pi-save" />
-                            </div>
-                        </form>
-                    </SplitterPanel>
-                    <SplitterPanel className="block p-3" size={25}>
-                        <h3 className="text-center">Preview</h3>
-                    </SplitterPanel>
-                </Splitter>
+                        </div>
+                        <div className="form-field" >
+                            <LessonStructureList lessonStructures={lesson.structures} onChange={handleStructuresChange}></LessonStructureList>
+                        </div>
+                        <div className="form-field" >
+                            <LessonUsageList lessonUsages={lesson.usages} onChange={handleUsagesChange}></LessonUsageList>
+                        </div>
+                        <div className="form-field" >
+                            <LessonMistakeList lessonMistakes={lesson.commonMistakes} onChange={handleMistakesChange}></LessonMistakeList>
+                        </div>
+                        <div className="form-field" >
+                            <FillInTheGapList exercises={lesson.exercises.fillInTheGaps} onChange={handleFillInTheGapsChange}></FillInTheGapList>
+                        </div>
+                        <div className='form-actions'>
+                            <Button label="Save" type='submit' className='mx-2' icon="pi pi-save" />
+                        </div>
+                    </form>
+                </div>
             </div>}
         </>
 

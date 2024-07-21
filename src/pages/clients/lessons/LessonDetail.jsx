@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Image } from 'primereact/image';
 import { TabView, TabPanel } from 'primereact/tabview';
 import { useCollection } from '../../../hooks/useCollection';
-import QuestionStandard from '../../../components/clients/QuestionStandard';
+// import QuestionStandard from '../../../components/clients/QuestionStandard';
 import { useSelector } from 'react-redux';
 import SwitchLang from '../../../components/clients/SwitchLang';
 import DoubleLangText from '../../../components/clients/DoubleLangText';
@@ -126,7 +126,15 @@ export default function LessonDetail() {
                             </div>
                         </TabPanel>
                         <TabPanel header={translate ? 'Practices' : 'Bài tập'} leftIcon="pi pi-pencil mr-2">
-                            {practices.map((question, index) => <QuestionStandard question={question} questionNumber={index} key={index} />)}
+                            {/* {practices.map((question, index) => <QuestionStandard question={question} questionNumber={index} key={index} />)} */}
+                            <div>
+                                {(document.exercises.fillInTheGaps && document.exercises.fillInTheGaps.length) && document.exercises.fillInTheGaps.map((item, idx) => 
+                                <div key={idx}>
+                                    <p>{item.content}</p>
+                                    <p>{item.answer}</p>
+                                </div>
+                                )}
+                            </div>
                         </TabPanel>
                     </TabView>
                 </div>
