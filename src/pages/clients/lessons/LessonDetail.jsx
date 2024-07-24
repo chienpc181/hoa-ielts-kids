@@ -11,6 +11,9 @@ import DoubleLangText from '../../../components/clients/DoubleLangText';
 import { useSpeechSynthesis } from 'react-speech-kit';
 import { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
+import FillInTheBlankExercise from '../../../components/clients/common/FillInTheBlankExercise';
+import { Divider } from 'primereact/divider';
+import { Accordion, AccordionTab } from 'primereact/accordion';
 
 export default function LessonDetail() {
     const { id } = useParams();
@@ -126,15 +129,46 @@ export default function LessonDetail() {
                             </div>
                         </TabPanel>
                         <TabPanel header={translate ? 'Practices' : 'Bài tập'} leftIcon="pi pi-pencil mr-2">
-                            {/* {practices.map((question, index) => <QuestionStandard question={question} questionNumber={index} key={index} />)} */}
-                            <div>
-                                {(document.exercises.fillInTheGaps && document.exercises.fillInTheGaps.length) && document.exercises.fillInTheGaps.map((item, idx) => 
-                                <div key={idx}>
-                                    <p>{item.content}</p>
-                                    <p>{item.answer}</p>
-                                </div>
-                                )}
-                            </div>
+                            <Accordion>
+                                {(document.exercises.fillInTheGaps && document.exercises.fillInTheGaps.length) &&
+                                <AccordionTab header='Fill in the blank'>
+                                    <div>
+                                        {document.exercises.fillInTheGaps.map((item, idx) => 
+                                        <div key={idx}>
+                                            {(idx > 0) && <Divider />}
+                                            <FillInTheBlankExercise sentence={item.content} correctAnswer={item.answer} index={idx+1}></FillInTheBlankExercise>
+                                        </div>
+                                        )}
+                                    </div>
+                                </AccordionTab>}
+                                {(document.exercises.rearrangeSentences && document.exercises.rearrangeSentences.length) &&
+                                <AccordionTab header='Rearrange the sentence'>
+                                    <div>
+                                        {document.exercises.rearrangeSentences.map((item, idx) => 
+                                        <div key={idx}>
+                                            {(idx > 0) && <Divider />}
+                                            <p>{item.content}</p>
+                                            <p>{item.answer}</p>
+                                            
+                                        </div>
+                                        )}
+                                    </div>
+                                </AccordionTab>}
+                                {(document.exercises.rewriteSentences && document.exercises.rewriteSentences.length) &&
+                                <AccordionTab header='Rewrite the sentence'>
+                                    <div>
+                                        {document.exercises.rewriteSentences.map((item, idx) => 
+                                        <div key={idx}>
+                                            {(idx > 0) && <Divider />}
+                                            <p>{item.content}</p>
+                                            <p>{item.answer}</p>
+                                            
+                                        </div>
+                                        )}
+                                    </div>
+                                </AccordionTab>}
+                            </Accordion>
+                            
                         </TabPanel>
                     </TabView>
                 </div>

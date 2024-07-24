@@ -12,6 +12,7 @@ import LessonMistakeList from '../../../components/admin/LessonMistakeList';
 import useDocument from '../../../hooks/useDocument';
 import { useNavigate, useParams } from 'react-router-dom';
 import FillInTheGapList from '../../../components/admin/lessonExercises/FillInTheGapList';
+import CompleteSentenceList from '../../../components/admin/lessonExercises/CompleteSentenceList';
 
 export default function EditLessonStandard() {
     const { updateDocument } = useFirestore('HikLessons');
@@ -23,6 +24,7 @@ export default function EditLessonStandard() {
 
     const [image, setImage] = useState([]);
     const [formError, setFormError] = useState('');
+    
 
     useEffect(() => {
         if (fileUrl) {
@@ -39,21 +41,56 @@ export default function EditLessonStandard() {
         content: '',
         answer: ''
     }
+    const initCompleteSentence = {
+        content: '',
+        answer: ''
+    }
     const initExercise = {
         fillInTheGaps: [initFillInTheGap],
+        rearrangeSentences: [initCompleteSentence],
+        rewriteSentences: [initCompleteSentence]
     }
+    const [lessonExercises, setLessonExercises] = useState({});
     useEffect(() => {
         if (document && document.id) {
             setLesson(document);
-            if (!document.exercises) {
-                setLesson(prev => ({
-                    ...prev,
-                    exercises: initExercise
-                }));
-            }
+            
+            // if (!document.exercises) {
+            //     setLessonExercises(initExercise);
+            // }
+            // else {
+            //     setLessonExercises(document.exercises);
+            //     if (!document.exercises.fillInTheGaps) {
+            //         setLessonExercises(prev => ({
+            //             ...prev,
+            //             fillInTheGaps: [initFillInTheGap]
+            //         }));
+            //     }
+            //     else if (!document.exercises.rearrangeSentences) {
+            //         setLessonExercises(prev => ({
+            //             ...prev,
+            //             rearrangeSentences: [initCompleteSentence]
+            //         }));
+            //     }
+            //     else if (!document.exercises.rewriteSentences) {
+            //         setLessonExercises(prev => ({
+            //             ...prev,
+            //             rewriteSentences: [initCompleteSentence]
+            //         }));
+            //     }
+            // }
+
+            
         }
         
     }, [document]);
+
+    // useEffect(() => {
+    //     setLesson(prev => ({
+    //         ...prev,
+    //         exercises: lessonExercises
+    //     }));
+    // }, [lessonExercises])
 
     const handleOnSelectFiles = async (files) => {
         if (files && files.length && files[0]) {
@@ -126,7 +163,31 @@ export default function EditLessonStandard() {
             ...prev,
             exercises: updatedExercises
         }));
-        console.log(lesson)
+        
+    }
+
+    const handleRearrangeSentencesChange = (rearrangeSentences) => {
+        const updatedExercises = {
+            ...lesson.exercises,
+            rearrangeSentences: rearrangeSentences
+        }
+        setLesson(prev => ({
+            ...prev,
+            exercises: updatedExercises
+        }));
+        
+    }
+
+    const handleRewriteSentencesChange = (rewriteSentences) => {
+        const updatedExercises = {
+            ...lesson.exercises,
+            rewriteSentences: rewriteSentences
+        }
+        setLesson(prev => ({
+            ...prev,
+            exercises: updatedExercises
+        }));
+        
     }
 
     return (
@@ -163,7 +224,16 @@ export default function EditLessonStandard() {
                             <LessonMistakeList lessonMistakes={lesson.commonMistakes} onChange={handleMistakesChange}></LessonMistakeList>
                         </div>
                         <div className="form-field" >
-                            <FillInTheGapList exercises={lesson.exercises.fillInTheGaps} onChange={handleFillInTheGapsChange}></FillInTheGapList>
+                            {/* <FillInTheGapList exercises={lesson.exercises.fillInTheGaps} onChange={handleFillInTheGapsChange}></FillInTheGapList> */}
+                            <CompleteSentenceList title='Fill in the gap' exercises={lesson.exercises.fillInTheGaps} onChange={handleFillInTheGapsChange}></CompleteSentenceList>
+                        </div>
+                        <div className="form-field" >
+                            <CompleteSentenceList title='Rearrange the sentence' exercises={lesson.exercises.rearrangeSentences}
+                             onChange={handleRearrangeSentencesChange}></CompleteSentenceList>
+                        </div>
+                        <div className="form-field" >
+                            <CompleteSentenceList title='Rewrite the sentence' exercises={lesson.exercises.rewriteSentences}
+                             onChange={handleRewriteSentencesChange}></CompleteSentenceList>
                         </div>
                         <div className='form-actions'>
                             <Button label="Save" type='submit' className='mx-2' icon="pi pi-save" />

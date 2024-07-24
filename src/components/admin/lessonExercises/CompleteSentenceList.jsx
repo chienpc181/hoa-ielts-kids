@@ -1,17 +1,15 @@
 import AddnRemoveListItem from "../common/AddnRemoveListItem"
-import FillInTheGap from "./FillInTheGap"
 import { useState, useEffect } from "react"
 import { Divider } from 'primereact/divider';
+import CompleteSentence from "./CompleteSentence";
 
-export default function FillInTheGapList ({exercises, onChange}) {
+export default function CompleteSentenceList ({title, exercises, onChange}) {
     const [_exercises, setExercises] = useState(exercises);
     
-    const initFillInTheGap = {
+    const initCompleteSentence = {
         content: '',
         answer: ''
     }
-
-
 
     const handleAddOrRemoveItem = (items) => {
         setExercises(items);
@@ -30,8 +28,8 @@ export default function FillInTheGapList ({exercises, onChange}) {
         <>
         {_exercises && <div className='w-full mt-2 card'>
             <div className="form-field justify-content-between">
-                <label>Fill in the gap</label>
-                <AddnRemoveListItem items={_exercises} initItem={initFillInTheGap} onChange={handleAddOrRemoveItem}></AddnRemoveListItem>
+                <label>{title}</label>
+                <AddnRemoveListItem items={_exercises} initItem={initCompleteSentence} onChange={handleAddOrRemoveItem}></AddnRemoveListItem>
             </div>
             
             {_exercises.map((item, idx) => (
@@ -42,7 +40,7 @@ export default function FillInTheGapList ({exercises, onChange}) {
                             <label>Exercise {idx + 1}</label>
                         </div>
                     </Divider>
-                    <FillInTheGap exercise={item} onChange={(item) => handleOnChangeItem(item, idx)}></FillInTheGap>
+                    <CompleteSentence exercise={item} onChange={(item) => handleOnChangeItem(item, idx)}></CompleteSentence>
                 </div>
             ))}
         </div>}
