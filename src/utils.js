@@ -25,4 +25,12 @@ const joinParagraphsToTextArea = (paraLang, lang) => {
     return "";
 }
 
-export { formatDate, splitTextAreaToParagraphs, joinParagraphsToTextArea }
+const normalizeString = (text) => {
+    return text
+        .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '') // Remove punctuation
+        .replace(/\s+/g, ' ') // Normalize spaces
+        .trim() // Trim leading and trailing spaces
+        .toLowerCase();
+};
+
+export { formatDate, splitTextAreaToParagraphs, joinParagraphsToTextArea, normalizeString }

@@ -7,6 +7,7 @@
     margin: 0 auto;
     /* padding: 0 0.75rem 1rem 0.75rem; */
     min-height: 1000px;
+    margin-bottom: 2rem;
 }
 
 .page-client .page-content .lesson {
@@ -25,10 +26,20 @@
     cursor: pointer;
 }
 
+.page-client .lesson h2{
+    color: orangered;
+    font-size: 1.25rem;
+    
+}
+
 .page-client .lesson-text {
     cursor: pointer;
     font-weight: 500;
     margin: 0.5rem 0 0.5rem 0;
+}
+
+.page-client .lesson-text.title {
+    color: #6366f1;
 }
 
 .page-client .lesson-listItem {
@@ -59,9 +70,15 @@
     border-bottom: 1px solid #d1d5db;
     border-radius: 0;
     box-shadow: none;
-    padding: 0.25rem 0.75rem;
-    font-weight: 700;
+    padding: 0.25rem;
+    font-weight: 600;
     font-size: 1rem;
     min-width: 100px;
 }
+
+.page-client .input-blank.full-row {
+    margin: 0;
+    width: 100%;
+}
+
 

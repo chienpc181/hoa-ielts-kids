@@ -13,6 +13,7 @@ import useDocument from '../../../hooks/useDocument';
 import { useNavigate, useParams } from 'react-router-dom';
 import FillInTheGapList from '../../../components/admin/lessonExercises/FillInTheGapList';
 import CompleteSentenceList from '../../../components/admin/lessonExercises/CompleteSentenceList';
+import { TabView, TabPanel } from 'primereact/tabview';
 
 export default function EditLessonStandard() {
     const { updateDocument } = useFirestore('HikLessons');
@@ -91,6 +92,8 @@ export default function EditLessonStandard() {
     //         exercises: lessonExercises
     //     }));
     // }, [lessonExercises])
+
+
 
     const handleOnSelectFiles = async (files) => {
         if (files && files.length && files[0]) {
@@ -196,44 +199,54 @@ export default function EditLessonStandard() {
                 <div>
                     <form onSubmit={handleSubmit} className='form-content'>
                         <h1 className="text-center">Create lesson</h1>
+                        <TabView>
+                            <TabPanel header='Summary'>
+                                <div className="form-field">
+                                    <FileUploadImage handleOnSelectFiles={handleOnSelectFiles} />
+                                </div>
+                                <div className="form-field card" >
+                                    <div className="w-full p-3">
+                                        <label>Title</label>
+                                        <DoubleLangInputText textLang={lesson.title} handleTextChange={handleTitleChange} />
+                                    </div>
+                                </div>
+                                <div className="form-field card" >
+                                    <div className="w-full p-3">
+                                        <label>Introduce</label>
+                                        <DoubleLangInputTextAreas paraLang={lesson.introduce} handleChange={handleIntroduceChange} ></DoubleLangInputTextAreas>
+                                    </div>
+                                </div>
+                                <div className="form-field" >
+                                    <LessonStructureList lessonStructures={lesson.structures} onChange={handleStructuresChange}></LessonStructureList>
+                                </div>
+                                <div className="form-field" >
+                                    <LessonUsageList lessonUsages={lesson.usages} onChange={handleUsagesChange}></LessonUsageList>
+                                </div>
+                                <div className="form-field" >
+                                    <LessonMistakeList lessonMistakes={lesson.commonMistakes} onChange={handleMistakesChange}></LessonMistakeList>
+                                </div>
+                            </TabPanel>
+                            <TabPanel header='Exercises'>
+                                <div className="form-field" >
+                                    {/* <FillInTheGapList exercises={lesson.exercises.fillInTheGaps} onChange={handleFillInTheGapsChange}></FillInTheGapList> */}
+                                    <CompleteSentenceList title='Fill in the gap' exercises={lesson.exercises.fillInTheGaps} onChange={handleFillInTheGapsChange}></CompleteSentenceList>
+                                </div>
+                                <div className="form-field" >
+                                    <CompleteSentenceList title='Rearrange the sentence' exercises={lesson.exercises.rearrangeSentences}
+                                        onChange={handleRearrangeSentencesChange}></CompleteSentenceList>
+                                </div>
+                                <div className="form-field" >
+                                    <CompleteSentenceList title='Rewrite the sentence' exercises={lesson.exercises.rewriteSentences}
+                                        onChange={handleRewriteSentencesChange}></CompleteSentenceList>
+                                </div>
+                                <div className="form-field" >
+                                    <CompleteSentenceList title='Rewrite the sentence premium' exercises={lesson.exercises.rewriteSentences}
+                                        onChange={handleRewriteSentencesChange}></CompleteSentenceList>
+                                </div>
+                            </TabPanel>
+                        </TabView>
                         <div className='form-error'>
                             {formError && <p>Invalid: {formError}</p>}
-                        </div>
-                        <div className="form-field">
-                            <FileUploadImage handleOnSelectFiles={handleOnSelectFiles} />
-                        </div>
-                        <div className="form-field card" >
-                            <div className="w-full p-3">
-                                <label>Title</label>
-                                <DoubleLangInputText textLang={lesson.title} handleTextChange={handleTitleChange} />
-                            </div>
-                        </div>
-                        <div className="form-field card" >
-                            <div className="w-full p-3">
-                                <label>Introduce</label>
-                                <DoubleLangInputTextAreas paraLang={lesson.introduce} handleChange={handleIntroduceChange} ></DoubleLangInputTextAreas>
-                            </div>
-                        </div>
-                        <div className="form-field" >
-                            <LessonStructureList lessonStructures={lesson.structures} onChange={handleStructuresChange}></LessonStructureList>
-                        </div>
-                        <div className="form-field" >
-                            <LessonUsageList lessonUsages={lesson.usages} onChange={handleUsagesChange}></LessonUsageList>
-                        </div>
-                        <div className="form-field" >
-                            <LessonMistakeList lessonMistakes={lesson.commonMistakes} onChange={handleMistakesChange}></LessonMistakeList>
-                        </div>
-                        <div className="form-field" >
-                            {/* <FillInTheGapList exercises={lesson.exercises.fillInTheGaps} onChange={handleFillInTheGapsChange}></FillInTheGapList> */}
-                            <CompleteSentenceList title='Fill in the gap' exercises={lesson.exercises.fillInTheGaps} onChange={handleFillInTheGapsChange}></CompleteSentenceList>
-                        </div>
-                        <div className="form-field" >
-                            <CompleteSentenceList title='Rearrange the sentence' exercises={lesson.exercises.rearrangeSentences}
-                             onChange={handleRearrangeSentencesChange}></CompleteSentenceList>
-                        </div>
-                        <div className="form-field" >
-                            <CompleteSentenceList title='Rewrite the sentence' exercises={lesson.exercises.rewriteSentences}
-                             onChange={handleRewriteSentencesChange}></CompleteSentenceList>
                         </div>
                         <div className='form-actions'>
                             <Button label="Save" type='submit' className='mx-2' icon="pi pi-save" />

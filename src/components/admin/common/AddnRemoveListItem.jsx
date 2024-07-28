@@ -8,7 +8,7 @@ export default function AddnRemoveListItem ({items, initItem, onChange}) {
         setItems(prev => [...prev, initItem]);
     }
     const handleRemoveItem = () => {
-        if (_items.length > 1) {
+        if (_items.length > 0) {
             setItems(prev => prev.slice(0, -1));
         }
     }
@@ -19,7 +19,7 @@ export default function AddnRemoveListItem ({items, initItem, onChange}) {
 
     return (
         <div>
-            <Button label='-' outlined onClick={handleRemoveItem} type='button' disabled={_items.length <= 1} />
+            <Button label='-' outlined onClick={handleRemoveItem} type='button' disabled={_items.length <= 0} />
             <Button className='ml-2' label='+' outlined onClick={handleAddItem} type='button' />
         </div>
     )

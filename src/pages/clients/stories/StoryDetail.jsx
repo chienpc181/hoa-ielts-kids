@@ -14,22 +14,12 @@ export default function StoryDetail() {
     const { id } = useParams();
     const { document, error } = useDocument('HikStories', id);
     const { speak, cancel, speaking, voices, supported } = useSpeechSynthesis();
-    const [selectedVoice, setSelectedVoice] = useState(null);
+    const selectedVoice  = useSelector(state => state.speechSynthesis.selectedVoice );
     const translate = useSelector(state => state.lang.translate);
     
     const user = useSelector(state => state.auth.user);
     const isUserAdmin = user?.role === 'admin' ? true : false;
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const englishVoices = voices.filter(voice => voice.lang.startsWith('en'));
-        if (englishVoices.length > 0) {
-            setSelectedVoice(englishVoices[0]);
-        } else {
-            setSelectedVoice(null);
-        }
-        
-    }, [voices]);
 
     if (error) {
         return <div>Error: {error}</div>;
@@ -60,7 +50,7 @@ export default function StoryDetail() {
     };
 
     const handleSpeakText = (text) => {
-        speak({ text, voice: selectedVoice });
+        speak({ text, voice: selectedVoice, rate: 0.6, pitch: 1 });
     };
 
     return (

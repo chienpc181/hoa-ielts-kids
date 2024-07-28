@@ -114,3 +114,6 @@ p {
 .p-tabview .p-tabview-panels {
   padding: 1rem;
 }
+.p-accordion .p-accordion-content {
+  padding: 1rem;
+}

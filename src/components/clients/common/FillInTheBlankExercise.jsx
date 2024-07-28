@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
+import { normalizeString } from '../../../utils';
+import SubmitAnswerBar from './SubmitAnswerBar';
+import { Divider } from 'primereact/divider';
 
-const FillInTheBlankExercise = ({ sentence, correctAnswer, isShortBlank = true, index }) => {
+const FillInTheBlankExercise = ({ sentence, correctAnswer, isShortBlank = true, sequenceNumber }) => {
     const [answers, setAnswers] = useState({});
     const [feedback, setFeedback] = useState('');
     const [parts, setParts] = useState([]);
@@ -11,7 +13,6 @@ const FillInTheBlankExercise = ({ sentence, correctAnswer, isShortBlank = true, 
     const regex = /_+[^_\s]*_+/g;
     const [correct, setCorrect] = useState(false);
     const [submitted, setSubmitted] = useState(false);
-    // const [blankStyle, setBlankStyle] = useState([])
 
     useEffect(() => {
         const partsArray = sentence.split(regex);
@@ -23,7 +24,7 @@ const FillInTheBlankExercise = ({ sentence, correctAnswer, isShortBlank = true, 
     const handleChange = (index, value) => {
         setAnswers(prev => ({
             ...prev,
-            [index]: value
+            ['blank'+index]: value
         }));
     };
 
@@ -32,61 +33,26 @@ const FillInTheBlankExercise = ({ sentence, correctAnswer, isShortBlank = true, 
     
         // Build the userAnswer by concatenating parts and answers
         let userAnswer = parts.reduce((acc, part, index) => {
-            return acc + part + (answers[index] || '');
+            return acc + part + (answers['blank'+index] || '');
         }, '');
     
         // Remove placeholder text (e.g., "(live)", "(study)") from userAnswer
         userAnswer = userAnswer.replace(/\([^)]*\)/g, '');
-    
-        // Normalize the string by removing punctuation and normalizing spaces
-        const normalizeString = (text) => {
-            return text
-                .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '') // Remove punctuation
-                .replace(/\s+/g, ' ') // Normalize spaces
-                .trim() // Trim leading and trailing spaces
-                .toLowerCase();
-        };
 
         // Compare normalized finalAnswer with normalized correctAnswer
         if (normalizeString(userAnswer) === normalizeString(correctAnswer)) {
-            setFeedback('Correct.');
+            setFeedback('Correct');
             setCorrect(true);
         } else {
-            setFeedback('Incorrect.');
+            setFeedback('Incorrect');
             setCorrect(false);
         }
-
-        // // Set blank styles
-        // const newBlankStyle = matches.map((match, i) => {
-        //     const correctBlank = correctAnswer.match(regex)[i];
-        //     const normalizedCorrectBlank = normalizeString(correctBlank);
-        //     const normalizedUserBlank = normalizeString(answers[i] || '');
-        //     return {
-        //         color: normalizedUserBlank === normalizedCorrectBlank ? 'green' : 'red'
-        //     };
-        // });
-        // setBlankStyle(newBlankStyle);
 
         setSubmitted(true);
     };
 
-    const blankWidthStyle = () => {
-        return isShortBlank ? { width: '100px' } : {};
-    };
+    const blankWidthStyle = isShortBlank ? { width: '100px' } : {};
 
-    const feedbackStyle = () => {
-        if (correct) {
-            return {
-                color: 'green'
-            }
-        }
-        else {
-            return {
-                color: 'red'
-            }
-        }
-    }
-    
     const renderSentenceWithBlanks = () => {
         let blankIndex = 0;
 
@@ -98,10 +64,10 @@ const FillInTheBlankExercise = ({ sentence, correctAnswer, isShortBlank = true, 
                     <InputText
                         key={`input-${index}`}
                         type="text"
-                        value={answers[index] || ''}
+                        value={answers['blank'+index] || ''}
                         onChange={(e) => handleChange(index, e.target.value)}
                         className='input-blank'
-                        style={{ ...blankWidthStyle()}}
+                        style={{ ...blankWidthStyle, ...inputStyleAfterSubmit}}
                         disabled={submitted}
                     />
                 );
@@ -111,14 +77,33 @@ const FillInTheBlankExercise = ({ sentence, correctAnswer, isShortBlank = true, 
         });
     };
 
+    const canSubmit = () => !submitted && answers['blank'+0] && answers['blank'+0].length;
+
+    const inputStyleAfterSubmit = submitted && !correct ? { textDecoration: 'line-through' } : {};
+
+    const handleReset = () => {
+        setAnswers({});
+        setSubmitted(false);
+        setCorrect(false);
+        setFeedback('');
+    };
+
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <p>{index}. {renderSentenceWithBlanks()}</p>
-                {submitted && <p style={{fontStyle:'italic'}}>{correctAnswer}</p>}
-                {!submitted && <Button type="submit"  text raised outlined>Check answer</Button>}
-            </form>
-            {feedback && <p style={feedbackStyle()}>{feedback}</p>}
+            {sequenceNumber > 1 && <Divider type='dashed' />}
+            <p>
+                <strong>{sequenceNumber}. </strong>
+                {renderSentenceWithBlanks()}
+            </p>
+            <SubmitAnswerBar
+                feedback={feedback}
+                correct={correct}
+                canSubmit={canSubmit}
+                handleSubmit={handleSubmit}
+                handleReset={handleReset}
+                submitted={submitted}
+                correctAnswer={correctAnswer}
+            />
         </div>
     );
 };

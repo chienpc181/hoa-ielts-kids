@@ -34,6 +34,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { checkAuthStateThunk } from './features/auth/authSlice';
 import AdminRoute from './components/AdminRoute';
+import { useSpeechSynthesis } from 'react-speech-kit';
+import { setVoices, setSelectedVoice } from './features/language/speechSynthesisSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +46,18 @@ function App() {
     dispatch(checkAuthStateThunk());
   }, [dispatch]);
   let isUserAdmin = user?.role === 'admin' ? true : false;
+
+  const { voices } = useSpeechSynthesis();
+  useEffect(() => {
+    const englishVoices = voices.filter(voice => voice.lang.startsWith('en'));
+    // dispatch(setVoices(voices));
+    if (englishVoices.length > 0) {
+        dispatch(setSelectedVoice(englishVoices[0]));
+    }
+    else {
+      dispatch(setSelectedVoice(voices[0]));
+    }
+}, [voices, dispatch]);
   
   return (
     <div className="App">
