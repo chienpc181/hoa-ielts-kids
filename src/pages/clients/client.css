@@ -29,7 +29,7 @@
 .page-client .lesson h2{
     color: orangered;
     font-size: 1.25rem;
-    
+    text-align: center;
 }
 
 .page-client .lesson-text {
@@ -42,7 +42,7 @@
     color: #6366f1;
 }
 
-.page-client .lesson-listItem {
+.page-client .lesson li {
     cursor: pointer;
     font-weight: 400;
     margin-left: 1rem;
@@ -81,4 +81,27 @@
     width: 100%;
 }
 
+.lesson-mistake .correct strong {
+    color: green;
+}
 
+.lesson-mistake .incorrect strong {
+    color: orangered;
+    text-decoration: line-through;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding-top: 56.25%; /* 16:9 aspect ratio (9 / 16 = 0.5625) */
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}

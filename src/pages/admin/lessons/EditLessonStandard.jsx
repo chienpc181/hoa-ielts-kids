@@ -38,62 +38,38 @@ export default function EditLessonStandard() {
     }, [fileUrl])
 
     const [lesson, setLesson] = useState();
-    const initFillInTheGap = {
-        content: '',
-        answer: ''
+
+    const textLang = {
+        en: '',
+        vi: ''
     }
+    const initUsage = {
+        usage: textLang,
+        explain: textLang,
+        examples: [textLang]
+    };
+
+    const initStructure = {
+        title: textLang,
+        examples: [textLang]
+    }
+
+    const initMistake = {
+        title: textLang,
+        examples: [textLang]
+    }
+
     const initCompleteSentence = {
         content: '',
         answer: ''
     }
-    const initExercise = {
-        fillInTheGaps: [initFillInTheGap],
-        rearrangeSentences: [initCompleteSentence],
-        rewriteSentences: [initCompleteSentence]
-    }
-    const [lessonExercises, setLessonExercises] = useState({});
+
     useEffect(() => {
         if (document && document.id) {
             setLesson(document);
-            
-            // if (!document.exercises) {
-            //     setLessonExercises(initExercise);
-            // }
-            // else {
-            //     setLessonExercises(document.exercises);
-            //     if (!document.exercises.fillInTheGaps) {
-            //         setLessonExercises(prev => ({
-            //             ...prev,
-            //             fillInTheGaps: [initFillInTheGap]
-            //         }));
-            //     }
-            //     else if (!document.exercises.rearrangeSentences) {
-            //         setLessonExercises(prev => ({
-            //             ...prev,
-            //             rearrangeSentences: [initCompleteSentence]
-            //         }));
-            //     }
-            //     else if (!document.exercises.rewriteSentences) {
-            //         setLessonExercises(prev => ({
-            //             ...prev,
-            //             rewriteSentences: [initCompleteSentence]
-            //         }));
-            //     }
-            // }
-
-            
         }
         
     }, [document]);
-
-    // useEffect(() => {
-    //     setLesson(prev => ({
-    //         ...prev,
-    //         exercises: lessonExercises
-    //     }));
-    // }, [lessonExercises])
-
-
 
     const handleOnSelectFiles = async (files) => {
         if (files && files.length && files[0]) {
@@ -143,55 +119,63 @@ export default function EditLessonStandard() {
         }));
     };
 
-    const handleStructuresChange = (newStrucs) => {
+    const handleAddLessonSection = (fieldName, initLessonSection) => {
         setLesson(prev => ({
             ...prev,
-            structures: newStrucs
+            [fieldName]: [initLessonSection]
         }));
     }
 
-    const handleMistakesChange = (newMistakes) => {
-        setLesson(prev => ({
-            ...prev,
-            commonMistakes: newMistakes
-        }));
-    }
+    const handleChangeLessonSections = (items, fieldName) => {
+        setLesson(prev => {
+            const updatedLesson = { ...prev };
+    
+            if (items.length === 0) {
+                delete updatedLesson[fieldName];
+            } else {
+                updatedLesson[fieldName] = items;
+            }
+    
+            // Return the updated lesson state
+            return updatedLesson;
+        });
+        console.log(lesson)
+    };
 
-    const handleFillInTheGapsChange = (fillInTheGaps) => {
+    const handleAddExerciseGroup = (fieldName, initExerciseType) => {
         const updatedExercises = {
             ...lesson.exercises,
-            fillInTheGaps: fillInTheGaps
+            [fieldName]: [initExerciseType]
         }
         setLesson(prev => ({
             ...prev,
             exercises: updatedExercises
         }));
-        
     }
 
-    const handleRearrangeSentencesChange = (rearrangeSentences) => {
-        const updatedExercises = {
-            ...lesson.exercises,
-            rearrangeSentences: rearrangeSentences
-        }
-        setLesson(prev => ({
-            ...prev,
-            exercises: updatedExercises
-        }));
-        
-    }
 
-    const handleRewriteSentencesChange = (rewriteSentences) => {
-        const updatedExercises = {
-            ...lesson.exercises,
-            rewriteSentences: rewriteSentences
-        }
-        setLesson(prev => ({
-            ...prev,
-            exercises: updatedExercises
-        }));
-        
-    }
+    const handleChangeExercises = (exerciseList, fieldName) => {
+        setLesson(prev => {
+            // Create a copy of the previous exercises object
+            const updatedExercises = { ...prev.exercises };
+    
+            // Check if the exerciseList is empty
+            if (exerciseList.length === 0) {
+                // Remove the field from the exercises object
+                delete updatedExercises[fieldName];
+            } else {
+                // Add or update the field in the exercises object
+                updatedExercises[fieldName] = exerciseList;
+            }
+    
+            // Return the updated lesson state
+            return {
+                ...prev,
+                exercises: updatedExercises
+            };
+        });
+        console.log(lesson)
+    };
 
     return (
         <>
@@ -217,31 +201,56 @@ export default function EditLessonStandard() {
                                     </div>
                                 </div>
                                 <div className="form-field" >
-                                    <LessonStructureList lessonStructures={lesson.structures} onChange={handleStructuresChange}></LessonStructureList>
+                                    <Button severity='secondary' type='button' outlined label='Structures' 
+                                    onClick={() => handleAddLessonSection('structures', initStructure)}
+                                        disabled={lesson.structures && lesson.structures.length}></Button>
+                                    <Button severity='secondary' className='ml-2' type='button' outlined label='Usages' 
+                                    onClick={() => handleAddLessonSection('usages', initUsage)}
+                                        disabled={lesson.usages && lesson.usages.length}></Button>
+                                    <Button severity='secondary' className='ml-2' type='button' outlined label='Common mistakes' 
+                                    onClick={() => handleAddLessonSection('commonMistakes', initMistake)}
+                                        disabled={lesson.commonMistakes && lesson.commonMistakes.length}></Button>
                                 </div>
-                                <div className="form-field" >
-                                    <LessonUsageList lessonUsages={lesson.usages} onChange={handleUsagesChange}></LessonUsageList>
-                                </div>
-                                <div className="form-field" >
-                                    <LessonMistakeList lessonMistakes={lesson.commonMistakes} onChange={handleMistakesChange}></LessonMistakeList>
+                                <div>
+                                    {lesson.structures && <div className="form-field" >
+                                        <LessonStructureList title='Structures' lessonStructures={lesson.structures} 
+                                        onChange={(items) => handleChangeLessonSections(items, 'structures')}></LessonStructureList>
+                                    </div>}
+                                    {lesson.usages && <div className="form-field" >
+                                        <LessonUsageList title='Usages' lessonUsages={lesson.usages} 
+                                        onChange={(items) => handleChangeLessonSections(items, 'usages')}></LessonUsageList>
+                                    </div>}
+                                    {lesson.commonMistakes && <div className="form-field" >
+                                        <LessonMistakeList title='Common mistakes' lessonMistakes={lesson.commonMistakes} 
+                                        onChange={(items) => handleChangeLessonSections(items, 'commonMistakes')}></LessonMistakeList>
+                                    </div>}
                                 </div>
                             </TabPanel>
                             <TabPanel header='Exercises'>
                                 <div className="form-field" >
-                                    {/* <FillInTheGapList exercises={lesson.exercises.fillInTheGaps} onChange={handleFillInTheGapsChange}></FillInTheGapList> */}
-                                    <CompleteSentenceList title='Fill in the gap' exercises={lesson.exercises.fillInTheGaps} onChange={handleFillInTheGapsChange}></CompleteSentenceList>
+                                    <Button severity='secondary' type='button' outlined label='Fill in the gap' 
+                                    onClick={() => handleAddExerciseGroup('fillInTheGaps', initCompleteSentence)}
+                                        disabled={lesson.exercises.fillInTheGaps && lesson.exercises.fillInTheGaps.length}></Button>
+                                    <Button severity='secondary' type='button' className='ml-2' outlined label='Rearrange sentence' 
+                                    onClick={() => handleAddExerciseGroup('rearrangeSentences', initCompleteSentence)}
+                                        disabled={lesson.exercises.rearrangeSentences && lesson.exercises.rearrangeSentences.length}></Button>
+                                    <Button severity='secondary' type='button' className='ml-2' outlined label='Rewrite sentence' 
+                                    onClick={() => handleAddExerciseGroup('rewriteSentences', initCompleteSentence)}
+                                        disabled={lesson.exercises.rewriteSentences && lesson.exercises.rewriteSentences.length}></Button>
                                 </div>
-                                <div className="form-field" >
-                                    <CompleteSentenceList title='Rearrange the sentence' exercises={lesson.exercises.rearrangeSentences}
-                                        onChange={handleRearrangeSentencesChange}></CompleteSentenceList>
-                                </div>
-                                <div className="form-field" >
-                                    <CompleteSentenceList title='Rewrite the sentence' exercises={lesson.exercises.rewriteSentences}
-                                        onChange={handleRewriteSentencesChange}></CompleteSentenceList>
-                                </div>
-                                <div className="form-field" >
-                                    <CompleteSentenceList title='Rewrite the sentence premium' exercises={lesson.exercises.rewriteSentences}
-                                        onChange={handleRewriteSentencesChange}></CompleteSentenceList>
+                                <div>
+                                    {lesson.exercises.fillInTheGaps && <div className="form-field" >
+                                        <CompleteSentenceList title='Fill in the gaps' exercises={lesson.exercises.fillInTheGaps}
+                                            onChange={(exerciseList) => handleChangeExercises(exerciseList, 'fillInTheGaps')}></CompleteSentenceList>
+                                    </div>}
+                                    {lesson.exercises.rearrangeSentences && <div className="form-field" >
+                                        <CompleteSentenceList title='Rearrange the sentence' exercises={lesson.exercises.rearrangeSentences}
+                                            onChange={(exerciseList) => handleChangeExercises(exerciseList, 'rearrangeSentences')}></CompleteSentenceList>
+                                    </div>}
+                                    {lesson.exercises.rewriteSentences && <div className="form-field" >
+                                        <CompleteSentenceList title='Rewrite the sentence' exercises={lesson.exercises.rewriteSentences}
+                                            onChange={(exerciseList) => handleChangeExercises(exerciseList, 'rewriteSentences')}></CompleteSentenceList>
+                                    </div>}
                                 </div>
                             </TabPanel>
                         </TabView>

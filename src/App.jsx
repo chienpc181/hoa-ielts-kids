@@ -60,11 +60,11 @@ function App() {
 }, [voices, dispatch]);
   
   return (
-    <div className="App">
+    <div className="App" id='app'>
       <BrowserRouter>
         {isUserAdmin && <NavbarAdmin />}
         {!isUserAdmin && <NavbarClient />}
-        <div className='container'>
+        <div className='container' id='app-container'>
           {isUserAdmin && <SidebarAdmin />}
           <Routes>
             <Route element={<AdminRoute isAllowed={isUserAdmin} />}>

@@ -10,6 +10,8 @@ import LessonUsageList from '../../../components/admin/LessonUsageList';
 import DoubleLangInputTextAreas from '../../../components/admin/DoubleLangInputTextAreas';
 import LessonStructureList from '../../../components/admin/LessonStructureList';
 import LessonMistakeList from '../../../components/admin/LessonMistakeList';
+import { TabView, TabPanel } from 'primereact/tabview';
+import CompleteSentenceList from '../../../components/admin/lessonExercises/CompleteSentenceList';
 
 export default function CreateLessonStandard() {
     const { addDocument } = useFirestore('HikLessons');
@@ -41,16 +43,27 @@ export default function CreateLessonStandard() {
     }
 
     const initLesson = {
+        thumbnailUrl: '',
         title: {
             en: '',
             vi: ''
         },
         introduce: [textLang],
-        structures: [initStructure],
-        usages: [initUsage],
-        commonMistakes: [initMistake],
-        thumbnailUrl: ''
+        // structures: [initStructure],
+        // usages: [initUsage],
+        // commonMistakes: [initMistake],
+        exercises: {}
     };
+
+    const initCompleteSentence = {
+        content: '',
+        answer: ''
+    }
+    // const initExercise = {
+    //     fillInTheGaps: [initFillInTheGap],
+    //     rearrangeSentences: [initCompleteSentence],
+    //     rewriteSentences: [initCompleteSentence]
+    // }
 
     useEffect(() => {
         if (fileUrl) {
@@ -59,7 +72,7 @@ export default function CreateLessonStandard() {
                 thumbnailUrl: fileUrl
             }))
         }
-        
+
     }, [fileUrl])
 
     const [lesson, setLesson] = useState(initLesson);
@@ -70,13 +83,6 @@ export default function CreateLessonStandard() {
             await uploadFile(files[0], 'Lessons');
         }
     };
-
-    const handleUsagesChange = (newUsages) => {
-        setLesson(prevLesson => ({
-            ...prevLesson,
-            usages: newUsages
-        }));
-    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -113,36 +119,79 @@ export default function CreateLessonStandard() {
         }));
     };
 
-    const handleStructuresChange = (newStrucs) => {
+    const handleAddLessonSection = (fieldName, initLessonSection) => {
         setLesson(prev => ({
             ...prev,
-            structures: newStrucs
+            [fieldName]: [initLessonSection]
         }));
     }
 
-    const handleMistakesChange = (newMistakes) => {
+    const handleChangeLessonSections = (items, fieldName) => {
+        setLesson(prev => {
+            const updatedLesson = { ...prev };
+    
+            if (items.length === 0) {
+                delete updatedLesson[fieldName];
+            } else {
+                updatedLesson[fieldName] = items;
+            }
+    
+            // Return the updated lesson state
+            return updatedLesson;
+        });
+        console.log(lesson)
+    };
+
+    const handleAddExerciseGroup = (fieldName, initExerciseType) => {
+        const updatedExercises = {
+            ...lesson.exercises,
+            [fieldName]: [initExerciseType]
+        }
         setLesson(prev => ({
             ...prev,
-            commonMistakes: newMistakes
+            exercises: updatedExercises
         }));
     }
+
+
+    const handleChangeExercises = (exerciseList, fieldName) => {
+        setLesson(prev => {
+            // Create a copy of the previous exercises object
+            const updatedExercises = { ...prev.exercises };
+    
+            // Check if the exerciseList is empty
+            if (exerciseList.length === 0) {
+                // Remove the field from the exercises object
+                delete updatedExercises[fieldName];
+            } else {
+                // Add or update the field in the exercises object
+                updatedExercises[fieldName] = exerciseList;
+            }
+    
+            // Return the updated lesson state
+            return {
+                ...prev,
+                exercises: updatedExercises
+            };
+        });
+        console.log(lesson)
+    };
+
+    
 
     return (
         <div className='page-admin'>
-            <Splitter className='card' style={{ minHeight: '800px' }}>
-                <SplitterPanel className="block p-3" size={75} minSize={10}>
-                    <form onSubmit={handleSubmit} className='form-content' key={resetKey}>
-                        <h1 className="text-center">Create lesson</h1>
-                        <div className='form-error'>
-                            {formError && <p>Invalid: {formError}</p>}
-                        </div>
+            <h1 className="text-center">Create lesson</h1>
+            <form onSubmit={handleSubmit} className='form-content' key={resetKey}>
+                <TabView>
+                    <TabPanel header='Summary'>
                         <div className="form-field">
                             <FileUploadImage handleOnSelectFiles={handleOnSelectFiles} />
                         </div>
                         <div className="form-field card" >
                             <div className="w-full p-3">
                                 <label>Title</label>
-                                <DoubleLangInputText textLang={lesson.title} handleTextChange={handleTitleChange}/>
+                                <DoubleLangInputText textLang={lesson.title} handleTextChange={handleTitleChange} />
                             </div>
                         </div>
                         <div className="form-field card" >
@@ -152,23 +201,70 @@ export default function CreateLessonStandard() {
                             </div>
                         </div>
                         <div className="form-field" >
-                            <LessonStructureList lessonStructures={lesson.structures} onChange={handleStructuresChange}></LessonStructureList>
+                            <Button severity='secondary' type='button' outlined label='Structures' 
+                            onClick={() => handleAddLessonSection('structures', initStructure)}
+                                disabled={lesson.structures && lesson.structures.length}></Button>
+                            <Button severity='secondary' className='ml-2' type='button' outlined label='Usages' 
+                            onClick={() => handleAddLessonSection('usages', initUsage)}
+                                disabled={lesson.usages && lesson.usages.length}></Button>
+                            <Button severity='secondary' className='ml-2' type='button' outlined label='Common mistakes' 
+                            onClick={() => handleAddLessonSection('commonMistakes', initMistake)}
+                                disabled={lesson.commonMistakes && lesson.commonMistakes.length}></Button>
                         </div>
+                        <div>
+                            {lesson.structures && <div className="form-field" >
+                                <LessonStructureList title='Structures' lessonStructures={lesson.structures} 
+                                onChange={(items) => handleChangeLessonSections(items, 'structures')}></LessonStructureList>
+                            </div>}
+                            {lesson.usages && <div className="form-field" >
+                                <LessonUsageList title='Usages' lessonUsages={lesson.usages} 
+                                onChange={(items) => handleChangeLessonSections(items, 'usages')}></LessonUsageList>
+                            </div>}
+                            {lesson.commonMistakes && <div className="form-field" >
+                                <LessonMistakeList title='Common mistakes' lessonMistakes={lesson.commonMistakes} 
+                                onChange={(items) => handleChangeLessonSections(items, 'commonMistakes')}></LessonMistakeList>
+                            </div>}
+                        </div>
+                        
+                    </TabPanel>
+                    <TabPanel header='Video'>
+
+                    </TabPanel>
+                    <TabPanel header='Exercises'>
                         <div className="form-field" >
-                            <LessonUsageList lessonUsages={lesson.usages} onChange={handleUsagesChange}></LessonUsageList>
+                            <Button severity='secondary' type='button' outlined label='Fill in the gap' 
+                            onClick={() => handleAddExerciseGroup('fillInTheGaps', initCompleteSentence)}
+                                disabled={lesson.exercises.fillInTheGaps && lesson.exercises.fillInTheGaps.length}></Button>
+                            <Button severity='secondary' type='button' className='ml-2' outlined label='Rearrange sentence' 
+                            onClick={() => handleAddExerciseGroup('rearrangeSentences', initCompleteSentence)}
+                                disabled={lesson.exercises.rearrangeSentences && lesson.exercises.rearrangeSentences.length}></Button>
+                            <Button severity='secondary' type='button' className='ml-2' outlined label='Rewrite sentence' 
+                            onClick={() => handleAddExerciseGroup('rewriteSentences', initCompleteSentence)}
+                                disabled={lesson.exercises.rewriteSentences && lesson.exercises.rewriteSentences.length}></Button>
                         </div>
-                        <div className="form-field" >
-                            <LessonMistakeList lessonMistakes={lesson.commonMistakes} onChange={handleMistakesChange}></LessonMistakeList>
+                        <div>
+                            {lesson.exercises.fillInTheGaps && <div className="form-field" >
+                                <CompleteSentenceList title='Fill in the gaps' exercises={lesson.exercises.fillInTheGaps}
+                                    onChange={(exerciseList) => handleChangeExercises(exerciseList, 'fillInTheGaps')}></CompleteSentenceList>
+                            </div>}
+                            {lesson.exercises.rearrangeSentences && <div className="form-field" >
+                                <CompleteSentenceList title='Rearrange the sentence' exercises={lesson.exercises.rearrangeSentences}
+                                    onChange={(exerciseList) => handleChangeExercises(exerciseList, 'rearrangeSentences')}></CompleteSentenceList>
+                            </div>}
+                            {lesson.exercises.rewriteSentences && <div className="form-field" >
+                                <CompleteSentenceList title='Rewrite the sentence' exercises={lesson.exercises.rewriteSentences}
+                                    onChange={(exerciseList) => handleChangeExercises(exerciseList, 'rewriteSentences')}></CompleteSentenceList>
+                            </div>}
                         </div>
-                        <div className='form-actions'>
-                            <Button label="Add" type='submit' className='mx-2' icon="pi pi-save" />
-                        </div>
-                    </form>
-                </SplitterPanel>
-                <SplitterPanel className="block p-3" size={25}>
-                    <h3 className="text-center">Preview</h3>
-                </SplitterPanel>
-            </Splitter>
+                    </TabPanel>
+                </TabView>
+                <div className='form-error'>
+                    {formError && <p>Invalid: {formError}</p>}
+                </div>
+                <div className='form-actions'>
+                    <Button label="Add" type='submit' className='mx-2' icon="pi pi-save" />
+                </div>
+            </form>
         </div>
     );
 }

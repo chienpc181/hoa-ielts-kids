@@ -67,19 +67,19 @@ export default function LessonDetail() {
                                     {translate ? <h2>Introduce</h2> : <h2>Giới thiệu</h2>}
                                     {document.introduce.map((intro, index) => (
                                         <DoubleLangText key={index} textLang={intro} speakText={handleSpeakText}>
-                                            {({ text, onClick }) => <li className='lesson-listItem ' onClick={onClick}>{text}</li>}
+                                            {({ text, onClick }) => <li  onClick={onClick}>{text}</li>}
                                         </DoubleLangText>
                                     ))}</>
                                 <>
-                                    {translate ? <h2>Structure</h2> : <h2>Công thức</h2>}
+                                    {translate ? <h2>Structure</h2> : <h2>Cấu trúc</h2>}
                                     {document.structures.map((structure, index) => (
                                         <div key={index} className='border-1 border-400 pl-3 mb-3 p-2' style={{borderRadius: '16px'}}>
                                             <DoubleLangText textLang={structure.title} speakText={handleSpeakText}>
-                                                {({ text, onClick }) => <p className='lesson-text title mt-0' onClick={onClick}>{text}</p>}
+                                                {({ text, onClick }) => <p className='lesson-text title mt-0' style={{textAlign: 'justify'}} onClick={onClick}>{text}</p>}
                                             </DoubleLangText>
                                             {structure.examples.map((example, idx) =>
-                                                <DoubleLangText key={idx} textLang={example} speakText={handleSpeakText}>
-                                                    {({ text, onClick }) => <li className='lesson-listItem ' onClick={onClick}>{text}</li>}
+                                                <DoubleLangText key={idx} textLang={example} speakText={handleSpeakText} isExample={true}>
+                                                    {({ text, onClick }) => <li  onClick={onClick}>{text}</li>}
                                                 </DoubleLangText>)}
                                         </div>
                                     ))}
@@ -97,27 +97,34 @@ export default function LessonDetail() {
                                                 </DoubleLangText>
                                             </p>
                                             {usage.examples.map((example, idx) =>
-                                                <DoubleLangText key={idx} textLang={example} speakText={handleSpeakText}>
-                                                    {({ text, onClick }) => <li className='lesson-listItem ' onClick={onClick}>{text}</li>}
+                                                <DoubleLangText key={idx} textLang={example} speakText={handleSpeakText} isExample={true}>
+                                                    {({ text, onClick }) => <li  onClick={onClick}>{text}</li>}
                                                 </DoubleLangText>)}
                                         </div>
                                     ))}
                                 </>
                                 <>
-                                    
                                     {translate ? <h2>Common mistakes</h2> : <h2>Lỗi thường gặp</h2>}
                                     {document.commonMistakes.map((mistake, index) => (
-                                        <div key={index}>
+                                        <div key={index} className='lesson-mistake'>
                                             <DoubleLangText textLang={mistake.title} speakText={handleSpeakText}>
                                                 {({ text, onClick }) => <p className='lesson-text title' onClick={onClick}>{text}</p>}
                                             </DoubleLangText>
                                             {mistake.examples.map((example, idx) =>
-                                                <DoubleLangText key={idx} textLang={example} speakText={handleSpeakText}>
-                                                    {({ text, onClick }) => <li className='lesson-listItem ' onClick={onClick}>{text}</li>}
+                                                <DoubleLangText key={idx} textLang={example} speakText={handleSpeakText} isExample={true}>
+                                                    {({ text, onClick }) => <li className={idx === 0 ? 'correct' : 'incorrect'} onClick={onClick}>{text}</li>}
                                                 </DoubleLangText>)}
                                         </div>
                                     ))}
                                 </>
+                            </div>
+                        </TabPanel>
+                        <TabPanel header='Video'>
+                            <div className='mt-6 video-container'>
+                                <iframe  src="https://www.youtube.com/embed/THxvJeRp_eo?si=8fowuCRJ3u247R8v" title="YouTube video player"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerPolicy="strict-origin-when-cross-origin" allowFullScreen>
+                                </iframe>
                             </div>
                         </TabPanel>
                         <TabPanel header={translate ? 'Exercises' : 'Bài tập'} leftIcon="pi pi-pencil mr-2">
@@ -155,6 +162,7 @@ export default function LessonDetail() {
                             </Accordion>
                             
                         </TabPanel>
+                        
                     </TabView>
                 </div>
 

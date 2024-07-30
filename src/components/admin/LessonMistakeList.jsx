@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'primereact/button';
+import AddnRemoveListItem from './common/AddnRemoveListItem';
 import PropTypes from 'prop-types';
 import TitleWithExamples from './TitleWithExamples';
 
-export default function LessonMistakeList({ lessonMistakes, onChange }) {
-    const [mistakes, setUsages] = useState(lessonMistakes);
+export default function LessonMistakeList({title, lessonMistakes, onChange }) {
+    const [mistakes, setMistakes] = useState(lessonMistakes);
 
     const textLang = {
         en: '',
@@ -21,29 +21,16 @@ export default function LessonMistakeList({ lessonMistakes, onChange }) {
         onChange(mistakes);
     }, [mistakes]);
 
-    const handleRemoveMistake = () => {
-        if (mistakes.length > 1) {
-            setUsages(prev => prev.slice(0, -1));
-        }
-    };
-
-    const handleAddMistake = () => {
-        setUsages(prev => [...prev, initMistake]);
-    };
-
     const handleLessonMistakeChange = (updateMistake, idx) => {
         const newStructures = mistakes.map((mistake, i) => (i === idx ? updateMistake : mistake));
-        setUsages(newStructures);
+        setMistakes(newStructures);
     };
 
     return (
         <div className='w-full mt-2 card'>
             <div className="form-field justify-content-between">
-                <label>Common mistakes</label>
-                <div>
-                    <Button label='-' outlined onClick={handleRemoveMistake} type='button' disabled={mistakes.length <= 1} />
-                    <Button className='ml-2' label='+' outlined onClick={handleAddMistake} type='button' />
-                </div>
+                <label>{title}</label>
+                <AddnRemoveListItem items={mistakes} initItem={initMistake} onChange={(items) => setMistakes(items)}></AddnRemoveListItem>
             </div>
             {mistakes.map((mistake, idx) => (
                 <div className="form-field" key={idx}>
@@ -57,18 +44,18 @@ export default function LessonMistakeList({ lessonMistakes, onChange }) {
     );
 }
 
-LessonMistakeList.propTypes = {
-    lessonMistakes: PropTypes.arrayOf(
-        PropTypes.shape({
-            title: PropTypes.shape({
-                en: PropTypes.string,
-                vi: PropTypes.string
-            }).isRequired,
-            examples: PropTypes.arrayOf({
-                en: PropTypes.string,
-                vi: PropTypes.string
-            }).isRequired
-        })
-    ).isRequired,
-    onChange: PropTypes.func.isRequired
-};
+// LessonMistakeList.propTypes = {
+//     lessonMistakes: PropTypes.arrayOf(
+//         PropTypes.shape({
+//             title: PropTypes.shape({
+//                 en: PropTypes.string,
+//                 vi: PropTypes.string
+//             }).isRequired,
+//             examples: PropTypes.arrayOf({
+//                 en: PropTypes.string,
+//                 vi: PropTypes.string
+//             }).isRequired
+//         })
+//     ).isRequired,
+//     onChange: PropTypes.func.isRequired
+// };

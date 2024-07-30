@@ -49,20 +49,20 @@ export default function LessonUsage({ usage, onLessonUsageChange }) {
     );
 }
 
-LessonUsage.propTypes = {
-    usage: PropTypes.shape({
-        usage: PropTypes.shape({
-            en: PropTypes.string,
-            vi: PropTypes.string
-        }).isRequired,
-        explain: PropTypes.shape({
-            en: PropTypes.string,
-            vi: PropTypes.string
-        }).isRequired,
-        examples: PropTypes.arrayOf({
-            en: PropTypes.string,
-            vi: PropTypes.string
-        }).isRequired
-    }).isRequired,
-    onLessonUsageChange: PropTypes.func.isRequired,
-};
+// LessonUsage.propTypes = {
+//     usage: PropTypes.shape({
+//         usage: PropTypes.shape({
+//             en: PropTypes.string,
+//             vi: PropTypes.string
+//         }).isRequired,
+//         explain: PropTypes.shape({
+//             en: PropTypes.string,
+//             vi: PropTypes.string
+//         }).isRequired,
+//         examples: PropTypes.arrayOf({
+//             en: PropTypes.string,
+//             vi: PropTypes.string
+//         }).isRequired
+//     }).isRequired,
+//     onLessonUsageChange: PropTypes.func.isRequired,
+// };
