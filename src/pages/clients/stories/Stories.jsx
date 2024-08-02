@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import SwitchLang from '../../../components/clients/SwitchLang';
 import { useNavigate } from 'react-router-dom';
 import ListItemStory from '../../../components/clients/ListItemStory';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 export default function Stories() {
     const navigate = useNavigate();
@@ -26,18 +27,26 @@ export default function Stories() {
     }
 
     return (
-        <div className='page-client'>
-            <div className='page-content px-3'>
-                <div className='my-3' >
-                    <SwitchLang></SwitchLang>
+        <HelmetProvider>
+            <div className='page-client'>
+                <Helmet>
+                    <title>HOA IELTS KiDs - All stories</title>
+                    <meta name="description" content='HOA IELTS KiDs - All stories' />
+                </Helmet>
+                <div className='story-container'>
+                    <div className='py-3'>
+                        <SwitchLang ></SwitchLang>
+                        <h1>All stories</h1>
+                    </div>
+                    <div className='story-list'>
+                        {documents.map((story, index) => (
+                            <ListItemStory key={index} item={story} onSelectItem={() => handleClickStory(story)}></ListItemStory>
+                        ))}
+                    </div>
+
                 </div>
-                <div className='story'>
-                    {documents.map((story, index) => (
-                        <ListItemStory key={index} item={story} onSelectItem={() => handleClickStory(story)}></ListItemStory>
-                    ))}
-                </div>
-                
             </div>
-        </div>
+        </HelmetProvider>
+
     );
 }

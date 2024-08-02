@@ -27,7 +27,7 @@ export default function NavbarAdmin() {
         navigate('/register');
     }
     return (
-        <div className='navbar-admin'>
+        <header className='navbar-admin'>
             <div className='content'>
                 <div className='logo'>
                     <Avatar image={logo} className="mr-2" size="large" shape="circle" />
@@ -42,6 +42,6 @@ export default function NavbarAdmin() {
             </div>
 
 
-        </div>
+        </header>
     )
 }

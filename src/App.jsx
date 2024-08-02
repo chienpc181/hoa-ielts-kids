@@ -36,6 +36,7 @@ import { checkAuthStateThunk } from './features/auth/authSlice';
 import AdminRoute from './components/AdminRoute';
 import { useSpeechSynthesis } from 'react-speech-kit';
 import { setVoices, setSelectedVoice } from './features/language/speechSynthesisSlice';
+import Footer from './components/Footer';
 
 function App() {
   const dispatch = useDispatch();
@@ -64,7 +65,7 @@ function App() {
       <BrowserRouter>
         {isUserAdmin && <NavbarAdmin />}
         {!isUserAdmin && <NavbarClient />}
-        <div className='container' id='app-container'>
+        <main className='container' id='app-container'>
           {isUserAdmin && <SidebarAdmin />}
           <Routes>
             <Route element={<AdminRoute isAllowed={isUserAdmin} />}>
@@ -95,7 +96,8 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/' element={<Home />} />
           </Routes>
-        </div>
+        </main>
+        <Footer></Footer>
       </BrowserRouter>
     </div>
   );

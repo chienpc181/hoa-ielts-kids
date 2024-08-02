@@ -151,7 +151,7 @@ export default function NavbarClient() {
     }
 
     return (
-        <>
+        <header>
             <div className='navbar-client desktop-navbar'>
                 <div className='content'>
                     <div className='navbar-start'>
@@ -212,7 +212,7 @@ export default function NavbarClient() {
 
                 </Sidebar>
             </div>
-        </>
+        </header>
     );
 }
 

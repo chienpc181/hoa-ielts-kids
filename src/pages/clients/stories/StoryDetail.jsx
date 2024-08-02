@@ -9,14 +9,15 @@ import { useSpeechSynthesis } from 'react-speech-kit';
 import { Image } from 'primereact/image';
 import { useSelector } from 'react-redux';
 import DoubleLangText from '../../../components/clients/DoubleLangText';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 export default function StoryDetail() {
     const { id } = useParams();
     const { document, error } = useDocument('HikStories', id);
     const { speak, cancel, speaking, voices, supported } = useSpeechSynthesis();
-    const selectedVoice  = useSelector(state => state.speechSynthesis.selectedVoice );
+    const selectedVoice = useSelector(state => state.speechSynthesis.selectedVoice);
     const translate = useSelector(state => state.lang.translate);
-    
+
     const user = useSelector(state => state.auth.user);
     const isUserAdmin = user?.role === 'admin' ? true : false;
     const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function StoryDetail() {
         return <div>Loading...</div>;
     }
 
-    const getTranslate = (text) => {
+    const translateTextLang = (text) => {
         return translate ? text.en : text.vi;
     };
 
@@ -37,7 +38,7 @@ export default function StoryDetail() {
         const content = document.paragraphs
             .map(para => (translate ? para.en : para.vi))
             .join('\n');
-        const text = getTranslate(document.title) + "\n" + content;
+        const text = translateTextLang(document.title) + "\n" + content;
         speak({ text, voice: selectedVoice });
     };
 
@@ -54,38 +55,56 @@ export default function StoryDetail() {
     };
 
     return (
-        <div className='page-client'>
-            <div className='page-content p-3' style={{maxWidth:'700px'}}>
-                {isUserAdmin && <div className='pt-3'>
-                    <Button onClick={() => navigate(`../admin/stories/${document.id}`)}>Edit</Button>
-                </div>}
-                <div className='pt-3'>
-                    <SwitchLang/>
-                </div>
-                <div className='block justify-content-center mt-4'>
-                    {translate && <ToggleButton 
-                        checked={speaking} 
-                        onChange={handlePauseResume} 
-                        onIcon="pi pi-pause" 
-                        offIcon="pi pi-play" 
-                        onLabel="Pause" 
-                        offLabel="Listen" 
-                        disabled={!selectedVoice} 
-                    />}
-                </div>
-                <div className='mt-3'>
-                    <Image src={document.thumbnailUrl} alt="Image" className='shadow-2 border-round'></Image>
-                    <h1>{getTranslate(document.title)}</h1>
-                    <span className='flex justify-content-end' style={{fontStyle: 'italic'}}>{document.author}</span>
-                    <div className=''>
-                        {document.paragraphs.map((para, index) => (
-                            <DoubleLangText key={index} textLang={para} speakText={handleSpeakText}>
-                                {({ text, onClick }) => <p className='story-para' onClick={onClick}>{text}</p>}
-                            </DoubleLangText>
-                        ))}
-                    </div>
+        <HelmetProvider>
+            <div className='page-client'>
+                <Helmet>
+                    <title>{translateTextLang(document.title)} - Story</title>
+                    <meta name="description" content={translateTextLang(document.title)} />
+                </Helmet>
+                <div className='story-container'>
+                    <section>
+                        {isUserAdmin && <div className='pt-3'>
+                            <Button onClick={() => navigate(`../admin/stories/${document.id}`)}>Edit</Button>
+                        </div>}
+                        <div className='pt-3'>
+                            <SwitchLang />
+                        </div>
+                        <div className='block justify-content-center mt-4'>
+                            {translate && <ToggleButton
+                                checked={speaking}
+                                onChange={handlePauseResume}
+                                onIcon="pi pi-pause"
+                                offIcon="pi pi-play"
+                                onLabel="Pause"
+                                offLabel="Listen"
+                                disabled={!selectedVoice}
+                            />}
+                        </div>
+                    </section>
+                    <hgroup>
+                        <Image src={document.thumbnailUrl} alt="Story-thumbnail"></Image>
+                        <h1>{translateTextLang(document.title)}</h1>
+                        <div className='author'>
+                            <address>{document.author}</address>
+                        </div>
+                    </hgroup>
+                    <article>
+                        <section className='main-story'>
+                            {document.paragraphs.map((para, index) => (
+                                <DoubleLangText key={index} textLang={para} speakText={handleSpeakText}>
+                                    {({ text, onClick }) => <p className='story-para' onClick={onClick}>{text}</p>}
+                                </DoubleLangText>
+                            ))}
+                        </section>
+                    </article>
+                    <aside>
+                        <div className='related-stories'>
+
+                        </div>
+                    </aside>
                 </div>
             </div>
-        </div>
+        </HelmetProvider>
+
     );
 }

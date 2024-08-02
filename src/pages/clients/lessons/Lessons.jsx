@@ -1,9 +1,9 @@
-
 import '../client.css';
 import { useCollection } from '../../../hooks/useCollection';
 import { useNavigate } from 'react-router-dom';
 import ListItemLesson from '../../../components/clients/ListItemLesson';
 import SwitchLang from '../../../components/clients/SwitchLang';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 export default function Lessons() {
     const navigate = useNavigate();
@@ -27,23 +27,27 @@ export default function Lessons() {
     }
 
     return (
-        <div className='page-client'>
-            <div className='page-content'>
-            <div className='my-3' >
-                    <SwitchLang></SwitchLang>
+        <HelmetProvider>
+            <div className='page-client'>
+                <Helmet>
+                    <title>HOA IELTS KiDs - All lessons</title>
+                    <meta name="description" content='HOA IELTS KiDs - All lessons' />
+                </Helmet>
+                <div className='lesson-container'>
+                    <div className='py-3'>
+                        <SwitchLang ></SwitchLang>
+                        <h1>All lessons</h1>
+                    </div>
+                    <div className='lesson-list'>
+                        {documents.map((lesson, index) => (
+                            <ListItemLesson key={index} item={lesson} onSelectItem={() => handleClickLesson(lesson)}></ListItemLesson>
+                        ))}
+                    </div>
+                    
                 </div>
-                <div>
-                    <h1>All lessons</h1>
-                </div>
-                <div className='lesson'>
-                    {documents.map((lesson, index) => (
-                        <ListItemLesson key={index} item={lesson} onSelectItem={() => handleClickLesson(lesson)}></ListItemLesson>
-                    ))}
-                </div>
-                
             </div>
+        </HelmetProvider>
 
-        </div>
 
     )
 }

@@ -14,6 +14,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import FillInTheGapList from '../../../components/admin/lessonExercises/FillInTheGapList';
 import CompleteSentenceList from '../../../components/admin/lessonExercises/CompleteSentenceList';
 import { TabView, TabPanel } from 'primereact/tabview';
+import LessonRecognizationList from '../../../components/admin/lessonSections/LessonRecognizationList';
 
 export default function EditLessonStandard() {
     const { updateDocument } = useFirestore('HikLessons');
@@ -62,6 +63,12 @@ export default function EditLessonStandard() {
     const initCompleteSentence = {
         content: '',
         answer: ''
+    }
+
+    const initSignsToRecognize = {
+        title: textLang,
+        signs: [],
+        examples: [textLang]
     }
 
     useEffect(() => {
@@ -210,6 +217,9 @@ export default function EditLessonStandard() {
                                     <Button severity='secondary' className='ml-2' type='button' outlined label='Common mistakes' 
                                     onClick={() => handleAddLessonSection('commonMistakes', initMistake)}
                                         disabled={lesson.commonMistakes && lesson.commonMistakes.length}></Button>
+                                    <Button severity='secondary' className='ml-2' type='button' outlined label='Signs to recognize' 
+                                        onClick={() => handleAddLessonSection('signsToRecognize', initSignsToRecognize)}
+                                    disabled={lesson.signsToRecognize && lesson.signsToRecognize.length}></Button>
                                 </div>
                                 <div>
                                     {lesson.structures && <div className="form-field" >
@@ -224,6 +234,10 @@ export default function EditLessonStandard() {
                                         <LessonMistakeList title='Common mistakes' lessonMistakes={lesson.commonMistakes} 
                                         onChange={(items) => handleChangeLessonSections(items, 'commonMistakes')}></LessonMistakeList>
                                     </div>}
+                                    {lesson.signsToRecognize && <div className="form-field" >
+                                        <LessonRecognizationList signsToRecognizes={lesson.signsToRecognize} 
+                                        onChange={(items) => handleChangeLessonSections(items, 'signsToRecognize')}></LessonRecognizationList>
+                            </div>}
                                 </div>
                             </TabPanel>
                             <TabPanel header='Exercises'>

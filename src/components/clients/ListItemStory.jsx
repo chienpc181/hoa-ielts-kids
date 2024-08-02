@@ -33,16 +33,15 @@ export default function ListItemStory({ item, onSelectItem }) {
     }
 
     return (
-        <div className='grid card mx-0 p-2' style={{ cursor: 'pointer' }} onClick={onSelectItem}>
-            <div className="col-12 md:col-4">
+        <article className='grid card mx-0' style={{ cursor: 'pointer' }} onClick={onSelectItem}>
+            <section className="col-12 md:col-4" style={{padding: 0}}>
                 <Image src={item.thumbnailUrl} alt="Thumbnail" />
-            </div>
-            <div className="col-12 md:col-8">
-                <div className='flex' style={{justifyContent: 'space-between', alignItems: 'center'}}>
-                <span style={{ fontWeight: '600', fontSize:'1.25rem' }}>{getTranslate(item.title)}</span>
-                {/* <span>{item.ages}</span> */}
+            </section>
+            <section className="col-12 md:col-8">
+                <hgroup className='flex' style={{justifyContent: 'space-between', alignItems: 'center'}}>
+                <h2 >{getTranslate(item.title)}</h2>
                 <Badge value={item.ages} style={ageColorStyle(item)}></Badge>
-                </div>
+                </hgroup>
                 
                 {firstPara &&
                     <p style={{ textAlign: 'left' }}>
@@ -51,7 +50,7 @@ export default function ListItemStory({ item, onSelectItem }) {
                         <br />
                         <span>...</span>
                     </p>}
-            </div>
-        </div>
+            </section>
+        </article>
     )
 }
