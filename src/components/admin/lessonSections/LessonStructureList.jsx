@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import TitleWithExamples from './TitleWithExamples';
-import AddnRemoveListItem from './common/AddnRemoveListItem';
+import LessonStructure from './LessonStructure';
+import AddnRemoveListItem from '../common/AddnRemoveListItem';
 
-export default function LessonStructureList({title, lessonStructures, onChange }) {
+export default function LessonStructureList({lessonStructures, onChange }) {
     const [structures, setStructures] = useState(lessonStructures);
 
     const textLang = {
@@ -13,6 +13,7 @@ export default function LessonStructureList({title, lessonStructures, onChange }
 
     const initStructure = {
         title: textLang,
+        description: textLang,
         examples: [textLang]
     };
 
@@ -28,15 +29,12 @@ export default function LessonStructureList({title, lessonStructures, onChange }
     return (
         <div className='w-full mt-2 card'>
             <div className="form-field justify-content-between">
-                <label>{title}</label>
+                <label>Structures</label>
                 <AddnRemoveListItem items={structures} initItem={initStructure} onChange={(items) => setStructures(items)}></AddnRemoveListItem>
             </div>
             {structures.map((structure, idx) => (
                 <div className="form-field" key={idx}>
-                    <TitleWithExamples
-                        field={structure}
-                        onChange={(structure) => handleLessonStructureChange(structure, idx)}
-                    />
+                    <LessonStructure structure={structure} onChange={(structure) => handleLessonStructureChange(structure, idx)}></LessonStructure>
                 </div>
             ))}
         </div>

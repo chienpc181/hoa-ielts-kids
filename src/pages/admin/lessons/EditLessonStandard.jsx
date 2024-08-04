@@ -7,7 +7,7 @@ import { Button } from 'primereact/button';
 import DoubleLangInputText from '../../../components/admin/DoubleLangInputText';
 import LessonUsageList from '../../../components/admin/LessonUsageList';
 import DoubleLangInputTextAreas from '../../../components/admin/DoubleLangInputTextAreas';
-import LessonStructureList from '../../../components/admin/LessonStructureList';
+import LessonStructureList from '../../../components/admin/lessonSections/LessonStructureList';
 import LessonMistakeList from '../../../components/admin/LessonMistakeList';
 import useDocument from '../../../hooks/useDocument';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -52,6 +52,7 @@ export default function EditLessonStandard() {
 
     const initStructure = {
         title: textLang,
+        description: textLang,
         examples: [textLang]
     }
 
@@ -85,13 +86,6 @@ export default function EditLessonStandard() {
         }
     };
 
-    const handleUsagesChange = (newUsages) => {
-        setLesson(prevLesson => ({
-            ...prevLesson,
-            usages: newUsages
-        }));
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setFormError('');
@@ -123,6 +117,13 @@ export default function EditLessonStandard() {
         setLesson(prev => ({
             ...prev,
             introduce: paras
+        }));
+    };
+
+    const handleKeyPointsChange = (paras) => {
+        setLesson(prev => ({
+            ...prev,
+            keyPoints: paras
         }));
     };
 
@@ -208,22 +209,25 @@ export default function EditLessonStandard() {
                                     </div>
                                 </div>
                                 <div className="form-field" >
-                                    <Button severity='secondary' type='button' outlined label='Structures' 
+                                    <Button severity='secondary' className='mx-1' type='button' outlined label='Structures' 
                                     onClick={() => handleAddLessonSection('structures', initStructure)}
                                         disabled={lesson.structures && lesson.structures.length}></Button>
-                                    <Button severity='secondary' className='ml-2' type='button' outlined label='Usages' 
+                                    <Button severity='secondary' className='mx-1' type='button' outlined label='Usages' 
                                     onClick={() => handleAddLessonSection('usages', initUsage)}
                                         disabled={lesson.usages && lesson.usages.length}></Button>
-                                    <Button severity='secondary' className='ml-2' type='button' outlined label='Common mistakes' 
+                                    <Button severity='secondary' className='mx-1' type='button' outlined label='Common mistakes' 
                                     onClick={() => handleAddLessonSection('commonMistakes', initMistake)}
                                         disabled={lesson.commonMistakes && lesson.commonMistakes.length}></Button>
-                                    <Button severity='secondary' className='ml-2' type='button' outlined label='Signs to recognize' 
+                                    <Button severity='secondary' className='mx-1' type='button' outlined label='Signs to recognize' 
                                         onClick={() => handleAddLessonSection('signsToRecognize', initSignsToRecognize)}
                                     disabled={lesson.signsToRecognize && lesson.signsToRecognize.length}></Button>
+                                    <Button severity='secondary' className='mx-1' type='button' outlined label='Key points' 
+                                    onClick={() => handleAddLessonSection('keyPoints', textLang)}
+                                        disabled={lesson.keyPoints && lesson.keyPoints.length}></Button>
                                 </div>
                                 <div>
                                     {lesson.structures && <div className="form-field" >
-                                        <LessonStructureList title='Structures' lessonStructures={lesson.structures} 
+                                        <LessonStructureList lessonStructures={lesson.structures} 
                                         onChange={(items) => handleChangeLessonSections(items, 'structures')}></LessonStructureList>
                                     </div>}
                                     {lesson.usages && <div className="form-field" >
@@ -237,7 +241,14 @@ export default function EditLessonStandard() {
                                     {lesson.signsToRecognize && <div className="form-field" >
                                         <LessonRecognizationList signsToRecognizes={lesson.signsToRecognize} 
                                         onChange={(items) => handleChangeLessonSections(items, 'signsToRecognize')}></LessonRecognizationList>
-                            </div>}
+                                    </div>}
+                                    {lesson.keyPoints && <div className="form-field card" >
+                                        <div className="w-full p-3">
+                                            <label>Key points</label>
+                                            <DoubleLangInputTextAreas paraLang={lesson.keyPoints} handleChange={handleKeyPointsChange} ></DoubleLangInputTextAreas>
+                                        </div>
+                                    </div>}
+                            
                                 </div>
                             </TabPanel>
                             <TabPanel header='Exercises'>
@@ -245,10 +256,10 @@ export default function EditLessonStandard() {
                                     <Button severity='secondary' type='button' outlined label='Fill in the gap' 
                                     onClick={() => handleAddExerciseGroup('fillInTheGaps', initCompleteSentence)}
                                         disabled={lesson.exercises.fillInTheGaps && lesson.exercises.fillInTheGaps.length}></Button>
-                                    <Button severity='secondary' type='button' className='ml-2' outlined label='Rearrange sentence' 
+                                    <Button severity='secondary' type='button' className='mx-1' outlined label='Rearrange sentence' 
                                     onClick={() => handleAddExerciseGroup('rearrangeSentences', initCompleteSentence)}
                                         disabled={lesson.exercises.rearrangeSentences && lesson.exercises.rearrangeSentences.length}></Button>
-                                    <Button severity='secondary' type='button' className='ml-2' outlined label='Rewrite sentence' 
+                                    <Button severity='secondary' type='button' className='mx-1' outlined label='Rewrite sentence' 
                                     onClick={() => handleAddExerciseGroup('rewriteSentences', initCompleteSentence)}
                                         disabled={lesson.exercises.rewriteSentences && lesson.exercises.rewriteSentences.length}></Button>
                                 </div>

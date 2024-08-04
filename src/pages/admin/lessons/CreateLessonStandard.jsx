@@ -8,11 +8,12 @@ import { Button } from 'primereact/button';
 import DoubleLangInputText from '../../../components/admin/DoubleLangInputText';
 import LessonUsageList from '../../../components/admin/LessonUsageList';
 import DoubleLangInputTextAreas from '../../../components/admin/DoubleLangInputTextAreas';
-import LessonStructureList from '../../../components/admin/LessonStructureList';
+import LessonStructureList from '../../../components/admin/lessonSections/LessonStructureList';
 import LessonMistakeList from '../../../components/admin/LessonMistakeList';
 import { TabView, TabPanel } from 'primereact/tabview';
 import CompleteSentenceList from '../../../components/admin/lessonExercises/CompleteSentenceList';
 import LessonRecognizationList from '../../../components/admin/lessonSections/LessonRecognizationList';
+import LessonDistinguishedList from '../../../components/admin/lessonSections/LessonDistinguishedList';
 
 export default function CreateLessonStandard() {
     const { addDocument } = useFirestore('HikLessons');
@@ -35,6 +36,7 @@ export default function CreateLessonStandard() {
 
     const initStructure = {
         title: textLang,
+        description: textLang,
         examples: [textLang]
     }
 
@@ -46,6 +48,12 @@ export default function CreateLessonStandard() {
     const initSignsToRecognize = {
         title: textLang,
         signs: [],
+        examples: [textLang]
+    }
+
+    const initDistinguish = {
+        title: textLang,
+        expressions: [textLang],
         examples: [textLang]
     }
 
@@ -126,6 +134,13 @@ export default function CreateLessonStandard() {
         }));
     };
 
+    const handleKeyPointsChange = (paras) => {
+        setLesson(prev => ({
+            ...prev,
+            keyPoints: paras
+        }));
+    };
+
     const handleAddLessonSection = (fieldName, initLessonSection) => {
         setLesson(prev => ({
             ...prev,
@@ -146,8 +161,36 @@ export default function CreateLessonStandard() {
             // Return the updated lesson state
             return updatedLesson;
         });
-        console.log(lesson)
+        
     };
+
+    const handleAddLessonDistinguish = () => {
+        setLesson(prev => ({
+            ...prev,
+            distinguishes: {
+                entities: [],
+                distinguishes: [initDistinguish]
+            }
+        }))
+    }
+
+    const handleChangeLessonDistinguish = (item) => {
+        setLesson(prev => {
+            const updatedLesson = { ...prev };
+    
+            if (item.distinguishes.length === 0) {
+                
+                delete updatedLesson.distinguishes;
+            } else {
+                updatedLesson.distinguishes = item;
+            }
+    
+            // Return the updated lesson state
+            return updatedLesson;
+        });
+        console.log(lesson)
+
+    }
 
     const handleAddExerciseGroup = (fieldName, initExerciseType) => {
         const updatedExercises = {
@@ -220,10 +263,16 @@ export default function CreateLessonStandard() {
                             <Button severity='secondary' className='ml-2' type='button' outlined label='Signs to recognize' 
                             onClick={() => handleAddLessonSection('signsToRecognize', initSignsToRecognize)}
                                 disabled={lesson.signsToRecognize && lesson.signsToRecognize.length}></Button>
+                                <Button severity='secondary' className='ml-2' type='button' outlined label='Distinguishes' 
+                            onClick={() => handleAddLessonDistinguish()}
+                                disabled={lesson.distinguishes}></Button>
+                            <Button severity='secondary' className='mx-1' type='button' outlined label='Key points' 
+                                onClick={() => handleAddLessonSection('keyPoints', textLang)}
+                                    disabled={lesson.keyPoints && lesson.keyPoints.length}></Button>
                         </div>
                         <div>
                             {lesson.structures && <div className="form-field" >
-                                <LessonStructureList title='Structures' lessonStructures={lesson.structures} 
+                                <LessonStructureList lessonStructures={lesson.structures} 
                                 onChange={(items) => handleChangeLessonSections(items, 'structures')}></LessonStructureList>
                             </div>}
                             {lesson.usages && <div className="form-field" >
@@ -237,6 +286,16 @@ export default function CreateLessonStandard() {
                             {lesson.signsToRecognize && <div className="form-field" >
                                 <LessonRecognizationList signsToRecognizes={lesson.signsToRecognize} 
                                 onChange={(items) => handleChangeLessonSections(items, 'signsToRecognize')}></LessonRecognizationList>
+                            </div>}
+                            {lesson.distinguishes && <div className="form-field" >
+                                <LessonDistinguishedList distinguishes={lesson.distinguishes}
+                                onChange={(item) => handleChangeLessonDistinguish(item)}></LessonDistinguishedList>
+                            </div>}
+                            {lesson.keyPoints && <div className="form-field card" >
+                                <div className="w-full p-3">
+                                    <label>Key points</label>
+                                    <DoubleLangInputTextAreas paraLang={lesson.keyPoints} handleChange={handleKeyPointsChange} ></DoubleLangInputTextAreas>
+                                </div>
                             </div>}
                         </div>
                         

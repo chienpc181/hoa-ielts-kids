@@ -81,15 +81,17 @@ export default function StoryDetail() {
                             />}
                         </div>
                     </section>
-                    <hgroup>
+                    <section>
                         <Image src={document.thumbnailUrl} alt="Story-thumbnail"></Image>
-                        <h1>{translateTextLang(document.title)}</h1>
-                        <div className='author'>
-                            <address>{document.author}</address>
-                        </div>
-                    </hgroup>
-                    <article>
-                        <section className='main-story'>
+                    </section>
+                    <article className='story'>
+                        <hgroup>
+                            <h1>{translateTextLang(document.title)}</h1>
+                            <div className='author'>
+                                <address>{document.author}</address>
+                            </div>
+                        </hgroup>
+                        <section className='main-content'>
                             {document.paragraphs.map((para, index) => (
                                 <DoubleLangText key={index} textLang={para} speakText={handleSpeakText}>
                                     {({ text, onClick }) => <p className='story-para' onClick={onClick}>{text}</p>}
@@ -97,6 +99,7 @@ export default function StoryDetail() {
                             ))}
                         </section>
                     </article>
+                    
                     <aside>
                         <div className='related-stories'>
 
