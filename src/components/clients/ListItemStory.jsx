@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux';
 import { Badge } from 'primereact/badge';
 
 export default function ListItemStory({ item, onSelectItem }) {
-    const firstPara = item.paragraphs[0];
-    const secondPara = item.paragraphs[1];
     const translate = useSelector(state => state.lang.translate);
     
     const getTranslate = (text) => {
@@ -33,23 +31,21 @@ export default function ListItemStory({ item, onSelectItem }) {
     }
 
     return (
-        <article className='grid card mx-0' style={{ cursor: 'pointer' }} onClick={onSelectItem}>
-            <section className="col-12 md:col-4" style={{padding: 0}}>
+        <article className='grid card mx-0 mt-0 thumbnail' style={{ cursor: 'pointer' }} onClick={onSelectItem}>
+            <section className="col-12 md:col-4" style={{ padding: 0 }}>
                 <Image src={item.thumbnailUrl} alt="Thumbnail" />
             </section>
-            <section className="col-12 md:col-8">
-                <hgroup className='flex' style={{justifyContent: 'space-between', alignItems: 'center'}}>
-                <h2 >{getTranslate(item.title)}</h2>
-                <Badge value={item.ages} style={ageColorStyle(item)}></Badge>
+            <section className="col-12 md:col-8 story-description">
+                <hgroup className='flex' style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h2 >{getTranslate(item.title)}</h2>
+                    <Badge value={item.ages} style={ageColorStyle(item)}></Badge>
                 </hgroup>
-                
-                {firstPara &&
-                    <p style={{ textAlign: 'left' }}>
-                        {getTranslate(firstPara)}
-                        {firstPara.en.length < 150 && secondPara && <span> {getTranslate(secondPara)}</span>}
-                        <br />
-                        <span>...</span>
-                    </p>}
+                {(item.description && item.description.length) &&
+                    <div>
+                        <p>{getTranslate(item.description[0])}</p>
+                        {/* {getTranslate(item.description[0])} */}
+                    </div>
+                }
             </section>
         </article>
     )

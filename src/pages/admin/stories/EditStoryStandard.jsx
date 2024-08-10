@@ -1,37 +1,58 @@
 import '../admin.css';
 import React, { useState, useEffect } from "react";
 import { Button } from 'primereact/button';
-import { InputTextarea } from 'primereact/inputtextarea';
 import { Splitter, SplitterPanel } from 'primereact/splitter';
-import { useFirestore } from '../../../hooks/useFirestore';
 import useFirebaseStorage from '../../../hooks/useFirebaseStorage';
 import FileUploadImage from '../../../components/admin/FileUploadImage';
 import DoubleLangInputText from '../../../components/admin/DoubleLangInputText';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { useParams, useNavigate } from 'react-router-dom';
-import useDocument from '../../../hooks/useDocument';
 import DoubleLangInputTextAreas from '../../../components/admin/DoubleLangInputTextAreas';
+import axios from 'axios';
 
 export default function EditStoryStandard() {
-    const { updateDocument } = useFirestore('HikStories');
     const { uploadFile, fileUrl } = useFirebaseStorage();
     const navigate = useNavigate();
     
     const { id } = useParams();
-    const { document, error } = useDocument('HikStories', id);
+    const [story, setStory] = useState({});
+    const [isLoading, setLoading] = useState(true);
+    const [error, setError] = useState('');
     
 
     const [image, setImage] = useState();
     const [formError, setFormError] = useState('');
 
-    const [story, setStory] = useState();
+    // const baseUrl = 'http://localhost:5000';
+    // const baseUrl = 'https://truyen-cua-ba.onrender.com';
+    const baseUrl = 'https://truyen-cua-ba.vercel.app';
 
     useEffect(() => {
-        if (document && document.id) {
-            setStory(document);
-        }
-    }, [document]);
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const response = await axios.get(`${baseUrl}/api/stories/${id}`);
+                const storyData = response.data;
+                if (!storyData.description) {
+                    storyData.description = [{en: '', vi: ''}];
+                }
+                console.log(storyData)
+                setStory(storyData);
+
+            } catch (err) {
+                if (axios.isCancel(err)) {
+                    console.log('Request canceled', err.message);
+                } else {
+                    setError(err.message);
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [id]);
 
 
     useEffect(() => {
@@ -55,16 +76,12 @@ export default function EditStoryStandard() {
         }
 
         if (canSubmit) {
-
             console.log(story);
 
-            const response = await updateDocument(story.id, story);
-
-            if (response.success) {
+            const response = await axios.post(`${baseUrl}/api/stories/${id}`, story);
+            if (response.status === 200) {
                 console.log("Update story successfully");
-                navigate(`../stories/${story.id}`);
-            } else {
-                setFormError('Error submitting story');
+                navigate(`../stories/${story._id}`);
             }
         }
     };
@@ -124,11 +141,18 @@ export default function EditStoryStandard() {
         }));
     };
 
+    const handleDescriptionChange = (textLang) => {
+        setStory(prev => ({
+            ...prev,
+            description: textLang
+        }));
+    };
+
     if (error) {
         return <div>Error: {error}</div>;
     }
 
-    if (!document) {
+    if (isLoading) {
         return <div>Loading...</div>;
     }
 
@@ -138,7 +162,7 @@ export default function EditStoryStandard() {
             <Splitter className='card' style={{ minHeight: '800px' }}>
                 <SplitterPanel className="block p-3" size={75} minSize={10}>
                     <form onSubmit={handleSubmit} >
-                        <h1>Create story</h1>
+                        <h1>Edit story</h1>
                         <div className="form-field">
                             <FileUploadImage handleOnSelectFiles={handleOnSelectFiles} />
                         </div>
@@ -162,7 +186,12 @@ export default function EditStoryStandard() {
                                     onChange={handleGenreChange} className='mt-2' style={{ minWidth: '300px' }}></Dropdown>
                             </div>
                         </div>
-                        <div className="form-field">
+                        <div className="form-field block">
+                            <label >Short description</label>
+                            <DoubleLangInputTextAreas paraLang={story.description} handleChange={handleDescriptionChange} numberOfRow={8}></DoubleLangInputTextAreas>
+                        </div>
+                        <div className="form-field block">
+                            <label >Story</label>
                             <DoubleLangInputTextAreas paraLang={story.paragraphs} handleChange={handleParagraphsChange} numberOfRow={35}></DoubleLangInputTextAreas>
                         </div>
                         <div className='form-actions'>
@@ -174,6 +203,9 @@ export default function EditStoryStandard() {
                     <h3 className="text-center">Preview</h3>
                     {image && <div className='form-field'>
                         <img role="presentation" className="w-full" src={image.objectURL} alt={image.name} />
+                    </div>}
+                    {story.thumbnailUrl && <div className='form-field'>
+                        <img role="presentation" className="w-full" src={story.thumbnailUrl} alt={story.title} />
                     </div>}
                     {story.paragraphs.map((para, index) => (
                         <div className='story-para' key={index}>

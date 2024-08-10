@@ -46,20 +46,29 @@ function App() {
   useEffect(() => {
     dispatch(checkAuthStateThunk());
   }, [dispatch]);
-  let isUserAdmin = user?.role === 'admin' ? true : false;
+  
 
   const { voices } = useSpeechSynthesis();
   useEffect(() => {
     const englishVoices = voices.filter(voice => voice.lang.startsWith('en'));
-    // dispatch(setVoices(voices));
+    
     if (englishVoices.length > 0) {
-        dispatch(setSelectedVoice(englishVoices[0]));
+      dispatch(setSelectedVoice(englishVoices[0]));
     }
     else {
       dispatch(setSelectedVoice(voices[0]));
     }
-}, [voices, dispatch]);
+  }, [voices, dispatch]);
+
+  if (authStatus === 'idle' || authStatus === 'loading') {
+    return (
+      <div>Loading...</div>
+    )
+  }
   
+  
+  const isUserAdmin = user?.roles.includes('admin') ? true : false;
+
   return (
     <div className="App" id='app'>
       <BrowserRouter>
@@ -68,7 +77,7 @@ function App() {
         <main className='container' id='app-container'>
           {isUserAdmin && <SidebarAdmin />}
           <Routes>
-            <Route element={<AdminRoute isAllowed={isUserAdmin} />}>
+            <Route element={<AdminRoute isAllowed={isUserAdmin}/> }>
               <Route path='/admin/students' element={<AdminStudents />} />
               <Route path='/admin/students/add-student' element={<AddStudent />} />
               <Route path='/admin/teachers' element={<AdminTeachers />} />

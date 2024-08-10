@@ -3,16 +3,15 @@ import React, { useState, useEffect } from "react";
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Splitter, SplitterPanel } from 'primereact/splitter';
-import { useFirestore } from '../../../hooks/useFirestore';
 import useFirebaseStorage from '../../../hooks/useFirebaseStorage';
 import FileUploadImage from '../../../components/admin/FileUploadImage';
 import DoubleLangInputText from '../../../components/admin/DoubleLangInputText';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import DoubleLangInputTextAreas from '../../../components/admin/DoubleLangInputTextAreas';
+import axios from 'axios';
 
 export default function CreateStoryStandard() {
-    const { addDocument } = useFirestore('HikStories');
     const { uploadFile, fileUrl } = useFirebaseStorage();
 
     const [images, setImages] = useState([]);
@@ -28,6 +27,7 @@ export default function CreateStoryStandard() {
         ages: '3+',
         genre: 'ForeignFairyTales',
         thumbnailUrl: '',
+        description: [],
         paragraphs: []
     }
 
@@ -45,15 +45,17 @@ export default function CreateStoryStandard() {
 
         if (canSubmit) {
             console.log(story);
-            const response = await addDocument(story);
 
-            if (response.success) {
+            // const baseUrl = 'http://localhost:5000';
+            // const baseUrl = 'https://truyen-cua-ba.onrender.com';
+            const baseUrl = 'https://truyen-cua-ba.vercel.app';
+
+            const response = await axios.post(`${baseUrl}/api/stories`, story);
+            if (response.status === 201) {
                 setFormError('');
                 setStory(initStory);
                 setImages([]);
                 setResetKey(Date.now()); // Update key to force remount
-            } else {
-                setFormError('Error submitting story');
             }
         }
     };
@@ -105,6 +107,13 @@ export default function CreateStoryStandard() {
         }));
     };
 
+    const handleDescriptionChange = (textLang) => {
+        setStory(prev => ({
+            ...prev,
+            description: textLang
+        }));
+    };
+
     const genreOptions = [
         {name: 'Vietnamese fairy tales', code: 'VietnameseFairyTales'},
         {name: 'Foreign fairy tales', code: 'ForeignFairyTales'}
@@ -140,7 +149,12 @@ export default function CreateStoryStandard() {
                                     onChange={handleGenreChange} className='mt-2' style={{ minWidth: '300px' }}></Dropdown>
                             </div>
                         </div>
-                        <div className="form-field">
+                        <div className="form-field block">
+                            <label >Short description</label>
+                            <DoubleLangInputTextAreas paraLang={story.description} handleChange={handleDescriptionChange} numberOfRow={8}></DoubleLangInputTextAreas>
+                        </div>
+                        <div className="form-field block">
+                            <label >Story</label>
                             <DoubleLangInputTextAreas paraLang={story.paragraphs} handleChange={handleParagraphsChange} numberOfRow={35}></DoubleLangInputTextAreas>
                         </div>
                         <div className='form-actions'>

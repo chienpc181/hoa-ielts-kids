@@ -127,7 +127,11 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
       // Check Auth State
+      .addCase(checkAuthStateThunk.pending, (state) => {
+        state.status = 'loading';
+      })
       .addCase(checkAuthStateThunk.fulfilled, (state, action) => {
+        state.status = 'succeeded';
         state.user = action.payload;
       });
   },

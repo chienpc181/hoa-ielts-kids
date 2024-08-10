@@ -26,7 +26,7 @@ export default function LessonDetail() {
     );
 
     const user = useSelector(state => state.auth.user);
-    const isUserAdmin = user?.role === 'admin' ? true : false;
+    const isUserAdmin = user?.roles.includes('admin') ? true : false;
     const navigate = useNavigate();
 
     const { speak } = useSpeechSynthesis();
@@ -97,15 +97,18 @@ export default function LessonDetail() {
                                                 <DoubleLangText textLang={structure.title} speakText={handleSpeakText}>
                                                     {({ text, onClick }) => <h3 className='lesson-text title mt-0' onClick={onClick}>{text}</h3>}
                                                 </DoubleLangText>
-                                                <DoubleLangText textLang={structure.description} speakText={handleSpeakText}>
-                                                    {({ text, onClick }) => <p className='lesson-text title mt-0' onClick={onClick}>{text}</p>}
-                                                </DoubleLangText>
-                                                <ul>
-                                                    {structure.examples.map((example, idx) =>
-                                                        <DoubleLangText key={idx} textLang={example} speakText={handleSpeakText} isExample={true}>
-                                                            {({ text, onClick }) => <li onClick={onClick}>{text}</li>}
-                                                        </DoubleLangText>)}
-                                                </ul>
+                                                <div className='structure-content'>
+                                                    <DoubleLangText textLang={structure.description} speakText={handleSpeakText}>
+                                                        {({ text, onClick }) => <p className='lesson-text title mt-0' onClick={onClick}>{text}</p>}
+                                                    </DoubleLangText>
+                                                    <ul>
+                                                        {structure.examples.map((example, idx) =>
+                                                            <DoubleLangText key={idx} textLang={example} speakText={handleSpeakText} isExample={true}>
+                                                                {({ text, onClick }) => <li onClick={onClick}>{text}</li>}
+                                                            </DoubleLangText>)}
+                                                    </ul>
+                                                </div>
+                                                
 
                                             </div>
                                         ))}

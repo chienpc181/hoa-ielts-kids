@@ -1,10 +1,15 @@
 // authService.js
 import { projectAuth, googleAuthProvider, projectFirestore } from '../../firebase/config';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, onAuthStateChanged } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, onAuthStateChanged, getIdToken } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
+import axios from 'axios';
+
+// const baseUrl = 'http://localhost:5000';
+// const baseUrl = 'https://truyen-cua-ba.onrender.com';
+const baseUrl = 'https://truyen-cua-ba.vercel.app';
 
 // Register a new user
-export const registerUser = async ({ email, password, name }) => {
+export const registerUserFirebase = async ({ email, password, name }) => {
     try {
         const userCredential = await createUserWithEmailAndPassword(projectAuth, email, password);
         // await updateProfile(projectAuth.currentUser, { name });
@@ -34,6 +39,31 @@ export const registerUser = async ({ email, password, name }) => {
     }
 };
 
+export const registerUser = async ({ email, password, name }) => {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(projectAuth, email, password);
+
+        const { user } = userCredential;
+        const token = await getIdToken(user);
+        
+        const response = await axios.post(`${baseUrl}/api/users/register`, {
+            uid: user.uid,
+            email: user.email,
+            name: name,
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+       
+        const userProfile = response.data;
+
+        return userProfile;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
 const setCurrentUser = (userDoc) => {
     return {
         id: userDoc.data().Id,
@@ -46,7 +76,7 @@ const setCurrentUser = (userDoc) => {
 }
 
 // Sign in with email and password
-export const loginUser = async ({ email, password }) => {
+export const loginUserFirebase = async ({ email, password }) => {
     try {
         const userCredential = await signInWithEmailAndPassword(projectAuth, email, password);
         const { user } = userCredential;
@@ -60,6 +90,25 @@ export const loginUser = async ({ email, password }) => {
         }
 
         return setCurrentUser(userDoc);
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+export const loginUser = async ({ email, password }) => {
+    try {
+        const userCredential = await signInWithEmailAndPassword(projectAuth, email, password);
+        const { user } = userCredential;
+        const token = await getIdToken(user);
+
+        const response = await axios.get(`${baseUrl}/api/users/profile/${user.uid}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        const userProfile = response.data;
+
+        return userProfile;
     } catch (error) {
         throw new Error(error.message);
     }
@@ -95,11 +144,10 @@ export const logoutUser = async () => {
 };
 
 // Check authentication state
-export const checkAuthState = async () => {
+export const checkAuthStateFirebase = async () => {
     return new Promise((resolve) => {
         onAuthStateChanged(projectAuth, async (user) => {
             if (user) {
-                // resolve(user);
                 const userDocRef = doc(projectFirestore, 'HikUsers', user.uid);
                 const userDoc = await getDoc(userDocRef);
                 
@@ -110,6 +158,31 @@ export const checkAuthState = async () => {
                 resolve(setCurrentUser(userDoc));
             } else {
                 resolve(null);
+            }
+        });
+    });
+};
+
+export const checkAuthState = async () => {
+    return new Promise((resolve) => {
+        onAuthStateChanged(projectAuth, async (user) => {
+            try{
+                if (user) {
+                    const token = await getIdToken(user);
+                    const response = await axios.get(`${baseUrl}/api/users/profile/${user.uid}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        }
+                    });
+                    const userProfile = response.data;
+                    resolve(userProfile);
+    
+                } else {
+                    resolve(null);
+                }
+            }
+            catch (err){
+                console.log(err)
             }
         });
     });
