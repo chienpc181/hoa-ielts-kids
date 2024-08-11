@@ -9,7 +9,7 @@
   background-color: #F3F4FF;
   /* margin-top: 4px; */
   width: 100%;
-  /* min-height: calc(100vh); */
+  min-height: calc(100vh - 65px - 65px);
 }
 
 @keyframes App-logo-spin {

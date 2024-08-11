@@ -76,7 +76,7 @@ export default function Stories() {
             const response = await axios.get(`${baseUrl}/api/stories`, {
                 params: {
                     page: currentPage.current,
-                    limit: 2,
+                    limit: 3,
                 },
             });
             const nextPage = response.data.stories;

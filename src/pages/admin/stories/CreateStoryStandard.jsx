@@ -10,6 +10,8 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import DoubleLangInputTextAreas from '../../../components/admin/DoubleLangInputTextAreas';
 import axios from 'axios';
+import { getIdToken } from 'firebase/auth';
+import { projectAuth } from '../../../firebase/config';
 
 export default function CreateStoryStandard() {
     const { uploadFile, fileUrl } = useFirebaseStorage();
@@ -49,8 +51,13 @@ export default function CreateStoryStandard() {
             // const baseUrl = 'http://localhost:5000';
             // const baseUrl = 'https://truyen-cua-ba.onrender.com';
             const baseUrl = 'https://truyen-cua-ba.vercel.app';
+            const token = await getIdToken(projectAuth.currentUser);
 
-            const response = await axios.post(`${baseUrl}/api/stories`, story);
+            const response = await axios.post(`${baseUrl}/api/stories`, story, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             if (response.status === 201) {
                 setFormError('');
                 setStory(initStory);

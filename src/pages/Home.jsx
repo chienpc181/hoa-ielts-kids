@@ -16,7 +16,7 @@ export default function Home() {
 
     return (
         <div className="flex w-full justify-content-center">
-            <div  style={{margin: '0 auto', minHeight: '500px', minWidth:'500px', justifyContent: 'center', alignItems: 'center', display:'flex'}}>
+            <div >
                 home page
             </div>
         </div>

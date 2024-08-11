@@ -10,6 +10,8 @@ import { InputText } from 'primereact/inputtext';
 import { useParams, useNavigate } from 'react-router-dom';
 import DoubleLangInputTextAreas from '../../../components/admin/DoubleLangInputTextAreas';
 import axios from 'axios';
+import { getIdToken } from 'firebase/auth';
+import { projectAuth } from '../../../firebase/config';
 
 export default function EditStoryStandard() {
     const { uploadFile, fileUrl } = useFirebaseStorage();
@@ -27,6 +29,7 @@ export default function EditStoryStandard() {
     // const baseUrl = 'http://localhost:5000';
     // const baseUrl = 'https://truyen-cua-ba.onrender.com';
     const baseUrl = 'https://truyen-cua-ba.vercel.app';
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -77,8 +80,13 @@ export default function EditStoryStandard() {
 
         if (canSubmit) {
             console.log(story);
-
-            const response = await axios.post(`${baseUrl}/api/stories/${id}`, story);
+            
+            const token = await getIdToken(projectAuth.currentUser);
+            const response = await axios.post(`${baseUrl}/api/stories/${id}`, story, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             if (response.status === 200) {
                 console.log("Update story successfully");
                 navigate(`../stories/${story._id}`);
