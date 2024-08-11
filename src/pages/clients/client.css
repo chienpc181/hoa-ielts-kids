@@ -13,143 +13,12 @@
     max-width: 800px;
     margin: 0 auto;
     min-height: 1000px;
-}
-
-.story-container .story {
-    padding: 0 1rem;
-}
-
-.story-list .thumbnail .story-description p{
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.page-client .story-para {
-    cursor: pointer;
-}
-
-.story-container .author {
-    display: flex;
-    justify-content: end;
-}
-
-
-
-.lesson .structure {
-    border: 1px solid #dfe7ef;
-    /* padding: 0.5rem; */
-    margin: 0.5rem 0;
-}
-
-.lesson .structure h3 {
-    text-decoration: unset !important;
-    background: #bae1ff;
-    text-align: center;
-    padding: 0.5rem;
-}
-
-.lesson .structure .structure-content {
-    padding: 0 1rem;
-}
-
-.lesson .distinguish {
-    border: 1px solid #dfe7ef;
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-    /* border-color: red; */
     margin-bottom: 1rem;
-}
-
-.lesson .distinguish span {
-    font-weight: 700;
-    display: flex;
-    justify-content: center;
-    padding: 0.5rem 0;
-}
-
-.lesson .distinguish p {
-
-}
-
-.lesson .sign {
-    /* background: #ffe5ec; */
-    background: #bae1ff;
-    font-weight: 500;
-    /* color: #6366f1; */
-}
-
-.lesson .introduce, .key-point {
-    font-weight: 500;
-}
-
-.lesson .section-header {
-    margin: auto -1rem;
-    display: flex;
-    background-color: #ffe5ec;
-}
-
-.page-client .lesson h2{
-    
-    position: relative;
-    margin: 0;
-    padding: 1rem 1.5rem;
-}
-
-.page-client .lesson h2::before{
-    content: '';
-    background-color: orangered;
-    position: absolute;
-    width: 6px;
-    height: 100%;
-    top: 0;
-    left: 0;
-}
-
-.page-client .lesson h3{
-    margin: 1rem 0;
-    font-weight: bold;
-    text-decoration: underline;
-}
-
-
-.page-client .lesson-text {
-    cursor: pointer;
-    font-weight: 500;
-    margin: 0.5rem 0 0.5rem 0;
-}
-
-.page-client .lesson-text.title {
-    /* color: #6366f1; */
-}
-
-.page-client .lesson-list {
-    padding: 1rem;
-}
-
-.page-client .story-list {
-    padding: 1rem;
-}
-
-.page-client .lecture ul {
-    padding-left: 2rem;
-}
-
-
-.page-client .lecture li {
-    cursor: pointer;
-    /* font-weight: 500; */
-    margin-top: 0.25rem;
-    margin-bottom: 0.25rem;
-    font-style: italic;
-    line-height: 24px;
 }
 
 .page-client .data-table {
     border: solid 1px #e5e7eb;
 }
-
 
 .page-client img {
     width: 100%;
@@ -169,20 +38,6 @@
     min-width: 100px;
 }
 
-.page-client .input-blank.full-row {
-    margin: 0;
-    width: 100%;
-}
-
-.lesson-mistake .correct strong {
-    color: green;
-}
-
-.lesson-mistake .incorrect strong {
-    color: orangered;
-    text-decoration: line-through;
-}
-
 .video-container {
     position: relative;
     width: 100%;
@@ -197,4 +52,8 @@
     width: 100%;
     height: 100%;
     border: 0;
+}
+
+.page-client hr {
+    border-style: ridge;
 }

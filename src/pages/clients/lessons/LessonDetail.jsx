@@ -15,6 +15,7 @@ import { Accordion, AccordionTab } from 'primereact/accordion';
 import CompleteSentenceExercise from '../../../components/clients/common/CompleteSentenceExercise';
 import { Chip } from 'primereact/chip';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import './Lesson.css';
 
 export default function LessonDetail() {
     const { id } = useParams();

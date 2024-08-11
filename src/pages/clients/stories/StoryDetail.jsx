@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import DoubleLangText from '../../../components/clients/DoubleLangText';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import axios from 'axios';
+import './Story.css';
 
 export default function StoryDetail() {
     const { id } = useParams();
@@ -121,6 +122,13 @@ export default function StoryDetail() {
                             </hgroup>
                             <section className='main-content'>
                                 {storyData.paragraphs.map((para, index) => (
+                                    <DoubleLangText key={index} textLang={para} speakText={handleSpeakText}>
+                                        {({ text, onClick }) => <p className='story-para' onClick={onClick}>{text}</p>}
+                                    </DoubleLangText>
+                                ))}
+                            </section>
+                            <section className='description'>
+                                {storyData.description.map((para, index) => (
                                     <DoubleLangText key={index} textLang={para} speakText={handleSpeakText}>
                                         {({ text, onClick }) => <p className='story-para' onClick={onClick}>{text}</p>}
                                     </DoubleLangText>

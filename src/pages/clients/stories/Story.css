@@ -1,0 +1,46 @@
+.story-container .author {
+    display: flex;
+    justify-content: end;
+}
+
+.story-container .story {
+    padding: 0 1rem;
+}
+
+.story-container .story-para {
+    cursor: pointer;
+}
+
+.story-container .story-list {
+    padding: 1rem;
+}
+
+.thumbnail .description p{
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.story .description {
+    padding: 0.5rem 1rem;
+    background-color: #ffe5ec;
+    border-radius: 10px;
+}
+
+.thumbnail {
+    cursor: pointer;
+    
+}
+
+.thumbnail .image {
+    padding: 0;
+    margin: -1rem;
+    margin-bottom: 0;
+}
+
+.thumbnail .image img {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+

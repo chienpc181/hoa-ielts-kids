@@ -1,0 +1,113 @@
+
+.lesson .structure {
+    border: 1px solid #dfe7ef;
+    /* padding: 0.5rem; */
+    margin: 0.5rem 0;
+}
+
+.lesson .structure h3 {
+    text-decoration: unset !important;
+    background: #bae1ff;
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.lesson .structure .structure-content {
+    padding: 0 1rem;
+}
+
+.lesson .distinguish {
+    border: 1px solid #dfe7ef;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    /* border-color: red; */
+    margin-bottom: 1rem;
+}
+
+.lesson .distinguish span {
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0;
+}
+
+.lesson .sign {
+    /* background: #ffe5ec; */
+    background: #bae1ff;
+    font-weight: 500;
+    /* color: #6366f1; */
+}
+
+.lesson .introduce, .key-point {
+    font-weight: 500;
+}
+
+.lesson .section-header {
+    margin: auto -1rem;
+    display: flex;
+    background-color: #ffe5ec;
+}
+
+.lesson h2{
+    
+    position: relative;
+    margin: 0;
+    padding: 1rem 1.5rem;
+}
+
+.lesson h2::before{
+    content: '';
+    background-color: orangered;
+    position: absolute;
+    width: 6px;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.lesson h3{
+    margin: 1rem 0;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+
+.lesson-text {
+    cursor: pointer;
+    font-weight: 500;
+    margin: 0.5rem 0 0.5rem 0;
+}
+
+
+.lesson-list {
+    padding: 1rem;
+}
+
+
+.lesson .lecture ul {
+    padding-left: 2rem;
+}
+
+
+.lesson .lecture li {
+    cursor: pointer;
+    /* font-weight: 500; */
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    font-style: italic;
+    line-height: 24px;
+}
+
+.lesson .input-blank.full-row {
+    margin: 0;
+    width: 100%;
+}
+
+.lesson-mistake .correct strong {
+    color: green;
+}
+
+.lesson-mistake .incorrect strong {
+    color: orangered;
+    text-decoration: line-through;
+}

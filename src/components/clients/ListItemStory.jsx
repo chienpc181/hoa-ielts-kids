@@ -1,7 +1,7 @@
 import React from 'react';
-import { Image } from "primereact/image";
 import { useSelector } from 'react-redux';
 import { Badge } from 'primereact/badge';
+
 
 export default function ListItemStory({ item, onSelectItem }) {
     const translate = useSelector(state => state.lang.translate);
@@ -31,22 +31,49 @@ export default function ListItemStory({ item, onSelectItem }) {
     }
 
     return (
-        <article className='grid card mx-0 mt-0 thumbnail' style={{ cursor: 'pointer' }} onClick={onSelectItem}>
-            <section className="col-12 md:col-4" style={{ padding: 0 }}>
-                <Image src={item.thumbnailUrl} alt="Thumbnail" />
+        // <article className='grid card mx-0 mt-0 thumbnail' style={{ cursor: 'pointer' }} onClick={onSelectItem}>
+        //     <section className="col-12 md:col-4" style={{ padding: 0 }}>
+        //         <Image src={item.thumbnailUrl} alt="Thumbnail" />
+        //     </section>
+        //     <section className="col-12 md:col-8 story-description">
+        //         <hgroup >
+        //             <h2 style={{textAlign: 'center'}}>{getTranslate(item.title)}</h2>
+        //             <address style={{textAlign: 'right'}}>{item.author}</address>
+        //             <div className='flex justify-content-between' >
+                        
+        //             </div>
+                    
+        //         </hgroup>
+        //         {(item.description && item.description.length) &&
+        //             <div>
+        //                 <p>{getTranslate(item.description[0])}</p>
+        //             </div>
+        //         }
+        //         <hr></hr>
+        //         <div>
+        //             <Badge value={item.ages} style={ageColorStyle(item)}></Badge>
+        //         </div>
+        //     </section>
+        // </article>
+        <article className='card thumbnail' onClick={onSelectItem}>
+            
+            <section className="image" >
+                <img src={item.thumbnailUrl} alt={item.title}></img>
             </section>
-            <section className="col-12 md:col-8 story-description">
-                <hgroup className='flex' style={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h2 >{getTranslate(item.title)}</h2>
-                    <Badge value={item.ages} style={ageColorStyle(item)}></Badge>
-                </hgroup>
+            <hgroup >
+                <h2 style={{ textAlign: 'center' }}>{getTranslate(item.title)}</h2>
+                <address style={{ textAlign: 'right' }}>{item.author}</address>
+            </hgroup>
+            <section className="description">
                 {(item.description && item.description.length) &&
-                    <div>
-                        <p>{getTranslate(item.description[0])}</p>
-                        {/* {getTranslate(item.description[0])} */}
-                    </div>
+                    <p>{getTranslate(item.description[0])}</p>
                 }
             </section>
+            <hr></hr>
+            <div>
+                <Badge value={item.ages} style={ageColorStyle(item)}></Badge>
+            </div>
         </article>
+
     )
 }
