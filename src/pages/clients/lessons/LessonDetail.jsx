@@ -96,11 +96,11 @@ export default function LessonDetail() {
                                         {document.structures && document.structures.map((structure, index) => (
                                             <div key={index} className=' structure' >
                                                 <DoubleLangText textLang={structure.title} speakText={handleSpeakText}>
-                                                    {({ text, onClick }) => <h3 className='lesson-text title mt-0' onClick={onClick}>{text}</h3>}
+                                                    {({ text, onClick }) => <h3  onClick={onClick}>{text}</h3>}
                                                 </DoubleLangText>
                                                 <div className='structure-content'>
                                                     <DoubleLangText textLang={structure.description} speakText={handleSpeakText}>
-                                                        {({ text, onClick }) => <p className='lesson-text title mt-0' onClick={onClick}>{text}</p>}
+                                                        {({ text, onClick }) => <p  onClick={onClick}>{text}</p>}
                                                     </DoubleLangText>
                                                     <ul>
                                                         {structure.examples.map((example, idx) =>
@@ -123,10 +123,10 @@ export default function LessonDetail() {
                                         {document.usages.map((usage, index) => (
                                             <div key={index}>
                                                 <DoubleLangText textLang={usage.usage} speakText={handleSpeakText}>
-                                                    {({ text, onClick }) => <h3 className='lesson-text title' onClick={onClick}>{text}</h3>}
+                                                    {({ text, onClick }) => <h3  onClick={onClick}>{text}</h3>}
                                                 </DoubleLangText>
                                                 <DoubleLangText textLang={usage.explain} speakText={handleSpeakText}>
-                                                    {({ text, onClick }) => <p className='lesson-text my-0' onClick={onClick}> {text}</p>}
+                                                    {({ text, onClick }) => <p  onClick={onClick}> {text}</p>}
                                                 </DoubleLangText>
                                                 <ul>
                                                     {usage.examples.map((example, idx) =>
@@ -146,7 +146,7 @@ export default function LessonDetail() {
                                         {document.commonMistakes.map((mistake, index) => (
                                             <div key={index} className='lesson-mistake'>
                                                 <DoubleLangText textLang={mistake.title} speakText={handleSpeakText}>
-                                                    {({ text, onClick }) => <h3 className='lesson-text' onClick={onClick}>{text}</h3>}
+                                                    {({ text, onClick }) => <h3  onClick={onClick}>{text}</h3>}
                                                 </DoubleLangText>
                                                 <ul>
                                                     {mistake.examples.map((example, idx) =>
@@ -166,7 +166,7 @@ export default function LessonDetail() {
                                         {document.signsToRecognize.map((sign, index) => (
                                             <div key={index} className='lesson-sign'>
                                                 <DoubleLangText textLang={sign.title} speakText={handleSpeakText}>
-                                                    {({ text, onClick }) => <h3 className='lesson-text' onClick={onClick}>{text}</h3>}
+                                                    {({ text, onClick }) => <h3  onClick={onClick}>{text}</h3>}
                                                 </DoubleLangText>
                                                 {sign.signs.map((sign, idx) =>
                                                     <Chip key={idx} label={sign} className='m-1 sign'></Chip>)}
@@ -202,7 +202,7 @@ export default function LessonDetail() {
                                         {/* <h3 className='my-4' style={{fontWeight: '700'}}>Definition and focus</h3>
                                         <div className='distinguish' >
                                             <span style={{background: '#bae1ff'}}>The Simple Past</span>
-                                            <p className='lesson-text' style={{ textAlign: 'justify' }} >
+                                            <p  style={{ textAlign: 'justify' }} >
                                             Describes actions that happened and were completed at a specific time in the past.</p>
                                                 <ul>
                                                     <li>I visited Paris last year.</li>
@@ -213,7 +213,7 @@ export default function LessonDetail() {
                                         
                                         <div className=' distinguish' >
                                             <span style={{background: '#ffe5ec'}}>The Present Perfect</span>
-                                            <p className='lesson-text' style={{ textAlign: 'justify' }} >
+                                            <p  style={{ textAlign: 'justify' }} >
                                             Describes actions that occurred at an unspecified time before now and have relevance to the present.</p>
                                                 <ul>
                                                     <li>I have visited Paris.</li>
@@ -232,7 +232,7 @@ export default function LessonDetail() {
                                                     <div key={idxEntity} className=' distinguish'>
                                                         <span style={idxEntity === 1 ? { background: '#ffe5ec' } : { background: '#bae1ff' }}>{entity}</span>
                                                         <DoubleLangText textLang={aspect.expressions[idxEntity]} speakText={handleSpeakText}>
-                                                            {({ text, onClick }) => <p className='lesson-text' onClick={onClick}>{text}</p>}
+                                                            {({ text, onClick }) => <p  onClick={onClick}>{text}</p>}
                                                         </DoubleLangText>
 
                                                         <ul>

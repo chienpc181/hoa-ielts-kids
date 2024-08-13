@@ -7,6 +7,7 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 import axios from 'axios';
 import './Story.css';
 import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
 
 export default function Stories() {
     const navigate = useNavigate();
@@ -16,7 +17,8 @@ export default function Stories() {
     const [isLastPage, setIsLastPage] = useState(false);
     const [error, setError] = useState('');
     const currentPage = useRef(1);
-
+    const limit = 3;
+    const [textSearch, setTextSearch] = useState('');
 
     // const baseUrl = 'http://localhost:5000';
     // const baseUrl = 'https://truyen-cua-ba.onrender.com';
@@ -27,11 +29,11 @@ export default function Stories() {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                
                 const response = await axios.get(`${baseUrl}/api/stories`, {
                     params: {
-                        page: currentPage,
-                        limit: 3,
+                        paginationOptions: { page: currentPage.current, limit: limit }, // Optional
+                        // sortingOptions: { sort: 'desc' }, // Optional
+                        // queryOptions: { author: 'Brothers Grimm' } // Dynamic and can have any number of keys
                     },
                     signal: controller.signal, // Pass the signal to the request
                 });
@@ -75,10 +77,12 @@ export default function Stories() {
             
             const response = await axios.get(`${baseUrl}/api/stories`, {
                 params: {
-                    page: currentPage.current,
-                    limit: 3,
-                },
+                    paginationOptions: { page: currentPage.current, limit: limit }, // Optional
+                    // sortingOptions: { sort: 'desc' }, // Optional
+                    // queryOptions: { author: 'Brothers Grimm' } // Dynamic and can have any number of keys
+                }
             });
+            
             const nextPage = response.data.stories;
             setStories(prevStories => [...prevStories, ...nextPage]);
             if (currentPage.current === response.data.totalPages) {
@@ -95,6 +99,34 @@ export default function Stories() {
         }
     }
 
+    const handleSearchStory = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${baseUrl}/api/stories/search`, {
+                params: {
+                    paginationOptions: { page: 1, limit: 10 }, // Optional
+                    // sortingOptions: { sort: 'desc' }, // Optional
+                    search: textSearch
+                }
+            });
+            setStories(response.data.stories);
+        } catch (err) {
+            if (axios.isCancel(err)) {
+                console.log('Request canceled', err.message);
+            } else {
+                setError(err.message);
+            }
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const handleSearchKeydown = (e) => {
+        if(e.key === 'Enter') {
+            handleSearchStory();
+        }
+    }
+
     return (
         <HelmetProvider>
             <div className='page-client'>
@@ -103,8 +135,18 @@ export default function Stories() {
                     <meta name="description" content='HOA IELTS KiDs - All stories' />
                 </Helmet>
                 <div className='story-container'>
-                    <div className='py-3'>
-                        <SwitchLang />
+                    <div className='p-3'>
+                        <div>
+                            <SwitchLang />
+                            <div className="p-inputgroup pt-3" style={{maxWidth: '500px', margin: '0 auto'}}>
+                                <InputText placeholder="Keyword" value={textSearch} onChange={(e) => setTextSearch(e.target.value)} 
+                                onKeyDown={(e) => handleSearchKeydown(e)}/>
+                                <Button icon="pi pi-search" onClick={handleSearchStory}/>
+                            </div>
+                            
+                        </div>
+                        
+                        
                         <h1>All stories</h1>
                     </div>
                     {(stories && stories.length) && <div className='story-list'>

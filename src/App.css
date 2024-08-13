@@ -60,10 +60,9 @@ p {
   padding-bottom: 0.5rem;
 }
 
-/* .p-inputtext {
-  padding: 0.25rem 0.5rem !important; */
-  /* height: 36px;
-} */
+.p-inputtext {
+  padding: 0.25rem 0.75rem !important; 
+}
 
 /* label {
   font-weight: 500;
