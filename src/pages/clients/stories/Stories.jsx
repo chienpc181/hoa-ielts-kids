@@ -22,18 +22,25 @@ export default function Stories() {
 
     // const baseUrl = 'http://localhost:5000';
     // const baseUrl = 'https://truyen-cua-ba.onrender.com';
-    const baseUrl = 'https://truyen-cua-ba.vercel.app';
+    // const baseUrl = 'https://truyen-cua-ba.vercel.app';
+    const baseUrl = 'https://truyencuaba.vercel.app';
     useEffect(() => {
         const controller = new AbortController(); // Create an AbortController instance
 
         const fetchData = async () => {
             try {
                 setLoading(true);
+                // const response = await axios.get(`${baseUrl}/api/stories`, {
+                //     params: {
+                //         paginationOptions: { page: currentPage.current, limit: limit }, // Optional
+                //         // sortingOptions: { sort: 'desc' }, // Optional
+                //         // queryOptions: { author: 'Brothers Grimm' } // Dynamic and can have any number of keys
+                //     },
+                //     signal: controller.signal, // Pass the signal to the request
+                // });
                 const response = await axios.get(`${baseUrl}/api/stories`, {
                     params: {
-                        paginationOptions: { page: currentPage.current, limit: limit }, // Optional
-                        // sortingOptions: { sort: 'desc' }, // Optional
-                        // queryOptions: { author: 'Brothers Grimm' } // Dynamic and can have any number of keys
+                        page: currentPage.current, limit: limit, sort: 'desc'
                     },
                     signal: controller.signal, // Pass the signal to the request
                 });

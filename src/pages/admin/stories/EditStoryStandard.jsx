@@ -30,6 +30,20 @@ export default function EditStoryStandard() {
     // const baseUrl = 'https://truyen-cua-ba.onrender.com';
     const baseUrl = 'https://truyen-cua-ba.vercel.app';
 
+    const genreOptions = [
+        {name: 'Vietnamese fairy tales', code: 'VietnameseFairyTales'},
+        {name: 'Foreign fairy tales', code: 'ForeignFairyTales'}
+    ]
+
+    const authors = [
+        {name: 'Hans Christian Andersen', code: 'Hans Christian Andersen'},
+        {name: 'Brothers Grimm', code: 'Brothers Grimm'},
+        {name: 'Other', code: 'Other'}
+    ];
+
+    const [author, setAuthor] = useState('');
+    const [otherAuthor, setOtherAuthor] = useState('');
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,11 +51,19 @@ export default function EditStoryStandard() {
                 setLoading(true);
                 const response = await axios.get(`${baseUrl}/api/stories/${id}`);
                 const storyData = response.data;
-                if (!storyData.description) {
-                    storyData.description = [{en: '', vi: ''}];
+                if (!storyData.introduction) {
+                    storyData.introduction = [{en: '', vi: ''}];
                 }
-                console.log(storyData)
+                
                 setStory(storyData);
+                // console.log(storyData)
+                if (authors.map(at => at.name).includes(storyData.author)) {
+                    setAuthor(storyData.author);
+                } else {
+                    setAuthor('Other');
+                    setOtherAuthor(storyData.author);
+                }
+                
 
             } catch (err) {
                 if (axios.isCancel(err)) {
@@ -68,9 +90,30 @@ export default function EditStoryStandard() {
         
     }, [fileUrl])
 
+    useEffect(() => {
+        if (author === 'Other' && otherAuthor) {
+            setStory(prev => ({
+                ...prev,
+                author: otherAuthor
+            }));
+        } else {
+            setStory(prev => ({
+                ...prev,
+                author: author
+            }));
+        }
+    }, [author, otherAuthor])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         let canSubmit = true;
+        
+        if (!story.author) {
+            canSubmit = false;
+            setFormError('Author is required');
+            return;
+        }
 
         if (story.paragraphs.some(paragraph => paragraph.en.trim() === '' || paragraph.vi.trim() === '')) {
             canSubmit = false;
@@ -108,13 +151,6 @@ export default function EditStoryStandard() {
         }))
     }
 
-    const handleAgesChange = (e) => {
-        setStory(prev => ({
-            ...prev,
-            ages: e.value
-        }))
-    }
-
     const handleGenreChange = (e) => {
         setStory(prev => ({
             ...prev,
@@ -123,24 +159,14 @@ export default function EditStoryStandard() {
     }
 
     const handleAuthorChange = (e) => {
-        setStory(prev => ({
-            ...prev,
-            author: e.target.value
-        }))
+        setAuthor(e.target.value)
+        // setOtherAuthor(''); // Reset other author input when changing author dropdown
     }
 
-    const agesOptions = [
-        {name: '3+', code: '3+'},
-        {name: '4+', code: '4+'},
-        {name: '5+', code: '5+'},
-        {name: '6+', code: '6+'},
-        {name: '7+', code: '7+'},
-    ]
-
-    const genreOptions = [
-        {name: 'Vietnamese fairy tales', code: 'VietnameseFairyTales'},
-        {name: 'Foreign fairy tales', code: 'ForeignFairyTales'}
-    ]
+    const handeOtherAuthorChange = (e) => {
+        setOtherAuthor(e.target.value);
+    }
+    
 
     const handleParagraphsChange = (paras) => {
         setStory(prev => ({
@@ -149,10 +175,10 @@ export default function EditStoryStandard() {
         }));
     };
 
-    const handleDescriptionChange = (textLang) => {
+    const handleIntroductionChange = (textLang) => {
         setStory(prev => ({
             ...prev,
-            description: textLang
+            introduction: textLang
         }));
     };
 
@@ -169,6 +195,9 @@ export default function EditStoryStandard() {
         {story && <div className='page-admin'>
             <Splitter className='card' style={{ minHeight: '800px' }}>
                 <SplitterPanel className="block p-3" size={75} minSize={10}>
+                    {formError && <div>
+                        {formError}
+                    </div>}
                     <form onSubmit={handleSubmit} >
                         <h1>Edit story</h1>
                         <div className="form-field">
@@ -181,13 +210,13 @@ export default function EditStoryStandard() {
                         <div className="form-field justify-content-between">
                             <div className="form-field" style={{ display: 'block' }}>
                                 <label style={{ display: 'block' }}>Author</label>
-                                <InputText value={story.author} className='mt-2' style={{ minWidth: '300px' }} onChange={handleAuthorChange}></InputText>
+                                <Dropdown value={author} placeholder='Select author' options={authors} optionLabel='name' optionValue='code'
+                                    onChange={handleAuthorChange} className='mt-2' style={{ minWidth: '300px' }}></Dropdown>
                             </div>
-                            <div className="form-field" style={{ display: 'block' }}>
-                                <label style={{ display: 'block' }}>Ages</label>
-                                <Dropdown value={story.ages} optionValue='code' placeholder='Select ages' options={agesOptions} optionLabel='name'
-                                    onChange={handleAgesChange} className='mt-2' style={{ minWidth: '300px' }}></Dropdown>
-                            </div>
+                            {author === 'Other' && <div className="form-field" style={{ display: 'block' }}>
+                                <label style={{ display: 'block' }}>Author</label>
+                                <InputText className='mt-2' value={otherAuthor} onChange={handeOtherAuthorChange}></InputText>
+                            </div>}
                             <div className="form-field" style={{ display: 'block' }}>
                                 <label style={{ display: 'block' }}>Genre</label>
                                 <Dropdown value={story.genre} optionValue='code' placeholder='Select genre' options={genreOptions} optionLabel='name'
@@ -195,8 +224,8 @@ export default function EditStoryStandard() {
                             </div>
                         </div>
                         <div className="form-field block">
-                            <label >Short description</label>
-                            <DoubleLangInputTextAreas paraLang={story.description} handleChange={handleDescriptionChange} numberOfRow={8}></DoubleLangInputTextAreas>
+                            <label >Introduction</label>
+                            <DoubleLangInputTextAreas paraLang={story.introduction} handleChange={handleIntroductionChange} numberOfRow={8}></DoubleLangInputTextAreas>
                         </div>
                         <div className="form-field block">
                             <label >Story</label>
@@ -210,21 +239,11 @@ export default function EditStoryStandard() {
                 <SplitterPanel className="block p-3" size={25}>
                     <h3 className="text-center">Preview</h3>
                     {image && <div className='form-field'>
-                        <img role="presentation" className="w-full" src={image.objectURL} alt={image.name} />
+                        <img role="presentation" className="w-full" src={image} alt="Preview" />
                     </div>}
-                    {story.thumbnailUrl && <div className='form-field'>
-                        <img role="presentation" className="w-full" src={story.thumbnailUrl} alt={story.title} />
-                    </div>}
-                    {story.paragraphs.map((para, index) => (
-                        <div className='story-para' key={index}>
-                            <p><strong>EN:</strong> {para.en}</p>
-                            <p><strong>VI:</strong> {para.vi}</p>
-                        </div>
-                    ))}
                 </SplitterPanel>
             </Splitter>
         </div>}
         </>
-        
     )
 }

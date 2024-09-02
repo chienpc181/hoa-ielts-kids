@@ -27,8 +27,8 @@ export default function StoryDetail() {
     const navigate = useNavigate();
 
     // const baseUrl = 'http://localhost:5000';
-    const baseUrl = 'https://truyen-cua-ba.onrender.com';
-    // const baseUrl = 'https://truyen-cua-ba.vercel.app';
+    // const baseUrl = 'https://truyen-cua-ba.onrender.com';
+    const baseUrl = 'https://truyen-cua-ba.vercel.app';
     useEffect(() => {
         const fetchData = async () => {
             try {
