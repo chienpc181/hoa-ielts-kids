@@ -127,8 +127,8 @@ export default function StoryDetail() {
                                     </DoubleLangText>
                                 ))}
                             </section>
-                            <section className='description'>
-                                {storyData.description.map((para, index) => (
+                            <section className='introduction'>
+                                {storyData.introduction.map((para, index) => (
                                     <DoubleLangText key={index} textLang={para} speakText={handleSpeakText}>
                                         {({ text, onClick }) => <p className='story-para' onClick={onClick}>{text}</p>}
                                     </DoubleLangText>

@@ -15,14 +15,14 @@
     padding: 1rem;
 }
 
-.thumbnail .description p{
+.thumbnail .introduction p{
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-.story .description {
+.story .introduction {
     padding: 0.5rem 1rem;
     background-color: #ffe5ec;
     border-radius: 10px;

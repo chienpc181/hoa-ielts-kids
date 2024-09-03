@@ -20,20 +20,52 @@ export default function CreateStoryStandard() {
     const [formError, setFormError] = useState('');
     const [resetKey, setResetKey] = useState(Date.now());
 
+    const genreOptions = [
+        {name: 'Foreign fairy tales', code: 'ForeignFairyTales'},
+        {name: 'Folk tales', code: 'FolkTales'},
+        {name: 'Legend tales', code: 'LegendTales'},
+        {name: 'Fable tales', code: 'FableTales'},
+    ]
+
+    const authors = [
+        {name: 'Hans Christian Andersen', code: 'Hans Christian Andersen'},
+        {name: 'Brothers Grimm', code: 'Brothers Grimm'},
+        {name: 'Folk tales', code: 'FolkTales'},
+        {name: 'Legend tales', code: 'LegendTales'},
+        {name: 'Fables by Aesop', code: 'Aesop'},
+        {name: 'Other', code: 'Other'}
+    ];
+
+    const [author, setAuthor] = useState('');
+    const [otherAuthor, setOtherAuthor] = useState('');
+
     const initStory = {
         title: {
             en: '',
             vi: ''
         },
         author: '',
-        ages: '3+',
         genre: 'ForeignFairyTales',
         thumbnailUrl: '',
-        description: [],
+        introduction: [],
         paragraphs: []
     }
 
     const [story, setStory] = useState(initStory);
+
+    useEffect(() => {
+        if (author === 'Other' && otherAuthor) {
+            setStory(prev => ({
+                ...prev,
+                author: otherAuthor
+            }));
+        } else {
+            setStory(prev => ({
+                ...prev,
+                author: author
+            }));
+        }
+    }, [author, otherAuthor])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -78,13 +110,6 @@ export default function CreateStoryStandard() {
         }))
     }
 
-    const handleAgesChange = (e) => {
-        setStory(prev => ({
-            ...prev,
-            ages: e.value
-        }))
-    }
-
     const handleGenreChange = (e) => {
         setStory(prev => ({
             ...prev,
@@ -93,19 +118,13 @@ export default function CreateStoryStandard() {
     }
 
     const handleAuthorChange = (e) => {
-        setStory(prev => ({
-            ...prev,
-            author: e.target.value
-        }))
+        setAuthor(e.target.value)
+        // setOtherAuthor(''); // Reset other author input when changing author dropdown
     }
 
-    const agesOptions = [
-        {name: '3+', code: '3+'},
-        {name: '4+', code: '4+'},
-        {name: '5+', code: '5+'},
-        {name: '6+', code: '6+'},
-        {name: '7+', code: '7+'},
-    ]
+    const handeOtherAuthorChange = (e) => {
+        setOtherAuthor(e.target.value);
+    }
 
     const handleParagraphsChange = (paras) => {
         setStory(prev => ({
@@ -114,22 +133,20 @@ export default function CreateStoryStandard() {
         }));
     };
 
-    const handleDescriptionChange = (textLang) => {
+    const handleIntroductionChange = (textLang) => {
         setStory(prev => ({
             ...prev,
-            description: textLang
+            introduction: textLang
         }));
     };
-
-    const genreOptions = [
-        {name: 'Vietnamese fairy tales', code: 'VietnameseFairyTales'},
-        {name: 'Foreign fairy tales', code: 'ForeignFairyTales'}
-    ]
 
     return (
         <div className='page-admin'>
             <Splitter className='card' style={{ minHeight: '800px' }}>
                 <SplitterPanel className="block p-3" size={75} minSize={10}>
+                    {formError && <div>
+                        {formError}
+                    </div>}
                     <form onSubmit={handleSubmit} key={resetKey}>
                         <h1>Create story</h1>
                         <div className="form-field">
@@ -141,15 +158,15 @@ export default function CreateStoryStandard() {
                             <DoubleLangInputText textLang={story.title} handleTextChange={handleTitleChange} />
                         </div>
                         <div className="form-field justify-content-between">
-                            <div className="form-field" style={{ display: 'block' }}>
+                        <div className="form-field" style={{ display: 'block' }}>
                                 <label style={{ display: 'block' }}>Author</label>
-                                <InputText value={story.author} className='mt-2' style={{ minWidth: '300px' }} onChange={handleAuthorChange}></InputText>
+                                <Dropdown value={author} placeholder='Select author' options={authors} optionLabel='name' optionValue='code'
+                                    onChange={handleAuthorChange} className='mt-2' style={{ minWidth: '300px' }}></Dropdown>
                             </div>
-                            <div className="form-field" style={{ display: 'block' }}>
-                                <label style={{ display: 'block' }}>Ages</label>
-                                <Dropdown value={story.ages} optionValue='code' placeholder='Select ages' options={agesOptions} optionLabel='name'
-                                    onChange={handleAgesChange} className='mt-2' style={{ minWidth: '300px' }}></Dropdown>
-                            </div>
+                            {author === 'Other' && <div className="form-field" style={{ display: 'block' }}>
+                                <label style={{ display: 'block' }}>Author</label>
+                                <InputText className='mt-2' value={otherAuthor} onChange={handeOtherAuthorChange}></InputText>
+                            </div>}
                             <div className="form-field" style={{ display: 'block' }}>
                                 <label style={{ display: 'block' }}>Genre</label>
                                 <Dropdown value={story.genre} optionValue='code' placeholder='Select genre' options={genreOptions} optionLabel='name'
@@ -157,8 +174,8 @@ export default function CreateStoryStandard() {
                             </div>
                         </div>
                         <div className="form-field block">
-                            <label >Short description</label>
-                            <DoubleLangInputTextAreas paraLang={story.description} handleChange={handleDescriptionChange} numberOfRow={8}></DoubleLangInputTextAreas>
+                            <label >Introduction</label>
+                            <DoubleLangInputTextAreas paraLang={story.introduction} handleChange={handleIntroductionChange} numberOfRow={8}></DoubleLangInputTextAreas>
                         </div>
                         <div className="form-field block">
                             <label >Story</label>

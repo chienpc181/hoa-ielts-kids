@@ -31,13 +31,18 @@ export default function EditStoryStandard() {
     const baseUrl = 'https://truyen-cua-ba.vercel.app';
 
     const genreOptions = [
-        {name: 'Vietnamese fairy tales', code: 'VietnameseFairyTales'},
-        {name: 'Foreign fairy tales', code: 'ForeignFairyTales'}
+        {name: 'Foreign fairy tales', code: 'ForeignFairyTales'},
+        {name: 'Folk tales', code: 'FolkTales'},
+        {name: 'Legend tales', code: 'LegendTales'},
+        {name: 'Fable tales', code: 'FableTales'},
     ]
 
     const authors = [
         {name: 'Hans Christian Andersen', code: 'Hans Christian Andersen'},
         {name: 'Brothers Grimm', code: 'Brothers Grimm'},
+        {name: 'Folk tales', code: 'FolkTales'},
+        {name: 'Legend tales', code: 'LegendTales'},
+        {name: 'Fables by Aesop', code: 'Aesop'},
         {name: 'Other', code: 'Other'}
     ];
 
