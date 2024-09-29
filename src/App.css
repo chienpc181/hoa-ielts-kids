@@ -39,8 +39,16 @@ h3 {
 
 p {
   line-height: 24px;
-  font-weight: 500;
+  /* font-weight: 500; */
   font-size: 1rem;
+}
+
+.card {
+  background: var(--surface-card);
+  padding: 1rem;
+  border-radius: 8px;
+  /* margin-bottom: 1rem; */
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .12);
 }
 
 .p-button-icon-only {
@@ -93,7 +101,7 @@ p {
 }
 .p-card {
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .12);
-  border-radius: 12px;
+  border-radius: 8px;
 }
 
 .p-menubar {
@@ -115,5 +123,25 @@ p {
   padding: 1rem;
 }
 .p-accordion .p-accordion-content {
+  padding: 1rem;
+}
+
+.p-dataview .p-dataview-content {
+  background-color: unset;
+}
+
+/* .p-dialog .p-dialog-header {
+  padding: 0;
+  position: relative;
+} */
+
+.p-dialog .p-dialog-header-icons {
+  position: absolute;
+    right: 0;
+    padding-right: 1rem;
+    padding-top: 1rem;
+}
+
+.p-dialog .p-dialog-content {
   padding: 1rem;
 }

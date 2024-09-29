@@ -8,6 +8,9 @@ import axios from 'axios';
 import './Story.css';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
+import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { NavLink } from 'react-router-dom';
 
 export default function Stories() {
     const navigate = useNavigate();
@@ -17,7 +20,7 @@ export default function Stories() {
     const [isLastPage, setIsLastPage] = useState(false);
     const [error, setError] = useState('');
     const currentPage = useRef(1);
-    const limit = 3;
+    const limit = 6;
     const [textSearch, setTextSearch] = useState('');
 
     // const baseUrl = 'http://localhost:5000';
@@ -72,9 +75,7 @@ export default function Stories() {
         return <div>Loading...</div>;
     }
 
-    const handleClickStory = (story) => {
-        navigate(`/stories/${story._id}`);
-    };
+    
 
     const handleLoadMore = async () => {
         currentPage.current++;
@@ -84,9 +85,11 @@ export default function Stories() {
             
             const response = await axios.get(`${baseUrl}/api/stories`, {
                 params: {
-                    paginationOptions: { page: currentPage.current, limit: limit }, // Optional
+                    // paginationOptions: { page: currentPage.current, limit: limit }, // Optional
                     // sortingOptions: { sort: 'desc' }, // Optional
                     // queryOptions: { author: 'Brothers Grimm' } // Dynamic and can have any number of keys
+
+                    page: currentPage.current, limit: limit, sort: 'desc'
                 }
             });
             
@@ -134,6 +137,59 @@ export default function Stories() {
         }
     }
 
+    const dialogHeaderStyle = {
+        padding: 0,
+        position: 'relative'
+    }
+
+
+    const handleClickStory = (story) => {
+        // navigate(`/stories/${story._id}`);
+        confirmDialog({
+            group: 'templating',
+            // header: story.title.en,
+            header: (
+                <div style={{
+                    backgroundImage: `url(${story.thumbnailUrl})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    width: '100%',
+                    aspectRatio: '16 / 9'
+                }}></div>
+            ),
+            headerStyle: dialogHeaderStyle,
+            message: (
+                <div>
+                    <p style={{textIndent: '1rem'}}>{story.introduction[0].en}</p>
+                </div>
+            ),
+            footer: (
+                <div className='flex justify-content-center'>
+                    <button class="p-confirm-dialog-accept p-button p-component">
+                        <NavLink to={`/stories/${story._id}`} style={{textDecoration: 'none', color: 'white'}}>Read story</NavLink>
+                    </button>
+                    
+                </div>
+            )
+        });
+    };
+
+    const itemTemplate = (story, index) => {
+        if (!story) {
+            return;
+        }
+
+        return (
+            <div className="col-12 md:col-6 pb-3 md:px-2" key={index}>
+                <ListItemStory item={story} onSelectItem={() => handleClickStory(story)} />
+            </div>
+        )
+    };
+
+    const listTemplate = (stories) => {
+        return <div className="grid grid-nogutter">{stories.map((story, index) => itemTemplate(story, index))}</div>;
+    };
+
     return (
         <HelmetProvider>
             <div className='page-client'>
@@ -156,11 +212,17 @@ export default function Stories() {
                         
                         <h1>All stories</h1>
                     </div>
+                    <ConfirmDialog group="templating" dismissableMask={true}
+                                    style={{ width: '50vw', margin: '0.5rem' }} 
+                                    breakpoints={{ '1100px': '75vw', '960px': '100vw' }}/>
                     {(stories && stories.length) && <div className='story-list'>
-                        {stories.map((story, index) => (
+                        {/* {stories.map((story, index) => (
                             <ListItemStory key={index} item={story} onSelectItem={() => handleClickStory(story)} />
-                        ))}
+                        ))} */}
+
+                        <DataView value={stories} listTemplate={listTemplate(stories)} layout='grid' />
                     </div>}
+                    
                     <div className='flex justify-content-center'>
                         <Button label={isLoadingMore ? 'Loading...' : 'Load more...'} type='button' 
                         rounded outlined onClick={handleLoadMore} disabled={isLastPage}

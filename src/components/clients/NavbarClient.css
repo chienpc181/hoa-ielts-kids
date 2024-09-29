@@ -76,7 +76,7 @@
 }
 
 /* Media query for mobile screens */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     /* Hide desktop navbar on mobile screens */
     .desktop-navbar {
         display: none;

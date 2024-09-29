@@ -1,3 +1,8 @@
+.story-container .story-detail {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
 .story-container .author {
     display: flex;
     justify-content: end;
@@ -5,6 +10,13 @@
 
 .story-container .story {
     padding: 0 1rem;
+}
+
+.story-container .story p {
+    text-indent: 1rem;
+    letter-spacing: 0.2px;
+    font-size: 1.125em;
+    line-height: 28px;
 }
 
 .story-container .story-para {
@@ -25,22 +37,58 @@
 .story .introduction {
     padding: 0.5rem 1rem;
     background-color: #ffe5ec;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 .thumbnail {
     cursor: pointer;
-    
+    transition: transform 0.3s ease-in-out;
+    padding: 0;
+}
+
+.thumbnail:hover {
+    -webkit-transform: scale(1.05);
+    -moz-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    transform: scale(1.05);
+    z-index: 2;
 }
 
 .thumbnail .image {
-    padding: 0;
-    margin: -1rem;
-    margin-bottom: 0;
+    position: relative;
 }
 
-.thumbnail .image img {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+.thumbnail img {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    /* height: calc(1.5*width); */
+    height: auto;
+    /* aspect-ratio: 3 / 2; */
+    aspect-ratio: 16 / 9;
+}
+
+.thumbnail i {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-bottom: 1rem;
+    padding-right: 1rem;
+    color: cornsilk;
+    /* font-weight: 500; */
+    font-size: 14px;
+}
+
+.thumbnail .title {
+    color: chocolate;
+    text-align: center;
+    /* font-size: 1.125em; */
+    padding: 1rem;
+    font-weight: bold;
+}
+
+@media (min-width: 768px) {
+    .story-container .story {
+        padding: 0 2rem;
+    }
 }
 

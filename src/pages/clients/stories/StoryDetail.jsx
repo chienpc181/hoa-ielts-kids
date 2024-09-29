@@ -91,50 +91,53 @@ export default function StoryDetail() {
                         <meta name="description" content={translateTextLang(storyData.title)} />
                     </Helmet>
                     <div className='story-container'>
-                        <section>
-                            {isUserAdmin && <div className='pt-3'>
-                                <Button onClick={() => navigate(`../admin/stories/${storyData._id}`)}>Edit</Button>
-                            </div>}
-                            <div className='pt-3'>
-                                <SwitchLang />
-                            </div>
-                            <div className='block justify-content-center mt-4'>
-                                {translate && <ToggleButton
-                                    checked={speaking}
-                                    onChange={handlePauseResume}
-                                    onIcon="pi pi-pause"
-                                    offIcon="pi pi-play"
-                                    onLabel="Pause"
-                                    offLabel="Listen"
-                                    disabled={!selectedVoice}
-                                />}
-                            </div>
-                        </section>
-                        <section>
-                            <Image src={storyData.thumbnailUrl} alt="Story-thumbnail"></Image>
-                        </section>
-                        <article className='story'>
-                            <hgroup>
-                                <h1>{translateTextLang(storyData.title)}</h1>
-                                <div className='author'>
-                                    <address>{storyData.author}</address>
+                        <div className="story-detail">
+                            <section>
+                                {isUserAdmin && <div className='pt-3'>
+                                    <Button onClick={() => navigate(`../admin/stories/${storyData._id}`)}>Edit</Button>
+                                </div>}
+                                <div className='pt-3'>
+                                    <SwitchLang />
                                 </div>
-                            </hgroup>
-                            <section className='main-content'>
-                                {storyData.paragraphs.map((para, index) => (
-                                    <DoubleLangText key={index} textLang={para} speakText={handleSpeakText}>
-                                        {({ text, onClick }) => <p className='story-para' onClick={onClick}>{text}</p>}
-                                    </DoubleLangText>
-                                ))}
+                                <div className='block justify-content-center mt-4'>
+                                    {translate && <ToggleButton
+                                        checked={speaking}
+                                        onChange={handlePauseResume}
+                                        onIcon="pi pi-pause"
+                                        offIcon="pi pi-play"
+                                        onLabel="Pause"
+                                        offLabel="Listen"
+                                        disabled={!selectedVoice}
+                                    />}
+                                </div>
                             </section>
-                            <section className='introduction'>
-                                {storyData.introduction.map((para, index) => (
-                                    <DoubleLangText key={index} textLang={para} speakText={handleSpeakText}>
-                                        {({ text, onClick }) => <p className='story-para' onClick={onClick}>{text}</p>}
-                                    </DoubleLangText>
-                                ))}
+                            <section>
+                                <Image src={storyData.thumbnailUrl} alt="Story-thumbnail"></Image>
                             </section>
-                        </article>
+                            <article className='story'>
+                                <hgroup>
+                                    <h1>{translateTextLang(storyData.title)}</h1>
+                                    <div className='author'>
+                                        <address>{storyData.author}</address>
+                                    </div>
+                                </hgroup>
+                                <section className='main-content'>
+                                    {storyData.paragraphs.map((para, index) => (
+                                        <DoubleLangText key={index} textLang={para} speakText={handleSpeakText}>
+                                            {({ text, onClick }) => <p className='story-para' onClick={onClick}>{text}</p>}
+                                        </DoubleLangText>
+                                    ))}
+                                </section>
+                                <section className='introduction'>
+                                    {storyData.introduction.map((para, index) => (
+                                        <DoubleLangText key={index} textLang={para} speakText={handleSpeakText}>
+                                            {({ text, onClick }) => <p className='story-para' onClick={onClick}>{text}</p>}
+                                        </DoubleLangText>
+                                    ))}
+                                </section>
+                            </article>
+                        </div>
+
 
                         <aside>
                             <div className='related-stories'>
