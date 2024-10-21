@@ -1,19 +1,17 @@
 import '../client.css';
 import { useState, useEffect, useRef } from 'react';
 import SwitchLang from '../../../components/clients/SwitchLang';
-import { useNavigate } from 'react-router-dom';
-import ListItemStory from '../../../components/clients/ListItemStory';
+import FairyStoryItem from '../../../components/clients/FairyStoryItem';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import axios from 'axios';
 import './Story.css';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
-import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
+import { DataView } from 'primereact/dataview';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { NavLink } from 'react-router-dom';
 
-export default function Stories() {
-    const navigate = useNavigate();
+export default function FairyStories() {
     const [stories, setStories] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const [isLoadingMore, setLoadingMore] = useState(false);
@@ -23,8 +21,6 @@ export default function Stories() {
     const limit = 6;
     const [textSearch, setTextSearch] = useState('');
 
-    // const baseUrl = 'http://localhost:5000';
-    // const baseUrl = 'https://truyen-cua-ba.onrender.com';
     const baseUrl = 'https://truyen-cua-ba.vercel.app';
     // const baseUrl = 'https://truyencuaba.vercel.app';
     useEffect(() => {
@@ -33,17 +29,10 @@ export default function Stories() {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                // const response = await axios.get(`${baseUrl}/api/stories`, {
-                //     params: {
-                //         paginationOptions: { page: currentPage.current, limit: limit }, // Optional
-                //         // sortingOptions: { sort: 'desc' }, // Optional
-                //         // queryOptions: { author: 'Brothers Grimm' } // Dynamic and can have any number of keys
-                //     },
-                //     signal: controller.signal, // Pass the signal to the request
-                // });
-                const response = await axios.get(`${baseUrl}/api/stories`, {
+                const response = await axios.get(`${baseUrl}/api/fairyStories`, {
                     params: {
-                        page: currentPage.current, limit: limit, sort: 'desc'
+                        paginationOptions: { page: 1, limit: 1000 },
+                        queryOptions: {}
                     },
                     signal: controller.signal, // Pass the signal to the request
                 });
@@ -150,7 +139,8 @@ export default function Stories() {
             // header: story.title.en,
             header: (
                 <div style={{
-                    backgroundImage: `url(${story.thumbnailUrl})`,
+                    // backgroundImage: `url(${story.thumbnailUrl})`,
+                    backgroundImage: `url(${story.illustrationUrl})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     width: '100%',
@@ -180,8 +170,8 @@ export default function Stories() {
         }
 
         return (
-            <div className="col-12 md:col-6 pb-3 md:px-2" key={index}>
-                <ListItemStory item={story} onSelectItem={() => handleClickStory(story)} />
+            <div className="col-6 md:col-4 lg:col-3 p-2" key={index}>
+                <FairyStoryItem item={story} onSelectItem={() => handleClickStory(story)} />
             </div>
         )
     };

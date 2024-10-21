@@ -42,20 +42,35 @@
 
 .thumbnail {
     cursor: pointer;
-    transition: transform 0.3s ease-in-out;
+    /* transition: transform 0.3s ease-in-out; */
     padding: 0;
 }
 
-.thumbnail:hover {
+/* .thumbnail:hover {
     -webkit-transform: scale(1.05);
     -moz-transform: scale(1.05);
     -ms-transform: scale(1.05);
     transform: scale(1.05);
     z-index: 2;
+} */
+
+.thumbnail img{
+    transition: transform 0.5s ease-in-out;
+}
+
+.thumbnail:hover img{
+    -webkit-transform: scale(1.05);
+    -moz-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    transform: scale(1.05);
+    /* z-index: 2; */
 }
 
 .thumbnail .image {
     position: relative;
+    overflow: hidden;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 .thumbnail img {
@@ -63,7 +78,7 @@
     border-top-right-radius: 8px;
     /* height: calc(1.5*width); */
     height: auto;
-    /* aspect-ratio: 3 / 2; */
+    /* aspect-ratio: 210 / 297; */
     aspect-ratio: 16 / 9;
 }
 

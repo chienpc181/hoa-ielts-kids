@@ -62,6 +62,7 @@ export default function NavbarClient() {
                             <NavLink to="/documents" className={({ isActive }) => (isActive ? 'active-link' : undefined)}>Documents</NavLink>
                             <NavLink to="/lessons" className={({ isActive }) => (isActive ? 'active-link' : undefined)}>Lessons</NavLink>
                             <NavLink to="/stories" className={({ isActive }) => (isActive ? 'active-link' : undefined)}>Stories</NavLink>
+                            <NavLink to="/fairy-stories" className={({ isActive }) => (isActive ? 'active-link' : undefined)}>Fairy Tales</NavLink>
                             <NavLink to="/contact" className={({ isActive }) => (isActive ? 'active-link' : undefined)}>Contact</NavLink>
                         </nav>
                     </div>
@@ -107,6 +108,7 @@ export default function NavbarClient() {
                         <NavLink to="/documents" className={({ isActive }) => (isActive ? 'active-link' : undefined)}>Documents</NavLink>
                         <NavLink to="/lessons" className={({ isActive }) => (isActive ? 'active-link' : undefined)}>Lessons</NavLink>
                         <NavLink to="/stories" className={({ isActive }) => (isActive ? 'active-link' : undefined)}>Stories</NavLink>
+                        <NavLink to="/fairy-stories" className={({ isActive }) => (isActive ? 'active-link' : undefined)}>Fairy Tales</NavLink>
                         <NavLink to="/contact" className={({ isActive }) => (isActive ? 'active-link' : undefined)}>Contact</NavLink>
                     </nav>
 
