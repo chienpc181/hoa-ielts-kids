@@ -15,7 +15,7 @@
 .story-container .story p {
     text-indent: 1rem;
     letter-spacing: 0.2px;
-    font-size: 1.125em;
+    font-size: 1.125rem;
     line-height: 28px;
 }
 
@@ -42,19 +42,23 @@
 
 .thumbnail {
     cursor: pointer;
-    /* transition: transform 0.3s ease-in-out; */
+    transition: transform 0.5s ease-in-out;
     padding: 0;
 }
 
-/* .thumbnail:hover {
+.thumbnail:hover {
     -webkit-transform: scale(1.05);
     -moz-transform: scale(1.05);
     -ms-transform: scale(1.05);
-    transform: scale(1.05);
+    /* transform: scale(1.05); */
+    transform: translate(0, -1rem);
+    -webkit-transform: translate(0, -1rem);
+    -moz-transform: translate(0, -1rem);
+    -ms-transform: translate(0, -1rem);
     z-index: 2;
-} */
+}
 
-.thumbnail img{
+/* .thumbnail img{
     transition: transform 0.5s ease-in-out;
 }
 
@@ -63,8 +67,7 @@
     -moz-transform: scale(1.05);
     -ms-transform: scale(1.05);
     transform: scale(1.05);
-    /* z-index: 2; */
-}
+} */
 
 .thumbnail .image {
     position: relative;
@@ -96,9 +99,14 @@
 .thumbnail .title {
     color: chocolate;
     text-align: center;
-    /* font-size: 1.125em; */
     padding: 1rem;
     font-weight: bold;
+}
+
+.related-stories {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
 }
 
 @media (min-width: 768px) {

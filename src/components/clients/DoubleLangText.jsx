@@ -2,13 +2,14 @@ import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { Button } from 'primereact/button';
+import { TextSpeaker } from './WindowsSpeaker';
 
 const replaceSpecialSyntax = (text) => {
     // Use a regular expression to replace [text] with <strong>text</strong>
     return text.replace(/\[(.*?)\]/g, '<strong>$1</strong>');
 };
 
-export default function DoubleLangText({ children, textLang, speakText, isExample = false }) {
+export default function DoubleLangText({ children, textLang, isExample = false }) {
     const isENG = useSelector((state) => state.lang.translate);
     const op = useRef(null);
 
@@ -17,10 +18,6 @@ export default function DoubleLangText({ children, textLang, speakText, isExampl
             return textLang.en;
         }
         return isENG ? textLang.en : textLang.vi;
-    };
-
-    const handleSpeak = (text) => {
-        speakText(text);
     };
 
     const handleCopy = (text) => {
@@ -46,10 +43,10 @@ export default function DoubleLangText({ children, textLang, speakText, isExampl
                 ),
                 onClick: (e) => op.current.toggle(e)
             })}
-            <OverlayPanel ref={op} showCloseIcon appendTo={document.getElementById('app-container')} style={{ maxWidth: '700px' }}>
+            <OverlayPanel ref={op} showCloseIcon appendTo={document.getElementById('app-container')} style={{ maxWidth: '700px', marginLeft: '0.5rem', marginRight: '1rem' }}>
                 <div className='flex justify-content-end mb-2'>
                     <Button rounded text icon="pi pi-copy" onClick={() => handleCopy(textLang.en)} />
-                    <Button rounded text icon="pi pi-volume-up" onClick={() => handleSpeak(textLang.en)} />
+                    <TextSpeaker text={textLang.en}/>
                 </div>
                 {!isENG && !isExample && <p style={{ fontStyle: 'italic', margin: '0' }} dangerouslySetInnerHTML={{ __html: replaceSpecialSyntax(textLang.en) }} />}
                 {(isENG || isExample) && <p style={{ fontStyle: 'italic', margin: '0' }} dangerouslySetInnerHTML={{ __html: replaceSpecialSyntax(textLang.vi) }} />}

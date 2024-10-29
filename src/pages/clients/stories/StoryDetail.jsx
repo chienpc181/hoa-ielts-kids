@@ -1,5 +1,5 @@
 import '../client.css';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import SwitchLang from '../../../components/clients/SwitchLang';
 import { Button } from 'primereact/button';
@@ -18,7 +18,7 @@ export default function StoryDetail() {
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    const { speak, cancel, speaking, voices, supported } = useSpeechSynthesis();
+    const { speak, cancel, speaking} = useSpeechSynthesis();
     const selectedVoice = useSelector(state => state.speechSynthesis.selectedVoice);
     const translate = useSelector(state => state.lang.translate);
 
@@ -26,7 +26,6 @@ export default function StoryDetail() {
     const isUserAdmin = user?.roles.includes('admin') ? true : false;
     const navigate = useNavigate();
 
-    // const baseUrl = 'http://localhost:5000';
     // const baseUrl = 'https://truyen-cua-ba.onrender.com';
     const baseUrl = 'https://truyen-cua-ba.vercel.app';
     useEffect(() => {
@@ -78,10 +77,6 @@ export default function StoryDetail() {
         }
     };
 
-    const handleSpeakText = (text) => {
-        speak({ text, voice: selectedVoice, rate: 0.6, pitch: 1 });
-    };
-
     return (
         <>
             {storyData && <HelmetProvider>
@@ -123,14 +118,14 @@ export default function StoryDetail() {
                                 </hgroup>
                                 <section className='main-content'>
                                     {storyData.paragraphs.map((para, index) => (
-                                        <DoubleLangText key={index} textLang={para} speakText={handleSpeakText}>
+                                        <DoubleLangText key={index} textLang={para}>
                                             {({ text, onClick }) => <p className='story-para' onClick={onClick}>{text}</p>}
                                         </DoubleLangText>
                                     ))}
                                 </section>
                                 <section className='introduction'>
                                     {storyData.introduction.map((para, index) => (
-                                        <DoubleLangText key={index} textLang={para} speakText={handleSpeakText}>
+                                        <DoubleLangText key={index} textLang={para}>
                                             {({ text, onClick }) => <p className='story-para' onClick={onClick}>{text}</p>}
                                         </DoubleLangText>
                                     ))}

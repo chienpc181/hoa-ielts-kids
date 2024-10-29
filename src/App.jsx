@@ -21,8 +21,9 @@ import Teachers from './pages/clients/Teachers';
 import Students from './pages/clients/Students';
 import Practices from './pages/clients/Practices';
 import Stories from './pages/clients/stories/Stories';
-import FairyStories from './pages/clients/stories/FairyStories';
 import StoryDetail from './pages/clients/stories/StoryDetail';
+import FairyStories from './pages/clients/stories/FairyStories';
+import FairyStory from './pages/clients/stories/FairyStory';
 import StudentDetail from './pages/clients/StudentDetail';
 import Lessons from './pages/clients/lessons/Lessons';
 import LessonDetail from './pages/clients/lessons/LessonDetail';
@@ -99,6 +100,7 @@ function App() {
             <Route path='/practices' element={<Practices />} />
             <Route path='/stories' element={<Stories />} />
             <Route path='/fairy-stories' element={<FairyStories />} />
+            <Route path='/fairy-stories/:id' element={<FairyStory />} />
             <Route path="/stories/:id" element={<StoryDetail />} />
             <Route path='/lessons' element={<Lessons />} />
             <Route path="/lessons/:id" element={<LessonDetail />} />

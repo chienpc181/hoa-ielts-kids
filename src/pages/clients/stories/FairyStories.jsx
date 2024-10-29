@@ -1,60 +1,49 @@
 import '../client.css';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import SwitchLang from '../../../components/clients/SwitchLang';
 import FairyStoryItem from '../../../components/clients/FairyStoryItem';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import axios from 'axios';
 import './Story.css';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { DataView } from 'primereact/dataview';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { NavLink } from 'react-router-dom';
+import { useFetchingData, useFetchingDataWithPagination } from '../../../hooks/useData';
 
 export default function FairyStories() {
     const [stories, setStories] = useState([]);
-    const [isLoading, setLoading] = useState(true);
-    const [isLoadingMore, setLoadingMore] = useState(false);
     const [isLastPage, setIsLastPage] = useState(false);
-    const [error, setError] = useState('');
-    const currentPage = useRef(1);
-    const limit = 6;
+    const [currentPage, setCurrenPage] = useState(1);
     const [textSearch, setTextSearch] = useState('');
 
+    const limit = 2;
     const baseUrl = 'https://truyen-cua-ba.vercel.app';
     // const baseUrl = 'https://truyencuaba.vercel.app';
+
+    const fetchingUrl = `${baseUrl}/api/fairyStories`;
+    const fetchingOption = {
+        params: {
+            paginationOptions: { page: currentPage, limit },
+            // queryOptions: {category: 'Aesop', status: 'Inprogress'}
+        },
+    }
+    const {data, loadDataError: error, loadingData: isLoading} = useFetchingData(fetchingUrl, fetchingOption);
+    const {data: moreData, loadingData: isLoadingMore} = useFetchingDataWithPagination(fetchingUrl, fetchingOption, currentPage);
+
     useEffect(() => {
-        const controller = new AbortController(); // Create an AbortController instance
-
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                const response = await axios.get(`${baseUrl}/api/fairyStories`, {
-                    params: {
-                        paginationOptions: { page: 1, limit: 1000 },
-                        queryOptions: {}
-                    },
-                    signal: controller.signal, // Pass the signal to the request
-                });
-                setStories(response.data.stories);
-            } catch (err) {
-                if (axios.isCancel(err)) {
-                    console.log('Request canceled', err.message);
-                } else {
-                    setError(err.message);
-                }
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-
-        // Cleanup function to cancel the request if the component unmounts
-        return () => {
-            controller.abort();
-        };
-    }, []); // Empty dependency array ensures the effect runs only once on mount
+        if (currentPage > 1 && moreData) {
+            setStories(prevStories => [...prevStories, ...moreData.stories]);
+        }
+    }, [moreData])
+    
+    
+    useEffect(() => {
+        if (data) {
+            setStories(data.stories);
+        }
+    }, [data])
+   
 
     if (error) {
         return <div>Error: {error}</div>;
@@ -67,57 +56,32 @@ export default function FairyStories() {
     
 
     const handleLoadMore = async () => {
-        currentPage.current++;
-        
-        try {
-            setLoadingMore(true);
-            
-            const response = await axios.get(`${baseUrl}/api/stories`, {
-                params: {
-                    // paginationOptions: { page: currentPage.current, limit: limit }, // Optional
-                    // sortingOptions: { sort: 'desc' }, // Optional
-                    // queryOptions: { author: 'Brothers Grimm' } // Dynamic and can have any number of keys
-
-                    page: currentPage.current, limit: limit, sort: 'desc'
-                }
-            });
-            
-            const nextPage = response.data.stories;
-            setStories(prevStories => [...prevStories, ...nextPage]);
-            if (currentPage.current === response.data.totalPages) {
-                setIsLastPage(true);
-            }
-        } catch (err) {
-            if (axios.isCancel(err)) {
-                console.log('Request canceled', err.message);
-            } else {
-                setError(err.message);
-            }
-        } finally {
-            setLoadingMore(false);
+        setCurrenPage(currentPage + 1);
+        if (currentPage === data.totalPages - 1) {
+            setIsLastPage(true);
         }
     }
 
     const handleSearchStory = async () => {
-        try {
-            setLoading(true);
-            const response = await axios.get(`${baseUrl}/api/stories/search`, {
-                params: {
-                    paginationOptions: { page: 1, limit: 10 }, // Optional
-                    // sortingOptions: { sort: 'desc' }, // Optional
-                    search: textSearch
-                }
-            });
-            setStories(response.data.stories);
-        } catch (err) {
-            if (axios.isCancel(err)) {
-                console.log('Request canceled', err.message);
-            } else {
-                setError(err.message);
-            }
-        } finally {
-            setLoading(false);
-        }
+        // try {
+        //     setLoading(true);
+        //     const response = await axios.get(`${baseUrl}/api/stories/search`, {
+        //         params: {
+        //             paginationOptions: { page: 1, limit: 10 }, // Optional
+        //             // sortingOptions: { sort: 'desc' }, // Optional
+        //             search: textSearch
+        //         }
+        //     });
+        //     setStories(response.data.stories);
+        // } catch (err) {
+        //     if (axios.isCancel(err)) {
+        //         console.log('Request canceled', err.message);
+        //     } else {
+        //         setError(err.message);
+        //     }
+        // } finally {
+        //     setLoading(false);
+        // }
     }
 
     const handleSearchKeydown = (e) => {
@@ -133,7 +97,6 @@ export default function FairyStories() {
 
 
     const handleClickStory = (story) => {
-        // navigate(`/stories/${story._id}`);
         confirmDialog({
             group: 'templating',
             // header: story.title.en,
@@ -156,7 +119,7 @@ export default function FairyStories() {
             footer: (
                 <div className='flex justify-content-center'>
                     <button class="p-confirm-dialog-accept p-button p-component">
-                        <NavLink to={`/stories/${story._id}`} style={{textDecoration: 'none', color: 'white'}}>Read story</NavLink>
+                        <NavLink to={`/fairy-stories/${story._id}`} style={{textDecoration: 'none', color: 'white'}}>Read story</NavLink>
                     </button>
                     
                 </div>
@@ -170,7 +133,7 @@ export default function FairyStories() {
         }
 
         return (
-            <div className="col-6 md:col-4 lg:col-3 p-2" key={index}>
+            <div className="col-6 md:col-4 lg:col-3 p-3" key={index}>
                 <FairyStoryItem item={story} onSelectItem={() => handleClickStory(story)} />
             </div>
         )
@@ -196,23 +159,15 @@ export default function FairyStories() {
                                 onKeyDown={(e) => handleSearchKeydown(e)}/>
                                 <Button icon="pi pi-search" onClick={handleSearchStory}/>
                             </div>
-                            
                         </div>
-                        
-                        
                         <h1>All stories</h1>
                     </div>
                     <ConfirmDialog group="templating" dismissableMask={true}
                                     style={{ width: '50vw', margin: '0.5rem' }} 
                                     breakpoints={{ '1100px': '75vw', '960px': '100vw' }}/>
-                    {(stories && stories.length) && <div className='story-list'>
-                        {/* {stories.map((story, index) => (
-                            <ListItemStory key={index} item={story} onSelectItem={() => handleClickStory(story)} />
-                        ))} */}
-
+                    {stories && stories.length && <div className='story-list'>
                         <DataView value={stories} listTemplate={listTemplate(stories)} layout='grid' />
                     </div>}
-                    
                     <div className='flex justify-content-center'>
                         <Button label={isLoadingMore ? 'Loading...' : 'Load more...'} type='button' 
                         rounded outlined onClick={handleLoadMore} disabled={isLastPage}

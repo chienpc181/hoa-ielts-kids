@@ -145,3 +145,7 @@ p {
 .p-dialog .p-dialog-content {
   padding: 1rem;
 }
+
+.p-button.p-button-lg {
+  padding: 0;
+}
