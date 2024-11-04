@@ -10,7 +10,7 @@ import './Story.css';
 import { useFetchingData } from '../../../hooks/useData';
 import { StorySpeaker } from '../../../components/clients/WindowsSpeaker';
 import { ReaderBar } from '../../../components/clients/ReaderBar';
-import { RelatedStories } from '../../../components/clients/story/RelatedStories';
+import RelatedStories from '../../../components/clients/story/RelatedStories';
 
 export default function FairyStory() {
     const { id } = useParams();
@@ -21,15 +21,7 @@ export default function FairyStory() {
 
     const baseUrl = 'https://truyen-cua-ba.vercel.app';
     const fetchingDataUrl = `${baseUrl}/api/fairyStories/${id}`;
-    const {data: storyData, loadDataError, loadingData} = useFetchingData(fetchingDataUrl);
-    const fetchingOption = {
-        params: {
-            paginationOptions: { page: 1, limit: 10 },
-            // queryOptions: {category: 'Aesop', status: 'Inprogress'}
-        },
-    }
-    const relatedStoriesUrl = `${baseUrl}/api/fairyStories`;
-    const {data: relatedStoryData} = useFetchingData(relatedStoriesUrl, fetchingOption);
+    const {data: storyData, loadDataError, loadingData} = useFetchingData(fetchingDataUrl, {}, [id]);
     
     if (loadDataError) {
         return <div>Error: {loadDataError}</div>;
@@ -120,8 +112,7 @@ export default function FairyStory() {
                         <aside>
                             <div className='related-stories'>
                                 <h2>Related Stories</h2>
-                                {relatedStoryData && <RelatedStories 
-                                relatedStories={relatedStoryData.stories.map((story) => {return {title: story.title, thumbnailUrl: story.thumbnailUrl}})}/>}
+                                <RelatedStories story={storyData}/>
                             </div>
                         </aside>
                     </div>

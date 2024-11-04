@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function useFetchingData(url, option) {
+export function useFetchingData(url, option, dependencies = []) {
     const [loadDataError, setError] = useState('');
     const [loadingData, setLoadingData] = useState(false);
     const [data, setData] = useState();
@@ -32,45 +32,44 @@ function useFetchingData(url, option) {
         return () => {
             loadData = false;
         }
-    }, []);
+    }, [...dependencies]);
 
     return {loadDataError, loadingData, data}
 }
 
-function useFetchingDataWithPagination(url, option, page) {
-    const [loadDataError, setError] = useState('');
-    const [loadingData, setLoadingData] = useState(false);
-    const [data, setData] = useState();
+// export function useFetchingDataWithPagination(url, option, page) {
+//     const [loadDataError, setError] = useState('');
+//     const [loadingData, setLoadingData] = useState(false);
+//     const [data, setData] = useState();
     
-    useEffect(() => {
-        let loadData = true;
-        const fetchData = async () => {
-            try {
-                setLoadingData(true);
-                const response = await axios.get(url, option);
-                if (loadData) {
-                    setData(response.data);
-                }
+//     useEffect(() => {
+//         let loadData = true;
+//         const fetchData = async () => {
+//             try {
+//                 setLoadingData(true);
+//                 const response = await axios.get(url, option);
+//                 if (loadData) {
+//                     setData(response.data);
+//                 }
 
-            } catch (err) {
-                if (axios.isCancel(err)) {
-                    console.log('Request canceled', err.message);
-                } else {
-                    setError(err.message);
-                }
-            } finally {
-                setLoadingData(false);
-            }
-        };
+//             } catch (err) {
+//                 if (axios.isCancel(err)) {
+//                     console.log('Request canceled', err.message);
+//                 } else {
+//                     setError(err.message);
+//                 }
+//             } finally {
+//                 setLoadingData(false);
+//             }
+//         };
 
-        fetchData();
+//         fetchData();
 
-        return () => {
-            loadData = false;
-        }
-    }, [page]);
+//         return () => {
+//             loadData = false;
+//         }
+//     }, [page]);
 
-    return {loadDataError, loadingData, data}
-}
+//     return {loadDataError, loadingData, data}
+// }
 
-export {useFetchingData, useFetchingDataWithPagination}
